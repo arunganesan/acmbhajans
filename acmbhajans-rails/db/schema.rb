@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190814185949) do
+ActiveRecord::Schema.define(version: 20190814190157) do
 
   create_table "bhajans", force: :cascade do |t|
     t.string "name"
@@ -61,6 +61,24 @@ ActiveRecord::Schema.define(version: 20190814185949) do
     t.index ["lead_id"], name: "index_renditions_on_lead_id"
     t.index ["order_id"], name: "index_renditions_on_order_id"
     t.index ["sound_system_id"], name: "index_renditions_on_sound_system_id"
+  end
+
+  create_table "satsangs", force: :cascade do |t|
+    t.boolean "asked"
+    t.boolean "will_attend_practice"
+    t.boolean "will_attend_satsang"
+    t.integer "practice_request_id"
+    t.integer "satsang_request_id"
+    t.boolean "attended_practice"
+    t.boolean "attended_satsang"
+    t.integer "practice_bhajan_id"
+    t.integer "satsang_bhajan_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["practice_bhajan_id"], name: "index_satsangs_on_practice_bhajan_id"
+    t.index ["practice_request_id"], name: "index_satsangs_on_practice_request_id"
+    t.index ["satsang_bhajan_id"], name: "index_satsangs_on_satsang_bhajan_id"
+    t.index ["satsang_request_id"], name: "index_satsangs_on_satsang_request_id"
   end
 
 end
