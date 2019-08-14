@@ -1,0 +1,2 @@
+class Raga < ApplicationRecord
+end

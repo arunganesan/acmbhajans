@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  date: 2019-08-14
+  lead: one
+  bhajan: one
+  order: one
+  event: one
+  sound_system: one
+
+two:
+  date: 2019-08-14
+  lead: two
+  bhajan: two
+  order: two
+  event: two
+  sound_system: two

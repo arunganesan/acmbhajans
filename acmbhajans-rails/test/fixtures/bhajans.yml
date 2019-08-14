@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  deity: MyString
+  raga: one
+  beat: MyString
+  speed: 1
+  language: MyString
+
+two:
+  name: MyString
+  deity: MyString
+  raga: two
+  beat: MyString
+  speed: 1
+  language: MyString

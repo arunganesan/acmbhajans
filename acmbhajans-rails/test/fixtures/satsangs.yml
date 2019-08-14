@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  asked: false
+  will_attend_practice: false
+  will_attend_satsang: false
+  practice_request: one
+  satsang_request: one
+  attended_practice: false
+  attended_satsang: false
+  practice_bhajan: one
+  satsang_bhajan: one
+
+two:
+  asked: false
+  will_attend_practice: false
+  will_attend_satsang: false
+  practice_request: two
+  satsang_request: two
+  attended_practice: false
+  attended_satsang: false
+  practice_bhajan: two
+  satsang_bhajan: two
