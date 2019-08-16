@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
   get 'group/attended'
-
   get 'group/bhajans'
+
+  get 'person/edit'
+  get 'renditions/edit'
+
 
   get 'individual/graduated'
 
