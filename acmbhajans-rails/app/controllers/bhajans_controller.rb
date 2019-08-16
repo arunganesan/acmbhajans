@@ -1,0 +1,2 @@
+class BhajansController < ApplicationController
+end

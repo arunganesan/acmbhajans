@@ -1,0 +1,2 @@
+module BhajansHelper
+end

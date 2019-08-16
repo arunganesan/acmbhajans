@@ -1,0 +1,2 @@
+module RenditionsHelper
+end

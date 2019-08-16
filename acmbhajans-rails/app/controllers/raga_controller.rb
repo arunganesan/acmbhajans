@@ -1,0 +1,2 @@
+class RagaController < ApplicationController
+end
