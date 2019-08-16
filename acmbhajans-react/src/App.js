@@ -1,52 +1,38 @@
 import React from "react";
-import logo from './logo.svg';
+import amma from './amma.jpg';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.css';
+
+import { Button, ButtonToolbar } from 'react-bootstrap';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { EditBhajans } from './EditBhajans.js'
+
+
+
 
 function Index() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <img src={amma} className="App-logo" alt="logo" />
       </header>
     </div>
   );
-}
-
-function About() {
-  return <h2>About</h2>;
-}
-
-function Users() {
-  return <h2>Users</h2>;
 }
 
 function AppRouter() {
   return (
     <Router>
       <div>
-        <nav>
-          <ul>
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/about/">About</Link></li>
-            <li><Link to="/users/">Users</Link></li>
-          </ul>
+        <nav id='navigation'> 
+          <ButtonToolbar>
+            <Link to="/"><Button>Home</Button></Link>
+            <Link to="/edit/bhajans"><Button>Bhajans</Button></Link>
+          </ButtonToolbar>
         </nav>
 
         <Route path="/" exact component={Index} />
-        <Route path="/about/" component={About} />
-        <Route path="/users/" component={Users} />
+        <Route path="/edit/bhajans" component={EditBhajans} />
       </div>
     </Router>
   );
