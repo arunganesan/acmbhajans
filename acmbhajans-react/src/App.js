@@ -1,6 +1,7 @@
 import React from "react";
 import logo from './logo.svg';
 import './App.css';
+import { Button, ButtonToolbar } from 'react-bootstrap';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 function Index() {
@@ -32,21 +33,33 @@ function Users() {
   return <h2>Users</h2>;
 }
 
+class EditPersons extends React.Component {
+  render() {
+    return (
+      <div>
+        This is a return page?
+        <h1>what</h1>
+      </div>
+    );
+  }
+}
+
 function AppRouter() {
   return (
     <Router>
       <div>
-        <nav>
-          <ul>
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/about/">About</Link></li>
-            <li><Link to="/users/">Users</Link></li>
-          </ul>
+        <nav id='navigation'> 
+          <ButtonToolbar>
+            <Link to="/"><Button>Home</Button></Link>
+            <Link to="/about/"><Button>About</Button></Link>
+            <Link to="/edit/person"><Button>Individual</Button></Link>
+          </ButtonToolbar>
         </nav>
 
         <Route path="/" exact component={Index} />
         <Route path="/about/" component={About} />
         <Route path="/users/" component={Users} />
+        <Route path="/edit/person" component={EditPersons} />
       </div>
     </Router>
   );
