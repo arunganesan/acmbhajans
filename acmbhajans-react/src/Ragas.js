@@ -1,43 +1,18 @@
 import React from "react";
 import 'react-virtualized/styles.css'
 import { AutoSizer, List } from 'react-virtualized'
+import { EditForm } from './EditForm.js'
 import styles from './EditBhajans.css';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import { Button, Modal } from 'react-bootstrap';
 
 
-function EditForm(props) {
-    return (
-      <Modal
-        {...props}
-        size="lg"
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-      >
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-vcenter">
-            Edit form
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <pre>
-              {JSON.stringify(props.schema, null, 2)}
-          </pre>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={props.onHide}>Close</Button>
-        </Modal.Footer>
-      </Modal>
-    );
-  }
-
-
 export class Ragas extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            schema: {},
+            schema: [],
             database: [],
             rowCount: 0,
             overscanRowCount: 10,
@@ -70,7 +45,7 @@ export class Ragas extends React.Component {
         });
 
 
-        fetch('http://ammacentermichigan.com:3000/raga/edit')
+        fetch('http://localhost:1234/raga/edit')
             .then(res => res.json())
             .then(data => {
                 this.setState({
