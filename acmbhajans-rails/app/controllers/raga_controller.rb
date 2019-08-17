@@ -1,14 +1,25 @@
 class RagaController < ApplicationController
+  skip_before_action :verify_authenticity_token
+
+
   def edit
-    @schema = []
-    Raga.columns.each do | col | 
-      @schema << [col.name, col.sql_type]
+    if request.post?
+      if params['id'] == ''
+        raga = Raga.new  
+      else
+        raga = Raga.find_by(id: params['id'])
+      end
+
+      raga.name = params['name']
+      raga.arohanam = params['arohanam']
+      raga.avarohanam = params['avarohanam']
+      raga.anyasvara = params['anyasvara']
+      raga.save
     end
-    
-    @contents = Raga.all
+
+    @contents = Raga.all.order(id: :desc)
 
     render :json => {
-      'schema': @schema,
       'contents': @contents,
     }
   end

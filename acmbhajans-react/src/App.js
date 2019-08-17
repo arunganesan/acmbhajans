@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 import { Button, ButtonToolbar } from 'react-bootstrap';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import { EditBhajans } from './EditBhajans.js'
+import { Bhajans } from './Bhajans.js'
 import { Ragas } from './Ragas.js'
 
 
@@ -20,21 +20,6 @@ function Index() {
   );
 }
 
-// This looks nice but doesnt work out of the box
-{/* <Nav variant="pills" defaultActiveKey="/home">
-  <Nav.Item>
-    <Nav.Link href="/home">Active</Nav.Link>
-  </Nav.Item>
-  <Nav.Item>
-    <Nav.Link eventKey="link-1">Option 2</Nav.Link>
-  </Nav.Item>
-  <Nav.Item>
-    <Nav.Link eventKey="disabled" disabled>
-      Disabled
-    </Nav.Link>
-  </Nav.Item>
-</Nav> */}
-
 function AppRouter() {
   return (
     <Router>
@@ -48,7 +33,7 @@ function AppRouter() {
         </nav>
 
         <Route path="/" exact component={Index} />
-        <Route path="/edit/bhajans" component={EditBhajans} />
+        <Route path="/edit/bhajans" component={Bhajans} />
         <Route path="/edit/ragas" component={Ragas} />
       </div>
     </Router>

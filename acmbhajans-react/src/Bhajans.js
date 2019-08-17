@@ -1,10 +1,9 @@
 import React from "react";
 import 'react-virtualized/styles.css'
 import { AutoSizer, List } from 'react-virtualized'
-import styles from './EditBhajans.css';
 
 
-export class EditBhajans extends React.Component {
+export class Bhajans extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
