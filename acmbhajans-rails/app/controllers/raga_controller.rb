@@ -1,8 +1,8 @@
 class RagaController < ApplicationController
   def edit
-    @schema = {}
+    @schema = []
     Raga.columns.each do | col | 
-      @schema[col.name] = col.sql_type
+      @schema << [col.name, col.sql_type]
     end
     
     @contents = Raga.all
