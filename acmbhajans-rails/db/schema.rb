@@ -10,21 +10,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190816193536) do
+ActiveRecord::Schema.define(version: 20190819194643) do
 
   create_table "bhajans", force: :cascade do |t|
     t.string "name"
-    t.string "deity"
     t.integer "raga_id"
     t.string "beat"
     t.integer "speed"
-    t.string "language"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "deity_id"
+    t.integer "language_id"
+    t.index ["deity_id"], name: "index_bhajans_on_deity_id"
+    t.index ["language_id"], name: "index_bhajans_on_language_id"
     t.index ["raga_id"], name: "index_bhajans_on_raga_id"
   end
 
+  create_table "deities", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "events", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "languages", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

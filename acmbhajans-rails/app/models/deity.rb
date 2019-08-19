@@ -1,0 +1,2 @@
+class Deity < ApplicationRecord
+end

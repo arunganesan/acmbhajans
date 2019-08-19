@@ -8,6 +8,12 @@ Rails.application.routes.draw do
   post 'raga/edit'
   get 'raga/edit'
   
+  post 'deity/edit'
+  get 'deity/edit'
+
+  post 'language/edit'
+  get 'language/edit'
+
   get 'person/edit'
   get 'renditions/edit'
   

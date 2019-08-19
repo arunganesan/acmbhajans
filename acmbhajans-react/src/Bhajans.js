@@ -8,12 +8,13 @@ import { Button, Modal, Form } from 'react-bootstrap';
 
 function initForm () {
     return {
+        id: '',
         name: '',
-        deity: '',
+        deity_id: '',
         raga_id: '',
         beat: '',
         speed: '',
-        language: ''
+        language_id: ''
     }
 }
 
@@ -27,6 +28,8 @@ export class Bhajans extends React.Component {
             showEditForm: false,
             contents: [],
             ragas: [],
+            languages: [],
+            deities: [],
         };
         
         this._rowRenderer = this._rowRenderer.bind(this);
@@ -37,29 +40,6 @@ export class Bhajans extends React.Component {
     generateForm() {
       let onHide = () => this.setState({ showEditForm: false })
       
-      let changeArohanam = (event) => this.setState({
-        form: { 
-          ...this.state.form,
-          arohanam: event.target.value
-        }});
-      
-      let changeName = (event) => this.setState({ 
-        form: {
-          ...this.state.form,
-          name: event.target.value
-        }});
-
-      let changeAvarohanam = (event) => this.setState({ 
-        form: { 
-          ...this.state.form,
-          avarohanam: event.target.value
-        }});
-
-      let changeAnyasvara = (event) => this.setState({ 
-        form: {
-          ...this.state.form,
-          anyasvara: event.target.value
-        }});
 
       return (<Modal
         show={this.state.showEditForm}
@@ -72,7 +52,7 @@ export class Bhajans extends React.Component {
         <Form onSubmit={this.handleSubmit}>
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-vcenter">
-              Ragas
+              Bhajans
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -80,20 +60,35 @@ export class Bhajans extends React.Component {
               type="text" 
               hidden={true} 
               value={this.state.form.id} />
+
             <Form.Group>
               <Form.Label>Name</Form.Label>
               <Form.Control 
                 type="text"
                 value={this.state.form.name} 
-                onChange={changeName}
-                placeholder="Name" />
+                onChange={(event) => this.setState({
+                    form: { 
+                      ...this.state.form,
+                      name: event.target.value
+                    }})}
+                placeholder="Name of bhajan" />
             </Form.Group>
+            
 
             <Form.Group>
                 <Form.Label>Raga</Form.Label>
-                <Form.Control as="select">
+                <Form.Control 
+                    as="select"
+                    value={this.state.form.raga_id}
+                    onChange={(event) => this.setState({
+                      form: {
+                        ...this.state.form,
+                        raga_id: event.target.value
+                      }
+                    })}
+                  >
                     <option value=''>None</option>
-                    { 
+                    {
                         this.state.ragas.map((raga, key) => (
                         <option
                             key={'raga-' + raga['id']} 
@@ -102,17 +97,88 @@ export class Bhajans extends React.Component {
                         </option>)) 
                     }
                 </Form.Control>
-                
             </Form.Group>
 
+
             <Form.Group>
-              <Form.Label>Anyasvara</Form.Label>
-              <Form.Control 
-                type="text" 
-                value={this.state.form.anyasvara} 
-                onChange={changeAnyasvara}
-                placeholder="e.g. N1" />
+                <Form.Label>Deity</Form.Label>
+                <Form.Control 
+                    as="select"
+                    value={this.state.form.deity_id}
+                    onChange={(event) => this.setState({
+                      form: {
+                        ...this.state.form,
+                        deity_id: event.target.value
+                      }
+                    })}
+                  >
+                    <option value=''>None</option>
+                    { 
+                        this.state.deities.map((item, key) => (
+                        <option
+                            key={'deity-' + item.id} 
+                            value={item.id}>
+                            {item.name}
+                        </option>)) 
+                    }
+                </Form.Control>
             </Form.Group>
+
+
+            <Form.Group>
+                <Form.Label>Language</Form.Label>
+                <Form.Control 
+                    as="select"
+                    value={this.state.form.language_id}
+                    onChange={(event) => this.setState({
+                      form: {
+                        ...this.state.form,
+                        language_id: event.target.value
+                      }
+                    })}
+                  >
+                    <option value=''>None</option>
+                    { 
+                        this.state.languages.map((item, key) => (
+                        <option
+                            key={'language-' + item.id} 
+                            value={item.id}>
+                            {item.name}
+                        </option>)) 
+                    }
+                </Form.Control>
+            </Form.Group>
+
+
+            <Form.Group>
+              <Form.Label>Beat</Form.Label>
+              <Form.Control 
+                type="text"
+                value={this.state.form.beat} 
+                onChange={(event) => this.setState({
+                    form: { 
+                      ...this.state.form,
+                      beat: event.target.value
+                    }})}
+                placeholder="e.g. 8 beat cycle - Keherewa" />
+            </Form.Group>
+            
+
+
+            <Form.Group>
+              <Form.Label>Speed</Form.Label>
+              <Form.Control 
+                type="text"
+                value={this.state.form.speed} 
+                onChange={(event) => this.setState({
+                    form: { 
+                      ...this.state.form,
+                      speed: event.target.value
+                    }})}
+                placeholder="e.g. 100 bpm" />
+            </Form.Group>
+            
+
           </Modal.Body>
           <Modal.Footer>
             <Button type="submit">Submit form</Button>
@@ -122,30 +188,18 @@ export class Bhajans extends React.Component {
       </Modal>);
     }
 
-    generateDropdown() {
-        let elts = [];
-        for (let i = 0; i < this.state.ragas.length; i++) {
-            let raga = this.state.ragas[i];
-            let raga_option = (<option 
-                key={raga['id']} 
-                value={raga['id']}>{raga['name'] - raga['arohanam']}</option>);
-            elts.push(raga_option);
-        }
-
-        console.log(elts);
-        return elts;
-    }
-
+    
     componentDidMount() {
         // Make AJAX calls here
         fetch('http://localhost:1234/bhajans/edit')
             .then(res => res.json())
             .then(data => {
                 this.setState({
-                  contents: data['contents'],
-                  ragas: data['ragas'] 
+                  ...data
                 })
             });
+
+          
     }
 
     componentWillUnmount() {
@@ -154,6 +208,8 @@ export class Bhajans extends React.Component {
 
     handleSubmit(event) {
       this.setState({ showEditForm: false });
+
+      console.log(this.state.form);
 
       fetch('http://localhost:1234/bhajans/edit', {
         method: 'POST',
@@ -211,12 +267,7 @@ export class Bhajans extends React.Component {
         let loadForm = () => this.setState({
           form: {
             ...this.state.form,
-            name: datum.name,
-            deity: datum.deity,
-            raga_id: datum.raga_id,
-            beat: datum.beat,
-            speed: datum.speed,
-            language: datum.language
+            ...datum
           },
           showEditForm: true });
 
