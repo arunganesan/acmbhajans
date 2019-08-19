@@ -3,13 +3,27 @@ class PersonController < ApplicationController
 
   def edit
     if request.post?
-      # if params['id'] == ''
-      #   event = Event.new  
-      # else
-      #   event = Event.find_by(id: params['id'])
-      # end
-      # event.name = params['name']
-      # event.save
+      if params['id'] == ''
+        person = Person.new  
+      else
+        person = Person.find_by(id: params['id'])
+      end
+
+      person.name = params['name']
+      person.phone = params['phone']
+      person.email = params['email']
+
+      ready_list = params['ready_list']
+      
+
+      
+      ready_list = []
+      params['ready_list'].each do |bhajan_id| 
+        ready_list << Bhajan.find_by(id: bhajan_id)
+      end
+      
+      person.ready = ready_list
+      person.save
     end
 
 
