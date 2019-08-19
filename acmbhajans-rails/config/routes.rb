@@ -14,6 +14,11 @@ Rails.application.routes.draw do
   post 'language/edit'
   get 'language/edit'
 
+  post 'event/edit'
+  get 'event/edit'
+
+
+
   get 'person/edit'
   get 'renditions/edit'
   

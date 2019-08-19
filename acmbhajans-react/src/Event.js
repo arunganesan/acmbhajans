@@ -11,7 +11,7 @@ function generateEmptyForm () {
     id: ''
   }
 }
-export class Language extends React.Component {
+export class Event extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -41,7 +41,7 @@ export class Language extends React.Component {
         <Form onSubmit={this.handleSubmit}>
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-vcenter">
-              Language
+            Event
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -74,7 +74,7 @@ export class Language extends React.Component {
 
     componentDidMount() {
         // Make AJAX calls here
-        fetch('http://localhost:1234/language/edit')
+        fetch('http://localhost:1234/event/edit')
             .then(res => res.json())
             .then(data => {
                 this.setState({
@@ -90,7 +90,7 @@ export class Language extends React.Component {
     handleSubmit(event) {
       this.setState({ showEditForm: false });
 
-      fetch('http://localhost:1234/language/edit', {
+      fetch('http://localhost:1234/event/edit', {
         method: 'POST',
         mode: 'cors',
         cache: 'no-cache',
@@ -100,8 +100,8 @@ export class Language extends React.Component {
         body: JSON.stringify(this.state.form)
       }).then(response => response.json())
       .then(data => {
-        console.log('RESPONSE FROM SERVER', data);
-        this.setState({ contents: data['contents']})});
+        this.setState({ 
+          contents: data['contents']})});
 
       // Submit form
       // Reload page
@@ -115,7 +115,8 @@ export class Language extends React.Component {
                 onClick={() => this.setState({ 
                   form: generateEmptyForm(),
                   showEditForm: true })}>
-                Add Language
+                
+                Add Event
             </Button>
             
             { this.state.showEditForm && this.generateForm() }
