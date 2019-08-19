@@ -17,9 +17,9 @@ Rails.application.routes.draw do
   post 'event/edit'
   get 'event/edit'
 
-
-
   get 'person/edit'
+  post 'person/edit'
+
   get 'renditions/edit'
   
   get 'individual/graduated'

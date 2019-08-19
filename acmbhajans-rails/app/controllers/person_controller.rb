@@ -1,10 +1,21 @@
 class PersonController < ApplicationController
+  skip_before_action :verify_authenticity_token
+
   def edit
-    @people = Person.all
-    @details = Person.columns
-    Person.columns.each do | col | 
-      p col
+    if request.post?
+      # if params['id'] == ''
+      #   event = Event.new  
+      # else
+      #   event = Event.find_by(id: params['id'])
+      # end
+      # event.name = params['name']
+      # event.save
     end
-    p Person.reflections['ready']
+
+
+    render :json => {
+      'contents': Person.all,
+      'bhajans': Bhajan.all,
+    }
   end
 end

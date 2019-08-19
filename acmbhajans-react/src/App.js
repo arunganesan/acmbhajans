@@ -11,6 +11,7 @@ import { Ragas } from './Ragas.js'
 import { Deities } from './Deities.js'
 import { Language } from './Language.js'
 import { Event } from './Event.js'
+import { People } from './People.js'
 
 
 
@@ -36,6 +37,7 @@ function AppRouter() {
             <Link to="/edit/deities"><Button>Deities</Button></Link>
             <Link to="/edit/language"><Button>Languages</Button></Link>
             <Link to="/edit/events"><Button>Events</Button></Link>
+            <Link to="/edit/people"><Button>People</Button></Link>
           </ButtonToolbar>
         </nav>
 
@@ -45,6 +47,7 @@ function AppRouter() {
         <Route path="/edit/deities" component={Deities} />
         <Route path="/edit/language" component={Language} />
         <Route path="/edit/events" component={Event} />
+        <Route path="/edit/people" component={People} />
       </div>
     </Router>
   );

@@ -51,7 +51,10 @@
 
 * {
   --highlight-color: #ddd;
+  --delete-action-color: rgba(255, 0, 0, 0.25);
+  --positive-action-color: rgba(0, 255, 0, 0.25);
   --normal-color: #fff;
+
 
 }
 .List {
@@ -77,3 +80,21 @@
 .row:hover {
   background-color: var(--highlight-color);
 }
+
+
+.ready_bhajan {
+  border-radius: 5px;
+  border: solid thin black;
+  padding: 5px;
+  margin-left: 15px;
+  margin: 5px 15px;
+  width: 250px;
+  background-color:var(--positive-action-color);
+  cursor:pointer;
+}
+
+
+.ready_bhajan:hover {
+  background-color: var(--delete-action-color);
+}
+
