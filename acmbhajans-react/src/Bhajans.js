@@ -92,10 +92,11 @@ export class Bhajans extends React.Component {
             <Form.Group>
                 <Form.Label>Raga</Form.Label>
                 <Form.Control as="select">
+                    <option value=''>None</option>
                     { 
                         this.state.ragas.map((raga, key) => (
                         <option
-                            key={raga['id']} 
+                            key={'raga-' + raga['id']} 
                             value={raga['id']}>
                             {raga['name']} - {raga['arohanam']}
                         </option>)) 
