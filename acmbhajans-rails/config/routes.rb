@@ -1,14 +1,16 @@
 Rails.application.routes.draw do
   get 'group/attended'
   get 'group/bhajans'
-  
+
+  post 'bhajans/edit'
+  get 'bhajans/edit'
+
   post 'raga/edit'
   get 'raga/edit'
   
   get 'person/edit'
   get 'renditions/edit'
-
-
+  
   get 'individual/graduated'
 
   get 'individual/request'
