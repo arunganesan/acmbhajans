@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   get 'group/attended'
   get 'group/bhajans'
 
+
+
   post 'bhajans/edit'
   get 'bhajans/edit'
 
@@ -17,6 +19,7 @@ Rails.application.routes.draw do
   post 'event/edit'
   get 'event/edit'
 
+  get 'person/dummy'
   get 'person/edit'
   post 'person/edit'
 

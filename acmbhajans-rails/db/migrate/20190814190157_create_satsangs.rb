@@ -10,8 +10,6 @@ class CreateSatsangs < ActiveRecord::Migration[5.1]
       t.boolean :attended_satsang
       t.references :practice_bhajan, foreign_key: true
       t.references :satsang_bhajan, foreign_key: true
-
-      t.timestamps
     end
   end
 end

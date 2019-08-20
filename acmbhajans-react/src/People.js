@@ -202,6 +202,7 @@ export class People extends React.Component {
         fetch('http://localhost:1234/person/edit')
             .then(res => res.json())
             .then(data => {
+                console.log('Got response data: ', data);
                 this.setState({
                   ...data
                 })
@@ -275,7 +276,8 @@ export class People extends React.Component {
         let loadForm = () => this.setState({
           form: {
             ...this.state.form,
-            ...datum
+            ...datum,
+            ready_list: this.state.ready_list[datum.id]
           },
           showEditForm: true });
 

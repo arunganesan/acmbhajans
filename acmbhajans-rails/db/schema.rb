@@ -10,16 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190819194643) do
+ActiveRecord::Schema.define(version: 20190819194834) do
 
   create_table "bhajans", force: :cascade do |t|
     t.string "name"
-    t.integer "raga_id"
     t.string "beat"
     t.integer "speed"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.integer "deity_id"
+    t.integer "raga_id"
     t.integer "language_id"
     t.index ["deity_id"], name: "index_bhajans_on_deity_id"
     t.index ["language_id"], name: "index_bhajans_on_language_id"
@@ -28,30 +26,25 @@ ActiveRecord::Schema.define(version: 20190819194643) do
 
   create_table "deities", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "events", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "languages", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "people", force: :cascade do |t|
     t.string "name"
     t.string "phone"
     t.string "email"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "ready_id"
-    t.index ["ready_id"], name: "index_people_on_ready_id"
+  end
+
+  create_table "people_ready_list", id: false, force: :cascade do |t|
+    t.bigint "people_id"
+    t.bigint "ready_list_id"
   end
 
   create_table "ragas", force: :cascade do |t|
@@ -59,8 +52,6 @@ ActiveRecord::Schema.define(version: 20190819194643) do
     t.string "arohanam"
     t.string "avarohanam"
     t.string "anyasvara"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "renditions", force: :cascade do |t|
@@ -70,8 +61,6 @@ ActiveRecord::Schema.define(version: 20190819194643) do
     t.integer "order_id"
     t.integer "event_id"
     t.integer "sound_system_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.index ["bhajan_id"], name: "index_renditions_on_bhajan_id"
     t.index ["event_id"], name: "index_renditions_on_event_id"
     t.index ["lead_id"], name: "index_renditions_on_lead_id"
@@ -80,21 +69,6 @@ ActiveRecord::Schema.define(version: 20190819194643) do
   end
 
   create_table "satsangs", force: :cascade do |t|
-    t.boolean "asked"
-    t.boolean "will_attend_practice"
-    t.boolean "will_attend_satsang"
-    t.integer "practice_request_id"
-    t.integer "satsang_request_id"
-    t.boolean "attended_practice"
-    t.boolean "attended_satsang"
-    t.integer "practice_bhajan_id"
-    t.integer "satsang_bhajan_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["practice_bhajan_id"], name: "index_satsangs_on_practice_bhajan_id"
-    t.index ["practice_request_id"], name: "index_satsangs_on_practice_request_id"
-    t.index ["satsang_bhajan_id"], name: "index_satsangs_on_satsang_bhajan_id"
-    t.index ["satsang_request_id"], name: "index_satsangs_on_satsang_request_id"
   end
 
 end
