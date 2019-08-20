@@ -12,6 +12,11 @@
 
 ActiveRecord::Schema.define(version: 20190819194834) do
 
+  create_table "backup_rendition", id: false, force: :cascade do |t|
+    t.bigint "backup_id"
+    t.bigint "rendition_as_backup_id"
+  end
+
   create_table "bhajans", force: :cascade do |t|
     t.string "name"
     t.string "beat"
@@ -32,8 +37,18 @@ ActiveRecord::Schema.define(version: 20190819194834) do
     t.string "name"
   end
 
+  create_table "instrumentalist_rendition", id: false, force: :cascade do |t|
+    t.bigint "instrumentalist_id"
+    t.bigint "rendition_as_instrumentalist_id"
+  end
+
   create_table "languages", force: :cascade do |t|
     t.string "name"
+  end
+
+  create_table "lead_rendition", id: false, force: :cascade do |t|
+    t.bigint "lead_id"
+    t.bigint "rendition_as_lead_id"
   end
 
   create_table "people", force: :cascade do |t|
@@ -56,19 +71,34 @@ ActiveRecord::Schema.define(version: 20190819194834) do
 
   create_table "renditions", force: :cascade do |t|
     t.date "date"
-    t.integer "lead_id"
+    t.integer "order"
+    t.string "recording_url"
+    t.string "shruti"
     t.integer "bhajan_id"
-    t.integer "order_id"
     t.integer "event_id"
-    t.integer "sound_system_id"
     t.index ["bhajan_id"], name: "index_renditions_on_bhajan_id"
     t.index ["event_id"], name: "index_renditions_on_event_id"
-    t.index ["lead_id"], name: "index_renditions_on_lead_id"
-    t.index ["order_id"], name: "index_renditions_on_order_id"
-    t.index ["sound_system_id"], name: "index_renditions_on_sound_system_id"
   end
 
   create_table "satsangs", force: :cascade do |t|
+    t.boolean "asked"
+    t.boolean "will_attend_practice"
+    t.boolean "will_attend_satsang"
+    t.integer "practice_request_id"
+    t.integer "satsang_request_id"
+    t.boolean "attended_practice"
+    t.boolean "attended_satsang"
+    t.integer "practice_bhajan_id"
+    t.integer "satsang_bhajan_id"
+    t.index ["practice_bhajan_id"], name: "index_satsangs_on_practice_bhajan_id"
+    t.index ["practice_request_id"], name: "index_satsangs_on_practice_request_id"
+    t.index ["satsang_bhajan_id"], name: "index_satsangs_on_satsang_bhajan_id"
+    t.index ["satsang_request_id"], name: "index_satsangs_on_satsang_request_id"
+  end
+
+  create_table "soundsystem_rendition", id: false, force: :cascade do |t|
+    t.bigint "soundsystem_id"
+    t.bigint "rendition_as_soundsystem_id"
   end
 
 end

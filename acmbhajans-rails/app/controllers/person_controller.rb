@@ -1,25 +1,6 @@
 class PersonController < ApplicationController
   skip_before_action :verify_authenticity_token
 
-  def dummy
-    person = Person.new  
-    person.name = 'Abra'
-    person.phone = '1234'
-    person.email = 'abra@kadabra'
-    person.ready_list.delete_all
-
-    
-    person.ready_list << Bhajan.find_by(id: 2)
-    person.ready_list << Bhajan.find_by(id: 1)
-    person.save
-
-
-    render :json => {
-      'contents': Person.all,
-      'bhajans': Bhajan.all,
-    }
-  end
-
   def edit
     if request.post?
       if params['id'] == ''

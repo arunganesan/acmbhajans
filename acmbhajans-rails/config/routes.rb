@@ -2,10 +2,9 @@ Rails.application.routes.draw do
   get 'group/attended'
   get 'group/bhajans'
 
-
-
   post 'bhajans/edit'
   get 'bhajans/edit'
+  get 'bhajans/dummy_database'
 
   post 'raga/edit'
   get 'raga/edit'
