@@ -9,9 +9,10 @@ class RenditionsController < ApplicationController
           rendition = Rendition.find_by(id: params['id'])
         end
   
-        rendition.date = params['date']
         rendition.recording_url = params['recording_url']
         rendition.shruti = params['shruti']
+
+        rendition.weekend = Weekend.find_by(id: params['weekend_id'])
         rendition.bhajan = Bhajan.find_by(id: params['bhajan_id'])
         rendition.event = Event.find_by(id: params['event_id'])
         
@@ -59,6 +60,7 @@ class RenditionsController < ApplicationController
         # reference into the bhajan/event
         'bhajans': Bhajan.all,
         'events': Event.all,
+        'weekends': Weekend.all,
 
         # unique list
         'lead_list': lead_list_indices,

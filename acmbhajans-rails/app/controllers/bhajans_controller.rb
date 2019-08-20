@@ -9,6 +9,7 @@ class BhajansController < ApplicationController
       Person.create(:name => "Person #{i}")
       Bhajan.create(:name => "Bhajan #{i}")
       Event.create(:name => "Event #{i}")
+      Weekend.create(:name => "Weekend #{i}")
     end
     
     render :json => {

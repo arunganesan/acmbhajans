@@ -3,19 +3,19 @@ import 'react-virtualized/styles.css'
 import { AutoSizer, List } from 'react-virtualized'
 
 import 'bootstrap/dist/css/bootstrap.css';
-import { Button, Modal, Form, Dropdown } from 'react-bootstrap';
+import { Button, Modal, Form } from 'react-bootstrap';
 import { TextField, DropdownField, ArrayField } from './Fields.js'
 
 
 function initForm () {
     return {
         id: '',
-        date: '',
         recording_url: '',
         shruti: '',
 
         bhajan_id: '',
         event_id: '',
+        weekend_id: '',
 
         lead: [],
         backup: [],
@@ -78,10 +78,12 @@ export class Rendition extends React.Component {
               readOnly
               value={this.state.form.id} />
 
-            <TextField
-              field='date'
-              state={this.state}
-              setState={s => this.setState(s)} />
+              <DropdownField
+                label='Weekend'
+                field='weekend_id'
+                choices={this.state.weekends}
+                state={this.state}
+                setState={s => this.setState(s)} />
 
 
             <TextField

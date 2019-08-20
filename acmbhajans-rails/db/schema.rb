@@ -70,14 +70,15 @@ ActiveRecord::Schema.define(version: 20190819194834) do
   end
 
   create_table "renditions", force: :cascade do |t|
-    t.date "date"
     t.integer "order"
     t.string "recording_url"
     t.string "shruti"
     t.integer "bhajan_id"
     t.integer "event_id"
+    t.integer "weekend_id"
     t.index ["bhajan_id"], name: "index_renditions_on_bhajan_id"
     t.index ["event_id"], name: "index_renditions_on_event_id"
+    t.index ["weekend_id"], name: "index_renditions_on_weekend_id"
   end
 
   create_table "satsangs", force: :cascade do |t|
@@ -99,6 +100,10 @@ ActiveRecord::Schema.define(version: 20190819194834) do
   create_table "soundsystem_rendition", id: false, force: :cascade do |t|
     t.bigint "soundsystem_id"
     t.bigint "rendition_as_soundsystem_id"
+  end
+
+  create_table "weekends", force: :cascade do |t|
+    t.string "name"
   end
 
 end
