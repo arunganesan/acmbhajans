@@ -4,47 +4,52 @@ class RenditionsController < ApplicationController
     def edit
       if request.post?
         if params['id'] == ''
-          person = Person.new  
+          rendition = Rendition.new  
         else
-          person = Person.find_by(id: params['id'])
+          rendition = Rendition.find_by(id: params['id'])
         end
   
-        person.name = params['name']
-        person.phone = params['phone']
-        person.email = params['email']
-  
-        ready_list = params['ready_list']
-        person.ready_list.delete_all
-        params['ready_list'].each do |bhajan_id| 
-          person.ready_list << Bhajan.find_by(id: bhajan_id)
+        rendition.date = params['date']
+        rendition.recording_url = params['recording_url']
+        rendition.shruti = params['shruti']
+        rendition.bhajan = Bhajan.find_by(id: params['bhajan_id'])
+        rendition.event = Event.find_by(id: params['event_id'])
+        
+        lead_list = params['lead']
+        rendition.lead.delete_all
+        params['lead'].each do |person_id| 
+          rendition.lead << Person.find_by(id: person_id)
         end
         
-        person.save
+        rendition.save
+      end
+      
+      lead_list_indices = {}
+      backup_list_indices = {}
+      instrumentalists_list_indices = {}
+      soundsystem_list_indices = {}
+
+      all_renditions = Rendition.all
+      all_renditions.each do | rendition | 
+        lead_list_indices[rendition['id']] = rendition.lead.map { | person | person.id }
       end
   
-  
-      all_persons = Person.all
-      ready_list_indices = {}
-      all_persons.each do | person | 
-        ready_list_indices[person['id']] = person.ready_list.map { | bhajan | bhajan.id }
-      end
   
       render :json => {
-        'contents': all_persons,
+        'contents': all_renditions,
         
         # reference into the bhajan/event
         'bhajans': Bhajan.all,
         'events': Event.all,
 
         # unique list
-        'lead_list': ready_list_indices,
-        'backup_list': ready_list_indices,
-        'instrumentalists_list': ready_list_indices,
-        'soundsystem_list': ready_list_indices,
+        'lead_list': lead_list_indices,
+        'backup_list': backup_list_indices,
+        'instrumentalists_list': instrumentalists_list_indices,
+        'soundsystem_list': soundsystem_list_indices,
         
         # index into above lists
         'people': Person.all,
-        
       }
     end
   end
