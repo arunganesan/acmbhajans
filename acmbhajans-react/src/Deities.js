@@ -4,6 +4,8 @@ import { AutoSizer, List } from 'react-virtualized'
 
 import 'bootstrap/dist/css/bootstrap.css';
 import { Button, Modal, Form } from 'react-bootstrap';
+import { TextField } from './Fields.js'
+
 
 function generateEmptyForm () {
   return {
@@ -25,6 +27,16 @@ export class Deities extends React.Component {
         this._rowRenderer = this._rowRenderer.bind(this);
         this.generateForm = this.generateForm.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.controlledFormChange = this.controlledFormChange.bind(this)
+    }
+
+
+    controlledFormChange (key) {
+      return event => this.setState({ 
+        form: {
+          ...this.state.form,
+          [key]: event.target.value
+        }})
     }
 
     generateForm() {
@@ -51,18 +63,11 @@ export class Deities extends React.Component {
               hidden={true} 
               value={this.state.form.id} />
 
-            <Form.Group>
-              <Form.Label>Name</Form.Label>
-              <Form.Control 
-                type="text"
-                value={this.state.form.name} 
-                onChange={(event) => this.setState({
-                  form: { 
-                    ...this.state.form,
-                    name: event.target.value
-                  }})}
-                placeholder="Name" />
-            </Form.Group>
+          <TextField
+              label='Name'
+              value={this.state.form.name}
+              onChange={this.controlledFormChange('name')}
+              />
           </Modal.Body>
           <Modal.Footer>
             <Button type="submit">Submit form</Button>
@@ -100,8 +105,10 @@ export class Deities extends React.Component {
         body: JSON.stringify(this.state.form)
       }).then(response => response.json())
       .then(data => {
-        console.log('RESPONSE FROM SERVER', data);
-        this.setState({ contents: data['contents']})});
+        this.setState({ contents: data['contents']})
+        window.location.reload();
+      });
+        
 
       // Submit form
       // Reload page
@@ -146,8 +153,7 @@ export class Deities extends React.Component {
         let loadForm = () => this.setState({
           form: {
             ...this.state.form,
-            name: datum.name,
-            id: datum.id,
+            ...datum
           },
           showEditForm: true });
 

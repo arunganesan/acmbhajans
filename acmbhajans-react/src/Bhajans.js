@@ -4,6 +4,7 @@ import { AutoSizer, List } from 'react-virtualized'
 
 import 'bootstrap/dist/css/bootstrap.css';
 import { Button, Modal, Form } from 'react-bootstrap';
+import { TextField, DropdownField } from './Fields.js'
 
 
 function initForm () {
@@ -17,6 +18,7 @@ function initForm () {
         language_id: ''
     }
 }
+
 
 export class Bhajans extends React.Component {
     constructor(props) {
@@ -35,6 +37,16 @@ export class Bhajans extends React.Component {
         this._rowRenderer = this._rowRenderer.bind(this);
         this.generateForm = this.generateForm.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.controlledFormChange = this.controlledFormChange.bind(this);
+    }
+
+
+    controlledFormChange (key) {
+      return event => this.setState({ 
+        form: {
+          ...this.state.form,
+          [key]: event.target.value
+        }})
     }
 
     generateForm() {
@@ -61,123 +73,45 @@ export class Bhajans extends React.Component {
               hidden={true} 
               value={this.state.form.id} />
 
-            <Form.Group>
-              <Form.Label>Name</Form.Label>
-              <Form.Control 
-                type="text"
-                value={this.state.form.name} 
-                onChange={(event) => this.setState({
-                    form: { 
-                      ...this.state.form,
-                      name: event.target.value
-                    }})}
-                placeholder="Name of bhajan" />
-            </Form.Group>
+            
+            <TextField
+              label='Name'
+              value={this.state.form.name}
+              onChange={this.controlledFormChange('name')}
+              />
+
+            <DropdownField 
+              label='Raga'
+              value={this.state.form.raga_id}
+              onChange={this.controlledFormChange('raga_id')}
+              choices={this.state.ragas} />
+
+            <DropdownField 
+              label='Deity'
+              value={this.state.form.deity_id}
+              onChange={this.controlledFormChange('deity_id')}
+              choices={this.state.deities} />
+
+            <DropdownField 
+              label='Language'
+              value={this.state.form.language_id}
+              onChange={this.controlledFormChange('language_id')}
+              choices={this.state.languages} />
+
+            <TextField
+              label='Beat'
+              value={this.state.form.beat}
+              onChange={this.controlledFormChange('beat')}
+              placeholder="e.g. 8 beat cycle - Keherewa"
+            />
             
 
-            <Form.Group>
-                <Form.Label>Raga</Form.Label>
-                <Form.Control 
-                    as="select"
-                    value={this.state.form.raga_id}
-                    onChange={(event) => this.setState({
-                      form: {
-                        ...this.state.form,
-                        raga_id: event.target.value
-                      }
-                    })}
-                  >
-                    <option value=''>None</option>
-                    {
-                        this.state.ragas.map((raga, key) => (
-                        <option
-                            key={'raga-' + raga['id']} 
-                            value={raga['id']}>
-                            {raga['name']} - {raga['arohanam']}
-                        </option>)) 
-                    }
-                </Form.Control>
-            </Form.Group>
-
-
-            <Form.Group>
-                <Form.Label>Deity</Form.Label>
-                <Form.Control 
-                    as="select"
-                    value={this.state.form.deity_id}
-                    onChange={(event) => this.setState({
-                      form: {
-                        ...this.state.form,
-                        deity_id: event.target.value
-                      }
-                    })}
-                  >
-                    <option value=''>None</option>
-                    { 
-                        this.state.deities.map((item, key) => (
-                        <option
-                            key={'deity-' + item.id} 
-                            value={item.id}>
-                            {item.name}
-                        </option>)) 
-                    }
-                </Form.Control>
-            </Form.Group>
-
-
-            <Form.Group>
-                <Form.Label>Language</Form.Label>
-                <Form.Control 
-                    as="select"
-                    value={this.state.form.language_id}
-                    onChange={(event) => this.setState({
-                      form: {
-                        ...this.state.form,
-                        language_id: event.target.value
-                      }
-                    })}
-                  >
-                    <option value=''>None</option>
-                    { 
-                        this.state.languages.map((item, key) => (
-                        <option
-                            key={'language-' + item.id} 
-                            value={item.id}>
-                            {item.name}
-                        </option>)) 
-                    }
-                </Form.Control>
-            </Form.Group>
-
-
-            <Form.Group>
-              <Form.Label>Beat</Form.Label>
-              <Form.Control 
-                type="text"
-                value={this.state.form.beat} 
-                onChange={(event) => this.setState({
-                    form: { 
-                      ...this.state.form,
-                      beat: event.target.value
-                    }})}
-                placeholder="e.g. 8 beat cycle - Keherewa" />
-            </Form.Group>
-            
-
-
-            <Form.Group>
-              <Form.Label>Speed</Form.Label>
-              <Form.Control 
-                type="text"
-                value={this.state.form.speed} 
-                onChange={(event) => this.setState({
-                    form: { 
-                      ...this.state.form,
-                      speed: event.target.value
-                    }})}
-                placeholder="e.g. 100 bpm" />
-            </Form.Group>
-            
+            <TextField
+              label='Speed'
+              value={this.state.form.speed}
+              onChange={this.controlledFormChange('speed')}
+              placeholder="e.g. 100 BPM"
+            />
 
           </Modal.Body>
           <Modal.Footer>
@@ -197,9 +131,7 @@ export class Bhajans extends React.Component {
                 this.setState({
                   ...data
                 })
-            });
-
-          
+            });     
     }
 
     componentWillUnmount() {
@@ -221,7 +153,6 @@ export class Bhajans extends React.Component {
         body: JSON.stringify(this.state.form)
       }).then(response => response.json())
       .then(data => {
-        console.log('RESPONSE FROM SERVER', data);
         this.setState({ contents: data['contents']})});
 
       // Submit form

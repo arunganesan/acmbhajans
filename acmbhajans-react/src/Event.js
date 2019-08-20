@@ -4,6 +4,7 @@ import { AutoSizer, List } from 'react-virtualized'
 
 import 'bootstrap/dist/css/bootstrap.css';
 import { Button, Modal, Form } from 'react-bootstrap';
+import { TextField } from './Fields.js'
 
 function generateEmptyForm () {
   return {
@@ -25,7 +26,18 @@ export class Event extends React.Component {
         this._rowRenderer = this._rowRenderer.bind(this);
         this.generateForm = this.generateForm.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.controlledFormChange = this.controlledFormChange.bind(this);
     }
+    
+    controlledFormChange (key) {
+      return event => this.setState({ 
+        form: {
+          ...this.state.form,
+          [key]: event.target.value
+        }})
+    }
+
+
 
     generateForm() {
       let onHide = () => this.setState({ showEditForm: false })
@@ -51,18 +63,12 @@ export class Event extends React.Component {
               hidden={true} 
               value={this.state.form.id} />
 
-            <Form.Group>
-              <Form.Label>Name</Form.Label>
-              <Form.Control 
-                type="text"
-                value={this.state.form.name} 
-                onChange={(event) => this.setState({
-                  form: { 
-                    ...this.state.form,
-                    name: event.target.value
-                  }})}
-                placeholder="Name" />
-            </Form.Group>
+            <TextField
+              label='Name'
+              value={this.state.form.name}
+              onChange={this.controlledFormChange('name')}
+              />
+
           </Modal.Body>
           <Modal.Footer>
             <Button type="submit">Submit form</Button>

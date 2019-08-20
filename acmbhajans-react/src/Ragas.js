@@ -3,20 +3,27 @@ import 'react-virtualized/styles.css'
 import { AutoSizer, List } from 'react-virtualized'
 
 import 'bootstrap/dist/css/bootstrap.css';
-import { Button, Modal, Form } from 'react-bootstrap';
+import { Button, Modal, Form, Spinner } from 'react-bootstrap';
+import { TextField } from './Fields.js'
 
+const URL = "http://localhost:1234/raga/edit";
+
+function initForm () {
+  return {
+    id: '',
+    name: '',
+    arohanam: '',
+    avarohanam: '',
+    anyasvara: '',
+  }
+}
 
 export class Ragas extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            form: {
-              name: '',
-              arohanam: '',
-              avarohanam: '',
-              anyasvara: '',
-              id: ''
-            },
+            form: initForm(),
+            loading: true,
             rowCount: 0,
             overscanRowCount: 100,
             showEditForm: false,
@@ -26,38 +33,23 @@ export class Ragas extends React.Component {
         this._rowRenderer = this._rowRenderer.bind(this);
         this.generateForm = this.generateForm.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.controlledFormChange = this.controlledFormChange.bind(this)
+        this.onHide = this.setState({ showEditForm: false })
+
+    }
+
+    controlledFormChange (key) {
+      return event => this.setState({ 
+        form: {
+          ...this.state.form,
+          [key]: event.target.value
+        }})
     }
 
     generateForm() {
-      let onHide = () => this.setState({ showEditForm: false })
-      
-      let changeArohanam = (event) => this.setState({
-        form: { 
-          ...this.state.form,
-          arohanam: event.target.value
-        }});
-      
-      let changeName = (event) => this.setState({ 
-        form: {
-          ...this.state.form,
-          name: event.target.value
-        }});
-
-      let changeAvarohanam = (event) => this.setState({ 
-        form: { 
-          ...this.state.form,
-          avarohanam: event.target.value
-        }});
-
-      let changeAnyasvara = (event) => this.setState({ 
-        form: {
-          ...this.state.form,
-          anyasvara: event.target.value
-        }});
-
       return (<Modal
         show={this.state.showEditForm}
-        onHide={onHide}
+        onHide={this.onHide}
         {...this.props}
         size="lg"
         aria-labelledby="contained-modal-title-vcenter"
@@ -74,43 +66,42 @@ export class Ragas extends React.Component {
               type="text" 
               hidden={true} 
               value={this.state.form.id}
-              controlId="formRagaId" />
-            <Form.Group controlId="formRagaName">
-              <Form.Label>Name</Form.Label>
-              <Form.Control 
-                type="text"
-                value={this.state.form.name} 
-                onChange={changeName}
-                placeholder="Name" />
-            </Form.Group>
-            <Form.Group controlId="formRagaArohanam">
-              <Form.Label>Arohanam</Form.Label>
-              <Form.Control 
-                type="text" 
-                value={this.state.form.arohanam} 
-                onChange={changeArohanam} 
-                placeholder="e.g. S R2 G1 ..." />
-            </Form.Group>
-            <Form.Group controlId="formRagaAvarohanam">
-              <Form.Label>Avarohanam</Form.Label>
-              <Form.Control 
-                type="text"
-                value={this.state.form.avarohanam} 
-                onChange={changeAvarohanam}
-                placeholder="e.g. S N2 D1 ..." />
-            </Form.Group>
-            <Form.Group controlId="formRagaAnyasvara">
-              <Form.Label>Anyasvara</Form.Label>
-              <Form.Control 
-                type="text" 
-                value={this.state.form.anyasvara} 
-                onChange={changeAnyasvara}
-                placeholder="e.g. N1" />
-            </Form.Group>
+              />
+
+
+            <TextField
+              label='Name'
+              value={this.state.form.name}
+              onChange={this.controlledFormChange('name')}
+              />
+
+           
+            <TextField
+              label='Arohanam'
+              value={this.state.form.arohanam}
+              onChange={this.controlledFormChange('arohanam')}
+              placeholder="e.g. S R2 G1 ..."
+              />
+
+
+            <TextField
+              label='Avarohanam'
+              value={this.state.form.avarohanam}
+              onChange={this.controlledFormChange('avarohanam')}
+              placeholder="e.g. S N2 D1 ..."
+              />
+
+            
+            <TextField
+              label='Anyasvara'
+              value={this.state.form.anyasvara}
+              onChange={this.controlledFormChange('anyasvara')}
+              placeholder="e.g. N1"
+              />
           </Modal.Body>
           <Modal.Footer>
             <Button type="submit">Submit form</Button>
-            <Button onClick={onHide}>Close</Button>
+            <Button onClick={this.onHide}>Close</Button>
           </Modal.Footer>
         </Form>
       </Modal>);
@@ -118,11 +109,12 @@ export class Ragas extends React.Component {
 
     componentDidMount() {
         // Make AJAX calls here
-        fetch('http://localhost:1234/raga/edit')
+        fetch(URL)
             .then(res => res.json())
             .then(data => {
                 this.setState({
-                  contents: data['contents'] 
+                  contents: data['contents'],
+                  loading: false,
                 })
             });
     }
@@ -132,9 +124,12 @@ export class Ragas extends React.Component {
     }
 
     handleSubmit(event) {
-      this.setState({ showEditForm: false });
+      this.setState({ 
+        showEditForm: false,
+        loading: true,
+      });
 
-      fetch('http://localhost:1234/raga/edit', {
+      fetch(URL, {
         method: 'POST',
         mode: 'cors',
         cache: 'no-cache',
@@ -144,11 +139,14 @@ export class Ragas extends React.Component {
         body: JSON.stringify(this.state.form)
       }).then(response => response.json())
       .then(data => {
-        console.log('RESPONSE FROM SERVER', data);
-        this.setState({ contents: data['contents']})});
-
-      // Submit form
-      // Reload page
+        this.setState({ 
+          contents: data['contents'],
+          loading: false
+        });
+        
+        window.location.reload();
+      });
+      
       event.preventDefault();
     }
 
@@ -157,17 +155,17 @@ export class Ragas extends React.Component {
              <Button 
                 variant="primary" 
                 onClick={() => this.setState({ 
-                  form: {
-                    name: '',
-                    arohanam: '',
-                    avarohanam: '',
-                    anyasvara: '',
-                    id: ''
-                  },
+                  form: initForm(),
                   showEditForm: true })}>
                 Add Raga
             </Button>
             
+            { this.state.loading && (
+              <Spinner animation="border" role="status">
+                <span className="sr-only">Loading...</span>
+              </Spinner>
+            )}
+
             { this.state.showEditForm && this.generateForm() }
             
             <AutoSizer disableHeight>
@@ -184,6 +182,7 @@ export class Ragas extends React.Component {
                 />
             )}
             </AutoSizer>
+
             </div>
         );
     }

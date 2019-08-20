@@ -16,11 +16,9 @@ class RagaController < ApplicationController
       raga.anyasvara = params['anyasvara']
       raga.save
     end
-
-    @contents = Raga.all.order(id: :desc)
-
+    
     render :json => {
-      'contents': @contents,
+      'contents':Raga.all.order(id: :desc)
     }
   end
 end
