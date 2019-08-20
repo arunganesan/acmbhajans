@@ -10,7 +10,7 @@ class LanguageController < ApplicationController
         language = Language.find_by(id: params['id'])
       end
       language.name = params['name']
-      language.save
+      language.save!
     end
 
     @contents = Language.all.order(id: :desc)

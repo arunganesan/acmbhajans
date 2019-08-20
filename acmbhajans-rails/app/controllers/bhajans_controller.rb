@@ -32,7 +32,7 @@ class BhajansController < ApplicationController
       bhajan.raga_id = params['raga_id']
       bhajan.deity_id = params['deity_id']
       bhajan.language_id = params['language_id']
-      bhajan.save
+      bhajan.save!
     end
 
     

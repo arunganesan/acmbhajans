@@ -10,7 +10,7 @@ class DeityController < ApplicationController
         deity = Deity.find_by(id: params['id'])
       end
       deity.name = params['name']
-      deity.save
+      deity.save!
     end
 
     @contents = Deity.all.order(id: :desc)

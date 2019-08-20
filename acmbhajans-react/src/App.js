@@ -16,6 +16,7 @@ import { Language } from './Language.js'
 import { Event } from './Event.js'
 import { People } from './People.js'
 import { Rendition } from './Rendition.js'
+import { Weekends } from './Weekends.js'
 
 
 
@@ -62,6 +63,7 @@ function AppRouter() {
             <MyLink to="bhajans" />
             <MyLink to="events" />
             <MyLink to="people" />
+            <MyLink to="weekends" />
             <MyLink to="rendition" />
           </Nav>
 
@@ -74,6 +76,7 @@ function AppRouter() {
           <Route path="/language" component={Language} />
           <Route path="/events" component={Event} />
           <Route path="/people" component={People} />
+          <Route path="/weekends" component={Weekends} />
           <Route path="/rendition" component={Rendition} />
         </div>
       </div>

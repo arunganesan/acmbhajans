@@ -10,7 +10,7 @@ class EventController < ApplicationController
         event = Event.find_by(id: params['id'])
       end
       event.name = params['name']
-      event.save
+      event.save!
     end
 
     @contents = Event.all.order(id: :desc)

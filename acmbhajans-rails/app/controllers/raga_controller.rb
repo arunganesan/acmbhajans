@@ -14,7 +14,7 @@ class RagaController < ApplicationController
       raga.arohanam = params['arohanam']
       raga.avarohanam = params['avarohanam']
       raga.anyasvara = params['anyasvara']
-      raga.save
+      raga.save!
     end
     
     render :json => {

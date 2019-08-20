@@ -19,7 +19,7 @@ class PersonController < ApplicationController
         person.ready_list << Bhajan.find_by(id: bhajan_id)
       end
       
-      person.save
+      person.save!
     end
 
 

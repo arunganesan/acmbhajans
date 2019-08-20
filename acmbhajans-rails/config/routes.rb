@@ -12,6 +12,9 @@ Rails.application.routes.draw do
   post 'deity/edit'
   get 'deity/edit'
 
+  post 'weekend/edit'
+  get 'weekend/edit'
+
   post 'language/edit'
   get 'language/edit'
 

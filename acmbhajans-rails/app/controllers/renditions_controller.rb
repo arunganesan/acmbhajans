@@ -37,7 +37,7 @@ class RenditionsController < ApplicationController
           rendition.soundsystem << Person.find_by(id: person_id)
         end
         
-        rendition.save
+        rendition.save!
       end
       
       lead_list_indices = {}
