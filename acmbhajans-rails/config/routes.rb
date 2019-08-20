@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   post 'person/edit'
 
   get 'renditions/edit'
+  post 'renditions/edit'
   
   get 'individual/graduated'
 

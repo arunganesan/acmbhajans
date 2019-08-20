@@ -12,6 +12,7 @@ import { Deities } from './Deities.js'
 import { Language } from './Language.js'
 import { Event } from './Event.js'
 import { People } from './People.js'
+import { Rendition } from './Rendition.js'
 
 
 
@@ -38,6 +39,7 @@ function AppRouter() {
             <Link to="/edit/language"><Button>Languages</Button></Link>
             <Link to="/edit/events"><Button>Events</Button></Link>
             <Link to="/edit/people"><Button>People</Button></Link>
+            <Link to="/edit/rendition"><Button>Rendition</Button></Link>
           </ButtonToolbar>
         </nav>
 
@@ -48,6 +50,7 @@ function AppRouter() {
         <Route path="/edit/language" component={Language} />
         <Route path="/edit/events" component={Event} />
         <Route path="/edit/people" component={People} />
+        <Route path="/edit/rendition" component={Rendition} />
       </div>
     </Router>
   );

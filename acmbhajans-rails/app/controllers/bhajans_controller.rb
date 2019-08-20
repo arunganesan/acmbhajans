@@ -2,17 +2,15 @@ class BhajansController < ApplicationController
     skip_before_action :verify_authenticity_token
 
   def dummy_database
-    person = Person.new  
-    person.name = 'Abra'
-    person.phone = '1234'
-    person.email = 'abra@kadabra'
-    person.ready_list.delete_all
-
+    for i in 1..10 do
+      Language.create(:name => "Language #{i}")
+      Raga.create(:name =>"Raga #{i}")
+      Deity.create(:name => "Deity #{i}")
+      Person.create(:name => "Person #{i}")
+      Bhajan.create(:name => "Bhajan #{i}")
+      Event.create(:name => "Event #{i}")
+    end
     
-    person.ready_list << Bhajan.find_by(id: 2)
-    person.ready_list << Bhajan.find_by(id: 1)
-    person.save
-
     render :json => {
       'contents': Person.all,
       'bhajans': Bhajan.all,
