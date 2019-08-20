@@ -26,17 +26,9 @@ export class Event extends React.Component {
         this._rowRenderer = this._rowRenderer.bind(this);
         this.generateForm = this.generateForm.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.controlledFormChange = this.controlledFormChange.bind(this);
-    }
-    
-    controlledFormChange (key) {
-      return event => this.setState({ 
-        form: {
-          ...this.state.form,
-          [key]: event.target.value
-        }})
     }
 
+  
 
 
     generateForm() {
@@ -63,10 +55,10 @@ export class Event extends React.Component {
               hidden={true} 
               value={this.state.form.id} />
 
-            <TextField
-              label='Name'
-              value={this.state.form.name}
-              onChange={this.controlledFormChange('name')}
+           <TextField
+              field='name'
+              state={this.state}
+              setState={s => this.setState(s)}
               />
 
           </Modal.Body>

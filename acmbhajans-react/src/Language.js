@@ -62,9 +62,9 @@ export class Language extends React.Component {
               value={this.state.form.id} />
       
            <TextField
-              label='Name'
-              value={this.state.form.name}
-              onChange={this.controlledFormChange('name')}
+              field='name'
+              state={this.state}
+              setState={s => this.setState(s)}
               />
 
 

@@ -4,6 +4,7 @@ import { AutoSizer, List } from 'react-virtualized'
 
 import 'bootstrap/dist/css/bootstrap.css';
 import { Button, Modal, Form } from 'react-bootstrap';
+import { TextField, ArrayField } from './Fields.js'
 
 
 function initForm () {
@@ -33,6 +34,8 @@ export class People extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.findBhajan = this.findBhajan.bind(this);
     }
+
+
 
     findBhajan (bhajan_id) {
         for (let i = 0; i < this.state.bhajans.length; i++) {
@@ -70,123 +73,34 @@ export class People extends React.Component {
               readOnly
               value={this.state.form.id} />
 
-            <Form.Group>
-              <Form.Label>Name</Form.Label>
-              <Form.Control 
-                type="text"
-                value={this.state.form.name} 
-                onChange={(event) => this.setState({
-                    form: { 
-                      ...this.state.form,
-                      name: event.target.value
-                    }})}
-                placeholder="Name of bhajan" />
-            </Form.Group>
-
-            <Form.Group>
-              <Form.Label>Phone</Form.Label>
-              <Form.Control 
-                type="text"
-                value={this.state.form.phone} 
-                onChange={(event) => this.setState({
-                    form: { 
-                      ...this.state.form,
-                      phone: event.target.value
-                    }})}
-                placeholder="Phone no." />
-            </Form.Group>
-
-            <Form.Group>
-              <Form.Label>Email</Form.Label>
-              <Form.Control 
-                type="text"
-                value={this.state.form.email} 
-                onChange={(event) => this.setState({
-                    form: { 
-                      ...this.state.form,
-                      email: event.target.value
-                    }})}
-                placeholder="Email address" />
-            </Form.Group>
+            <TextField
+              field='name'
+              state={this.state}
+              setState={s => this.setState(s)}
+              />
 
 
-            <Form.Group>
-                <Form.Label>Ready list</Form.Label>
-                {
-                    this.state.form.ready_list.map((bhajan_id, idx) => (
-                    <div 
-                        className="ready_bhajan"
-                        onClick={() => {
-                            let new_list = this.state.form.ready_list.filter((v, i, a) => i != idx);
-                            this.setState({
-                                form: {
-                                    ...this.state.form,
-                                    ready_list: new_list
-                                }
-                            });
-                        }}
-                        key={'ready_list-' + bhajan_id}>
-                        {this.findBhajan(bhajan_id)}
-                        </div>
-                    ))
-                }
-
-                <Form.Control 
-                    as="select"
-                    onChange={(event) => {
-                        let ready_list = this.state.form.ready_list;
-                        ready_list.push(event.target.value);
-                        
-                        this.setState({
-                            form: {
-                                ...this.state.form,
-                                ready_list: ready_list,
-                            }
-                        })}}
-                    >
-                    <option value=''>None</option>
-                    { 
-                        this.state.bhajans.map((item, key) => (
-                        <option
-                            key={'bhajan-' + item.id} 
-                            value={item.id}
-                            readOnly>
-                            {item.name}
-                        </option>)) 
-                    }
-                </Form.Control>
-            </Form.Group>
+            <TextField  
+              field='phone'
+              state={this.state}
+              setState={s => this.setState(s)}
+              />
             
-
-{/*             
-
-            <Form.Group>
-                <Form.Label>Language</Form.Label>
-                <Form.Control 
-                    as="select"
-                    value={this.state.form.language_id}
-                    onChange={(event) => this.setState({
-                      form: {
-                        ...this.state.form,
-                        language_id: event.target.value
-                      }
-                    })}
-                  >
-                    <option value=''>None</option>
-                    { 
-                        this.state.languages.map((item, key) => (
-                        <option
-                            key={'language-' + item.id} 
-                            value={item.id}>
-                            {item.name}
-                        </option>)) 
-                    }
-                </Form.Control>
-            </Form.Group> */}
+            <TextField  
+              field='email'
+              state={this.state}
+              setState={s => this.setState(s)}
+              />
 
 
-            
-
+            <ArrayField
+              label='Ready list'
+              field='ready_list'
+              state={this.state}
+              choices={this.state.bhajans}
+              setState={s => this.setState(s)}
+              />
+              
           </Modal.Body>
           <Modal.Footer>
             <Button type="submit">Submit form</Button>

@@ -37,17 +37,8 @@ export class Bhajans extends React.Component {
         this._rowRenderer = this._rowRenderer.bind(this);
         this.generateForm = this.generateForm.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.controlledFormChange = this.controlledFormChange.bind(this);
     }
 
-
-    controlledFormChange (key) {
-      return event => this.setState({ 
-        form: {
-          ...this.state.form,
-          [key]: event.target.value
-        }})
-    }
 
     generateForm() {
       let onHide = () => this.setState({ showEditForm: false })
@@ -75,41 +66,44 @@ export class Bhajans extends React.Component {
 
             
             <TextField
-              label='Name'
-              value={this.state.form.name}
-              onChange={this.controlledFormChange('name')}
+              field='name'
+              state={this.state}
+              setState={s => this.setState(s)}
               />
 
             <DropdownField 
               label='Raga'
-              value={this.state.form.raga_id}
-              onChange={this.controlledFormChange('raga_id')}
+              field='raga_id'
+              state={this.state}
+              setState={s => this.setState(s)}
               choices={this.state.ragas} />
 
             <DropdownField 
               label='Deity'
-              value={this.state.form.deity_id}
-              onChange={this.controlledFormChange('deity_id')}
+              field='deity_id'
+              state={this.state}
+              setState={s => this.setState(s)}
               choices={this.state.deities} />
 
             <DropdownField 
               label='Language'
-              value={this.state.form.language_id}
-              onChange={this.controlledFormChange('language_id')}
+              field='language_id'
+              state={this.state}
+              setState={s => this.setState(s)}
               choices={this.state.languages} />
 
             <TextField
-              label='Beat'
-              value={this.state.form.beat}
-              onChange={this.controlledFormChange('beat')}
+              field='beat'
+              state={this.state}
+              setState={s => this.setState(s)}
               placeholder="e.g. 8 beat cycle - Keherewa"
             />
             
 
             <TextField
-              label='Speed'
-              value={this.state.form.speed}
-              onChange={this.controlledFormChange('speed')}
+              field='speed'
+              state={this.state}
+              setState={s => this.setState(s)}
               placeholder="e.g. 100 BPM"
             />
 

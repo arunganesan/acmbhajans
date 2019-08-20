@@ -33,18 +33,10 @@ export class Ragas extends React.Component {
         this._rowRenderer = this._rowRenderer.bind(this);
         this.generateForm = this.generateForm.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.controlledFormChange = this.controlledFormChange.bind(this)
         this.onHide = this.setState({ showEditForm: false })
 
     }
 
-    controlledFormChange (key) {
-      return event => this.setState({ 
-        form: {
-          ...this.state.form,
-          [key]: event.target.value
-        }})
-    }
 
     generateForm() {
       return (<Modal
@@ -68,34 +60,34 @@ export class Ragas extends React.Component {
               value={this.state.form.id}
               />
 
-
             <TextField
-              label='Name'
-              value={this.state.form.name}
-              onChange={this.controlledFormChange('name')}
+              field='name'
+              state={this.state}
+              setState={s => this.setState(s)}
               />
+
 
            
             <TextField
-              label='Arohanam'
-              value={this.state.form.arohanam}
-              onChange={this.controlledFormChange('arohanam')}
+              field='arohanam'
+              state={this.state}
+              setState={s => this.setState(s)}
               placeholder="e.g. S R2 G1 ..."
               />
 
 
             <TextField
-              label='Avarohanam'
-              value={this.state.form.avarohanam}
-              onChange={this.controlledFormChange('avarohanam')}
+              field='avarohanam'
+              state={this.state}
+              setState={s => this.setState(s)}
               placeholder="e.g. S N2 D1 ..."
               />
 
             
             <TextField
-              label='Anyasvara'
-              value={this.state.form.anyasvara}
-              onChange={this.controlledFormChange('anyasvara')}
+              field='anyasvara'
+              state={this.state}
+              setState={s => this.setState(s)}
               placeholder="e.g. N1"
               />
           </Modal.Body>
