@@ -33,16 +33,15 @@ export class Ragas extends React.Component {
         this._rowRenderer = this._rowRenderer.bind(this);
         this.generateForm = this.generateForm.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.onHide = this.setState({ showEditForm: false })
-
     }
 
-
     generateForm() {
+      let onHide = () => this.setState({ showEditForm: false });
+
       return (<Modal
         show={this.state.showEditForm}
-        onHide={this.onHide}
         {...this.props}
+        onHide={onHide}
         size="lg"
         aria-labelledby="contained-modal-title-vcenter"
         centered
@@ -93,7 +92,7 @@ export class Ragas extends React.Component {
           </Modal.Body>
           <Modal.Footer>
             <Button type="submit">Submit form</Button>
-            <Button onClick={this.onHide}>Close</Button>
+            <Button onClick={onHide}>Close</Button>
           </Modal.Footer>
         </Form>
       </Modal>);
@@ -174,7 +173,6 @@ export class Ragas extends React.Component {
                 />
             )}
             </AutoSizer>
-
             </div>
         );
     }
@@ -197,7 +195,7 @@ export class Ragas extends React.Component {
 
         return (
           <div className="row" key={key} style={style} onClick={loadForm}>
-            <div>{datum.name} - {datum.arohanam} - {datum.avarohanam} - {datum.anyasvara}</div>
+            <div>{JSON.stringify(datum)}</div>
           </div>
         );
       }

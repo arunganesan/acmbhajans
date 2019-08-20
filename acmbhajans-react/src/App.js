@@ -1,9 +1,12 @@
 import React from "react";
 import amma from './amma.jpg';
 import './App.css';
+
+import { LinkContainer } from "react-router-bootstrap";
+import { Nav, Navbar, NavItem } from "react-bootstrap";
+
 import 'bootstrap/dist/css/bootstrap.css';
 
-import { Button, ButtonToolbar } from 'react-bootstrap';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import { Bhajans } from './Bhajans.js'
@@ -26,31 +29,53 @@ function Index() {
   );
 }
 
+function MyLink (props) {
+  return (
+  // <Nav.Link eventKey={props.to}>
+  //   <LinkContainer to={"/" + props.to}>
+  //     <NavItem>{props.to}</NavItem>
+  //   </LinkContainer>
+  // </Nav.Link>
+
+
+  
+  <NavItem>
+    <LinkContainer to={"/" + props.to}>
+    <Nav.Link eventKey={props.to}>
+    
+        {props.to}
+      
+    </Nav.Link>
+    </LinkContainer>
+  </NavItem>);
+}
+
 function AppRouter() {
   return (
     <Router>
-      <div>
-        <nav id='navigation'> 
-          <ButtonToolbar>
-            <Link to="/"><Button>Home</Button></Link>
-            <Link to="/edit/bhajans"><Button>Bhajans</Button></Link>
-            <Link to="/edit/ragas"><Button>Ragas</Button></Link>
-            <Link to="/edit/deities"><Button>Deities</Button></Link>
-            <Link to="/edit/language"><Button>Languages</Button></Link>
-            <Link to="/edit/events"><Button>Events</Button></Link>
-            <Link to="/edit/people"><Button>People</Button></Link>
-            <Link to="/edit/rendition"><Button>Rendition</Button></Link>
-          </ButtonToolbar>
-        </nav>
+      <div id='navigation'>
+          <Nav fill={true} variant="tabs">
+            <MyLink to="home" />
+            <MyLink to="language" />
+            <MyLink to="deities" />
+            <MyLink to="ragas" />
+            <MyLink to="bhajans" />
+            <MyLink to="events" />
+            <MyLink to="people" />
+            <MyLink to="rendition" />
+          </Nav>
 
-        <Route path="/" exact component={Index} />
-        <Route path="/edit/bhajans" component={Bhajans} />
-        <Route path="/edit/ragas" component={Ragas} />
-        <Route path="/edit/deities" component={Deities} />
-        <Route path="/edit/language" component={Language} />
-        <Route path="/edit/events" component={Event} />
-        <Route path="/edit/people" component={People} />
-        <Route path="/edit/rendition" component={Rendition} />
+
+        <div id='content'>
+          <Route path="/home" exact component={Index} />
+          <Route path="/bhajans" component={Bhajans} />
+          <Route path="/ragas" component={Ragas} />
+          <Route path="/deities" component={Deities} />
+          <Route path="/language" component={Language} />
+          <Route path="/events" component={Event} />
+          <Route path="/people" component={People} />
+          <Route path="/rendition" component={Rendition} />
+        </div>
       </div>
     </Router>
   );

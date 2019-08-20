@@ -106,7 +106,6 @@ export class Language extends React.Component {
         body: JSON.stringify(this.state.form)
       }).then(response => response.json())
       .then(data => {
-        console.log('RESPONSE FROM SERVER', data);
         this.setState({ contents: data['contents']})});
 
       // Submit form
