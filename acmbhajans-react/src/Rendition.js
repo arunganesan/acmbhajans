@@ -3,8 +3,8 @@ import 'react-virtualized/styles.css'
 import { AutoSizer, List } from 'react-virtualized'
 
 import 'bootstrap/dist/css/bootstrap.css';
-import { Button, Modal, Form } from 'react-bootstrap';
-
+import { Button, Modal, Form, Dropdown } from 'react-bootstrap';
+import { TextField, DropdownField, ArrayField } from './Fields.js'
 
 
 function initForm () {
@@ -78,140 +78,71 @@ export class Rendition extends React.Component {
               readOnly
               value={this.state.form.id} />
 
-            <Form.Group>
-              <Form.Label>Date</Form.Label>
-              <Form.Control 
-                type="text"
-                value={this.state.form.date} 
-                onChange={(event) => this.setState({
-                    form: { 
-                      ...this.state.form,
-                      date: event.target.value
-                    }})}
-                placeholder="" />
-            </Form.Group>
+            <TextField
+              field='date'
+              state={this.state}
+              setState={s => this.setState(s)} />
 
 
-            <Form.Group>
-              <Form.Label>Recording</Form.Label>
-              <Form.Control 
-                type="text"
-                value={this.state.form.recording_url} 
-                onChange={(event) => this.setState({
-                    form: { 
-                      ...this.state.form,
-                      recording_url: event.target.value
-                    }})}
-                placeholder="" />
-            </Form.Group>
+            <TextField
+              label='Recording URL'
+              field='recording_url'
+              state={this.state}
+              setState={s => this.setState(s)} />
 
-            <Form.Group>
-              <Form.Label>Shruti</Form.Label>
-              <Form.Control 
-                type="text"
-                value={this.state.form.shruti} 
-                onChange={(event) => this.setState({
-                    form: { 
-                      ...this.state.form,
-                      shruti: event.target.value
-                    }})}/>
-            </Form.Group>
+            <TextField
+              field='shruti'
+              state={this.state}
+              setState={s => this.setState(s)} />
+
+
+
+            <DropdownField
+              label='Bhajan'
+              field='bhajan_id'
+              choices={this.state.bhajans}
+              state={this.state}
+              setState={s => this.setState(s)} />
+
+
+            <DropdownField
+              label='Event'
+              field='event_id'
+              choices={this.state.events}
+              state={this.state}
+              setState={s => this.setState(s)} />
               
+            
+            <ArrayField
+              label='Lead Singer(s)'
+              field='lead'
+              choices={this.state.people}
+              state={this.state}
+              setState={s => this.setState(s)} />
 
-            <Form.Group>
-                <Form.Label>Bhajan</Form.Label>
-                <Form.Control 
-                    as="select"
-                    value={this.state.form.bhajan_id}
-                    onChange={(event) => this.setState({
-                      form: {
-                        ...this.state.form,
-                        bhajan_id: event.target.value
-                      }
-                    })}
-                  >
-                    <option value=''>None</option>
-                    {
-                        this.state.bhajans.map(bhajan => (
-                        <option
-                            key={'bhajan-' + bhajan.id} 
-                            value={bhajan.id}>
-                            {bhajan.name}
-                        </option>)) 
-                    }
-                </Form.Control>
-            </Form.Group>
 
-            <Form.Group>
-                <Form.Label>Event</Form.Label>
-                <Form.Control 
-                    as="select"
-                    value={this.state.form.event_id}
-                    onChange={(event) => this.setState({
-                      form: {
-                        ...this.state.form,
-                        event_id: event.target.value
-                      }
-                    })}
-                  >
-                    <option value=''>None</option>
-                    {
-                        this.state.events.map(evt => (
-                        <option
-                            key={'event-' + evt.id} 
-                            value={evt.id}>
-                            {evt.name}
-                        </option>)) 
-                    }
-                </Form.Control>
-            </Form.Group>
+            <ArrayField
+              field='backup'
+              choices={this.state.people}
+              state={this.state}
+              setState={s => this.setState(s)} />
 
-            <Form.Group>
-                <Form.Label>Lead Singers</Form.Label>
-                {
-                    this.state.form.lead.map((lead_id, idx) => (
-                    <div 
-                        className="ready_bhajan"
-                        onClick={() => {
-                            let new_list = this.state.form.lead.filter((v, i, a) => i != idx);
-                            this.setState({
-                                form: {
-                                    ...this.state.form,
-                                    lead: new_list
-                                }
-                            });
-                        }}
-                        key={'lead_list-' + lead_id}>
-                        {this.findPerson(lead_id)}
-                        </div>
-                    ))
-                }
 
-                <Form.Control 
-                    as="select"
-                    onChange={(event) => {
-                        let lead_list = this.state.form.lead;
-                        lead_list.push(event.target.value);
-                        
-                        this.setState({
-                            form: {
-                                ...this.state.form,
-                                lead: lead_list,
-                            }
-                        })}}
-                    >
-                    <option value=''>None</option>
-                    { 
-                        this.state.people.map((item, key) => (
-                        <option
-                            key={'lead-person-' + item.id} 
-                            value={item.id}
-                            readOnly>
-                            {item.name}
-                        </option>)) 
-                    }
-                </Form.Control>
-            </Form.Group> 
+            <ArrayField
+              field='instrumentalists'
+              choices={this.state.people}
+              state={this.state}
+              setState={s => this.setState(s)} />
+
+
+          <ArrayField
+              label='Mixer operator(s)'
+              field='soundsystem'
+              choices={this.state.people}
+              state={this.state}
+              setState={s => this.setState(s)} />
+
+            
           </Modal.Body>
           <Modal.Footer>
             <Button type="submit">Submit form</Button>

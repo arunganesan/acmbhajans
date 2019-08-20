@@ -32,21 +32,8 @@ export class People extends React.Component {
         this._rowRenderer = this._rowRenderer.bind(this);
         this.generateForm = this.generateForm.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.findBhajan = this.findBhajan.bind(this);
     }
 
-
-
-    findBhajan (bhajan_id) {
-        for (let i = 0; i < this.state.bhajans.length; i++) {
-            let bhajan = this.state.bhajans[i];
-            if (bhajan_id == bhajan.id) {
-                return bhajan.name;
-            }
-        }
-
-        return 'Error - bhajan invalid'
-    }
 
     generateForm() {
       let onHide = () => this.setState({ showEditForm: false })
@@ -100,7 +87,7 @@ export class People extends React.Component {
               choices={this.state.bhajans}
               setState={s => this.setState(s)}
               />
-              
+
           </Modal.Body>
           <Modal.Footer>
             <Button type="submit">Submit form</Button>

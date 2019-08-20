@@ -15,10 +15,25 @@ class RenditionsController < ApplicationController
         rendition.bhajan = Bhajan.find_by(id: params['bhajan_id'])
         rendition.event = Event.find_by(id: params['event_id'])
         
-        lead_list = params['lead']
         rendition.lead.delete_all
         params['lead'].each do |person_id| 
           rendition.lead << Person.find_by(id: person_id)
+        end
+
+        rendition.backup.delete_all
+        params['backup'].each do |person_id| 
+          rendition.backup << Person.find_by(id: person_id)
+        end
+
+        rendition.instrumentalists.delete_all
+        params['instrumentalists'].each do |person_id| 
+          rendition.instrumentalists << Person.find_by(id: person_id)
+        end
+
+        
+        rendition.soundsystem.delete_all
+        params['soundsystem'].each do |person_id| 
+          rendition.soundsystem << Person.find_by(id: person_id)
         end
         
         rendition.save
@@ -32,6 +47,9 @@ class RenditionsController < ApplicationController
       all_renditions = Rendition.all
       all_renditions.each do | rendition | 
         lead_list_indices[rendition['id']] = rendition.lead.map { | person | person.id }
+        backup_list_indices[rendition['id']] = rendition.backup.map { | person | person.id }
+        instrumentalists_list_indices[rendition['id']] = rendition.instrumentalists.map { | person | person.id }
+        soundsystem_list_indices[rendition['id']] = rendition.soundsystem.map { | person | person.id }
       end
   
   
