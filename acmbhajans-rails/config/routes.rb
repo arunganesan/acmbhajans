@@ -4,7 +4,9 @@ Rails.application.routes.draw do
 
   post 'bhajans/edit'
   get 'bhajans/edit'
+
   get 'bhajans/dummy_database'
+  get 'bhajans/import_migration'
 
   post 'raga/edit'
   get 'raga/edit'

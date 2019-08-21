@@ -1,4 +1,4 @@
-Song,Deity,Speed,Raaga,Beat,Harmonium,Western,Language
+name,deity,speed,raga,beat,Harmonium,Western,language
 Aareyanareyanishtam,Krishna,,,6,,,
 Ambapaluku,Amma,,,6,,,
 Amma Amma Enu Mandiram,Amma,,,6,,,Tamil
@@ -41,8 +41,8 @@ Karuna Sindho Bhairavi,,,Sindhubhairavi,8/6,s r1 g1 m1 p d1 n1 s,C C# Eb F G Ab 
 Katinnu Katai,,,,6,,,
 Kottaiyendre,Shiva,,,,,,
 Krishna Mukunda Madhava,Krishna,,Suddhasaveri,,s r2 m1 p d2 s,C D F G A C,
-Krishna Ninne Bala,Krishna,,Sudha Dhanyasi,8,,,
-Manikya Chilaye,,,Madyamavati,,,,
+Krishna Ninne Bala,Krishna,,Suddhadhanyasi,8,,,
+Manikya Chilaye,,,Madhyamavati,,,,
 Morning Song,Krishna,,,,,,English
 Muralikayil Oru Ganam,,,Mohanam,,s r2 g2 p d2 s,C D E G A C,
 Nilayilla Ulakil,Philosophical,Medium,,8/5,,,

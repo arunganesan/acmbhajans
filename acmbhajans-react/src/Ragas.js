@@ -4,6 +4,7 @@ import { AutoSizer, List } from 'react-virtualized'
 
 import 'bootstrap/dist/css/bootstrap.css';
 import { Button, Modal, Form, Spinner } from 'react-bootstrap';
+import { ModelEditor } from './ModelEditor.js'
 import { TextField } from './Fields.js'
 
 const URL = "http://localhost:1234/raga/edit";
@@ -18,6 +19,50 @@ function initForm () {
   }
 }
 
+
+export class Ragas2 extends React.Component {
+
+  renderForm () {
+    return [<Form.Control 
+        type="text" 
+        hidden={true} 
+        value={this.state.form.id}
+        />,
+      <TextField
+        field='name'
+        state={this.state}
+        setState={s => this.setState(s)}
+        />
+,     <TextField
+        field='arohanam'
+        state={this.state}
+        setState={s => this.setState(s)}
+        placeholder="e.g. S R2 G1 ..."
+        />
+,
+      <TextField
+        field='avarohanam'
+        state={this.state}
+        setState={s => this.setState(s)}
+        placeholder="e.g. S N2 D1 ..."
+        />,     
+      <TextField
+        field='anyasvara'
+        state={this.state}
+        setState={s => this.setState(s)}
+        placeholder="e.g. N1"
+        />];
+    }
+  
+  render() {
+    return (
+    <ModelEditor
+      initForm={initForm}
+      pageName="Ragas"
+      editForm={this.renderForm()}
+    />
+  )}
+}
 
 
 export class Ragas extends React.Component {
@@ -55,42 +100,7 @@ export class Ragas extends React.Component {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form.Control 
-              type="text" 
-              hidden={true} 
-              value={this.state.form.id}
-              />
-
-            <TextField
-              field='name'
-              state={this.state}
-              setState={s => this.setState(s)}
-              />
-
-
-           
-            <TextField
-              field='arohanam'
-              state={this.state}
-              setState={s => this.setState(s)}
-              placeholder="e.g. S R2 G1 ..."
-              />
-
-
-            <TextField
-              field='avarohanam'
-              state={this.state}
-              setState={s => this.setState(s)}
-              placeholder="e.g. S N2 D1 ..."
-              />
-
             
-            <TextField
-              field='anyasvara'
-              state={this.state}
-              setState={s => this.setState(s)}
-              placeholder="e.g. N1"
-              />
           </Modal.Body>
           <Modal.Footer>
             <Button type="submit">Submit form</Button>
