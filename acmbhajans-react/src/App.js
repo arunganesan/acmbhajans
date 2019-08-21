@@ -17,6 +17,7 @@ import { Event } from './Event.js'
 import { People } from './People.js'
 import { Rendition } from './Rendition.js'
 import { Weekends } from './Weekends.js'
+import { InputPage } from './InputPage.js'
 
 
 
@@ -57,6 +58,7 @@ function AppRouter() {
       <div id='navigation'>
           <Nav fill={true} variant="tabs">
             <MyLink to="home" />
+            <MyLink to="input" />
             <MyLink to="language" />
             <MyLink to="deities" />
             <MyLink to="ragas" />
@@ -70,6 +72,7 @@ function AppRouter() {
 
         <div id='content'>
           <Route path="/home" exact component={Index} />
+          <Route path="/input" component={InputPage} />
           <Route path="/bhajans" component={Bhajans} />
           <Route path="/ragas" component={Ragas} />
           <Route path="/deities" component={Deities} />

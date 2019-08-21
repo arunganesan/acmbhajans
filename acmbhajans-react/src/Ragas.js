@@ -18,6 +18,8 @@ function initForm () {
   }
 }
 
+
+
 export class Ragas extends React.Component {
     constructor(props) {
         super(props);
@@ -134,14 +136,17 @@ export class Ragas extends React.Component {
           contents: data['contents'],
           loading: false
         });
-        
-        window.location.reload();
+
+        console.log(this.list);
+        this.list.forceUpdateGrid();
       });
       
       event.preventDefault();
     }
 
+
     render() {
+      
         return (<div>
              <Button 
                 variant="primary" 
@@ -162,7 +167,9 @@ export class Ragas extends React.Component {
             <AutoSizer disableHeight>
             {({width}) => (
                 <List
-                    ref="List"
+                    ref={ref => {
+                      this.list = ref;
+                    }}
                     className="List"
                     height={1500}
                     overscanRowCount={10}
