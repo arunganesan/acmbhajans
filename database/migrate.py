@@ -12,7 +12,7 @@ bhajans = {}
 events = {}
 weekends = {}
 people = {}
-renditions = []
+renditions = {}
 
 inputs = {}
 
@@ -37,19 +37,42 @@ def read_and_get_fields (filename, table_fields):
 
 
 
-def print_ruby (model_name, rows, reference_fields=[]):
+def print_ruby (model_name, rows, reference_fields=[], list_fields=[]):
     lines = []
     for name in sorted(rows.keys()):
-        keyvals = [
-            ':{} => "{}"'.format(k, v) if k not in reference_fields else ":{}_id => {}".format(k, v)
-            for k, v in rows[name].items()
-        ]
+        keyvals = []
+        for k, v in rows[name].items():
+            if k in list_fields:
+               continue
+            elif k in reference_fields:
+                keyvals.append(":{}_id => {}".format(k, v))
+            else:
+                keyvals.append(':{} => "{}"'.format(k, v))
 
-        str = '{}.create({})'.format(
+        if len(list_fields) != 0:
+            str = 'obj = '
+        else:
+            str = ''
+        
+        str += '{}.create({})'.format(
             model_name, ', '.join(keyvals)
         )
 
         lines.append(str)
+
+        for k in list_fields:
+            str = 'obj.{} += '.format(k)
+            all_persons = [
+                p
+                for p in rows[name][k]
+            ]
+            str += "[{}]".format(", ".join(all_persons))
+            lines.append(str)
+        
+        if len(list_fields) != 0:
+            lines.append('obj.save')
+
+    
     print('\n'.join(lines))
 
 
@@ -86,12 +109,14 @@ def main():
         weekends[week] = {'name': week}
 
     people = read_and_get_fields('people.csv', ['name', 'phone', 'email'])
+    people['Group'] = { 'name': 'Group' }
     first_name_mapping = {}
     for name in people.keys():
         firstname = name.split()[0]
         first_name_mapping[firstname] = name
     
 
+    rendition_id = 0
     for filename in weekly_files:
         # weeks_renditions = read_and_get_fields(
         #     filename, 
@@ -134,15 +159,90 @@ def main():
             rendition['weekend'] = 'Weekend.find_by(name: "{}").id'.format(week)
 
             if 'P' in order:
-                rendition['event'] = 'Event.find_by(name: "practice")'
+                rendition['event'] = 'Event.find_by(name: "practice").id'
             else:
-                rendition['event'] = 'Event.find_by(name: "satsang")'
-
-            renditions.append(rendition)
-            
+                rendition['event'] = 'Event.find_by(name: "satsang").id'
 
 
-    return
+            # people - lead, backup, soundsystem, instrumentalists
+            rendition['lead'] = []
+            lead_singer_key = 'Lead singer'
+            if ('Jay' in row[lead_singer_key] and 'Prema' in row[lead_singer_key]):
+                firstnames = ['Jay', 'Prema']
+            elif (row[lead_singer_key] in ['Sumathy & Senthil']):
+                firstnames = ['Senthil', 'Sumathy']
+            else:
+                firstnames = [row['Lead singer']]
+            for name in firstnames:
+                assert name in first_name_mapping, '{} LEAD: name not found <{}>'.format(week, name)
+                rendition['lead'].append('Person.find_by(name: "{}")'.format(first_name_mapping[name]))
+
+            rendition['backup'] = []
+            backup1 = row['Backup1']
+            if "," in backup1:
+                firstnames = backup1.split(", ")
+            else:
+                firstnames = [backup1]
+            if 'Backup2' in row and row['Backup2'] != '':
+                firstnames.append(row['Backup2'])
+            if 'Backup3' in row and row['Backup3'] != '':
+                firstnames.append(row['Backup3'])
+            for name in firstnames:
+                if name == '':
+                    continue
+                assert name in first_name_mapping, '{} BACKUP: name not found <{}>'.format(week, name)
+                rendition['backup'].append('Person.find_by(name: "{}")'.format(first_name_mapping[name]))
+
+
+            rendition['instrumentalists'] = []
+
+            keys = ['Harmonium', 'Percussionists', 'Guitar', 'Keyboard']
+            for key in keys:
+                if key not in row:
+                    continue
+
+                names = row[key]
+                if "," in names:
+                    firstnames = names.split(", ")
+                else:
+                    firstnames = [names]
+                
+                for name in firstnames:
+                    if name == '' or name == 'None':
+                        continue
+                    if " " in name:
+                        name = name.split(" ")[0]
+
+                    assert name in first_name_mapping, '{} INSTRUMENTALISTS: name not found <{}>'.format(week, name)
+                    rendition['instrumentalists'].append('Person.find_by(name: "{}")'.format(first_name_mapping[name]))
+
+
+            rendition['soundsystem'] = []
+            keys = ['Sound system']
+            for key in keys:
+                if key not in row:
+                    continue
+
+                names = row[key]
+                if "," in names:
+                    firstnames = names.split(", ")
+                else:
+                    firstnames = [names]
+                
+                for name in firstnames:
+                    if name == '' or name == 'None':
+                        continue
+                    if " " in name:
+                        name = name.split(" ")[0]
+
+                    assert name in first_name_mapping, '{} SOUNDSYSTEM: name not found <{}>'.format(week, name)
+                    rendition['soundsystem'].append('Person.find_by(name: "{}")'.format(first_name_mapping[name]))
+
+
+            renditions[rendition_id] = rendition
+            rendition_id += 1
+
+    #return
     print_ruby('Raga', ragas)
     print_ruby('Language', languages)
     print_ruby('Deity', deities)
@@ -152,14 +252,29 @@ def main():
     print_ruby('Weekend', weekends)
     print_ruby('Person', people)
 
-    # todo: print the rendition
-    # this also involves adding to the lead and backup lists
-
-
+    print_ruby("Rendition", renditions, 
+        reference_fields=['weekend', 'event', 'bhajan'], 
+        list_fields=['instrumentalists', 'soundsystem', 'lead', 'backup'])
     
+    # adding to the rendition list
+    """
+    rend = Rendition.create(:...)
+    rend.lead << Person.find_by(name: person_name)
+    rend.lead << Person.find_by(name: person_name)
+    rend.lead << Person.find_by(name: person_name)
+    
+    rend.lead << Person.find_by(name: person_name)
+    rend.lead << Person.find_by(name: person_name)
+    rend.lead << Person.find_by(name: person_name)
 
+    rend.lead << Person.find_by(name: person_name)
+    rend.lead << Person.find_by(name: person_name)
+    rend.lead << Person.find_by(name: person_name)
 
-
+    rend.lead << Person.find_by(name: person_name)
+    rend.lead << Person.find_by(name: person_name)
+    rend.lead << Person.find_by(name: person_name)
+    """
 if __name__ == '__main__':
     main()
 
