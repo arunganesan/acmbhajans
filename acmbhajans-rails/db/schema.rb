@@ -82,19 +82,22 @@ ActiveRecord::Schema.define(version: 20190819194834) do
   end
 
   create_table "satsangs", force: :cascade do |t|
-    t.boolean "asked"
     t.boolean "will_attend_practice"
     t.boolean "will_attend_satsang"
-    t.integer "practice_request_id"
-    t.integer "satsang_request_id"
     t.boolean "attended_practice"
     t.boolean "attended_satsang"
+    t.integer "weekend_id"
+    t.integer "person_id"
+    t.integer "practice_request_id"
     t.integer "practice_bhajan_id"
+    t.integer "satsang_request_id"
     t.integer "satsang_bhajan_id"
+    t.index ["person_id"], name: "index_satsangs_on_person_id"
     t.index ["practice_bhajan_id"], name: "index_satsangs_on_practice_bhajan_id"
     t.index ["practice_request_id"], name: "index_satsangs_on_practice_request_id"
     t.index ["satsang_bhajan_id"], name: "index_satsangs_on_satsang_bhajan_id"
     t.index ["satsang_request_id"], name: "index_satsangs_on_satsang_request_id"
+    t.index ["weekend_id"], name: "index_satsangs_on_weekend_id"
   end
 
   create_table "soundsystem_rendition", id: false, force: :cascade do |t|

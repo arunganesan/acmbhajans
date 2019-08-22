@@ -3,5 +3,6 @@ class IndividualController < ApplicationController
   end
 
   def request
+    
   end
 end
