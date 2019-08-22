@@ -8,12 +8,15 @@ export class ModelEditor extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            form: props.initForm(),
             rowCount: 0,
             overscanRowCount: 100,
             showEditForm: false,
         };
         
+        this.props.setState({
+          form: this.props.initForm()
+        });
+
         this.renderRow = this.renderRow.bind(this);
         this.generateForm = this.generateForm.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -53,7 +56,7 @@ export class ModelEditor extends React.Component {
         fetch(this.props.URL)
         .then(res => res.json())
         .then(data => {
-            this.setState({
+            this.props.setState({
                 ...data
             })
         });
@@ -66,10 +69,10 @@ export class ModelEditor extends React.Component {
       fetch(this.props.URL, {
         method: 'POST', mode: 'cors', cache: 'no-cache',
         headers: { 'Content-type': 'application/json' },
-        body: JSON.stringify(this.state.form)})
+        body: JSON.stringify(this.props.state.form)})
       .then(response => response.json())
       .then(data => {
-            this.setState({ 
+            this.props.setState({ 
                 contents: data['contents']
             })
             this.list.forceUpdateGrid();
@@ -82,9 +85,13 @@ export class ModelEditor extends React.Component {
         return (<div>
              <Button 
                 variant="primary" 
-                onClick={() => this.setState({ 
-                  form: this.props.initForm(),
-                  showEditForm: true })}>
+                onClick={() => {
+                    this.props.setState({ 
+                      form: this.props.initForm()
+                    });
+                    this.setState({
+                      showEditForm: true 
+                    })}}>
                 Add {this.props.pageName}
             </Button>
             
@@ -97,7 +104,7 @@ export class ModelEditor extends React.Component {
                     className="List"
                     height={1500}
                     overscanRowCount={10}
-                    rowCount={this.state.contents.length}
+                    rowCount={this.props.state.contents.length}
                     rowHeight={50}
                     rowRenderer={this.renderRow}
                     width={width}
@@ -111,18 +118,33 @@ export class ModelEditor extends React.Component {
     
 
     renderRow({index, key, style}) {
-        const datum = this.state.contents[index];
+        const datum = this.props.state.contents[index];
         
-        let loadForm = () => this.setState({
+        let loadForm = () => {
+          this.props.setState({
             form: {
                 ...this.state.form,
                 ...datum,
-                ...this.props.populateForm(datum, this.state) },
-            showEditForm: true });
+                ...this.props.populateForm(datum, this.props.state) 
+              }});
+          
+          this.setState({
+            showEditForm: true 
+          })};
+        
+        let formattedRow = '';
+        
+        if (this.props.formatRow) {
+            formattedRow = this.props.formatRow(datum);
+        } else if ('name' in datum) {
+          formattedRow = datum['name'];
+        } else {
+          formattedRow = JSON.stringify(datum);
+        }
         
         return (
           <div className="row" key={key} style={style} onClick={loadForm}>
-            <div>{JSON.stringify(datum)}</div>
+            <div>{formattedRow}</div>
           </div>
         );
       }
