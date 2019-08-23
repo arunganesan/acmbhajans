@@ -20,6 +20,9 @@ import { Weekends } from './Weekends.js'
 import { Requests } from './Requests.js'
 import { InputPage } from './InputPage.js'
 
+function capitalize (word) {
+  return word.charAt(0).toUpperCase() + word.slice(1);
+}
 
 
 function Index() {
@@ -34,20 +37,10 @@ function Index() {
 
 function MyLink (props) {
   return (
-  // <Nav.Link eventKey={props.to}>
-  //   <LinkContainer to={"/" + props.to}>
-  //     <NavItem>{props.to}</NavItem>
-  //   </LinkContainer>
-  // </Nav.Link>
-
-
-  
   <NavItem>
     <LinkContainer to={"/" + props.to}>
     <Nav.Link eventKey={props.to}>
-    
-        {props.to}
-      
+        {props.label ? props.label : capitalize(props.to)}
     </Nav.Link>
     </LinkContainer>
   </NavItem>);
@@ -58,7 +51,7 @@ function AppRouter() {
     <Router>
       <div id='navigation'>
           <Nav fill={true} variant="tabs">
-            <MyLink to="home" />
+            <MyLink to="home" label="Home" />
             <MyLink to="input" />
             <MyLink to="language" />
             <MyLink to="deities" />
