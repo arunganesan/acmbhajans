@@ -9,8 +9,8 @@ class CreateRequests < ActiveRecord::Migration[5.1]
       t.references :weekend, foreign_key: true
       t.references :person, foreign_key: true
       
-      t.references :practice_request, foreign_key: true
-      t.references :satsang_request, foreign_key: true
+      t.references :practice_request, foreign_key: {to_table: :bhajans}
+      t.references :satsang_request, foreign_key: {to_table: :bhajans}
 
       t.string :practice_note
       t.string :satsang_note

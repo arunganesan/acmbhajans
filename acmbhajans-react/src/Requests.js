@@ -62,7 +62,7 @@ export class Requests extends React.Component {
     return (
     <ModelEditor
       initForm={initForm}
-      pageName="Rendition"
+      pageName="Request"
       editForm={this.renderForm()}
       URL="http://localhost:1234/request/edit"
       populateForm={(datum, currState) => {

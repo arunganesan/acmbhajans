@@ -23,7 +23,7 @@ class RequestController < ApplicationController
       'contents': Request.all,
       'bhajans': Bhajan.all.as_json,
       'people': Person.all.as_json,
-      'weekends': Person.all.as_json,
+      'weekends': Weekend.all.as_json,
     }
   end
 end

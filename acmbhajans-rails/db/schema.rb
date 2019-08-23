@@ -55,6 +55,7 @@ ActiveRecord::Schema.define(version: 20190819194834) do
     t.string "name"
     t.string "phone"
     t.string "email"
+    t.boolean "coordinator"
   end
 
   create_table "people_ready_list", id: false, force: :cascade do |t|
@@ -81,7 +82,7 @@ ActiveRecord::Schema.define(version: 20190819194834) do
     t.index ["weekend_id"], name: "index_renditions_on_weekend_id"
   end
 
-  create_table "satsangs", force: :cascade do |t|
+  create_table "requests", force: :cascade do |t|
     t.boolean "will_attend_practice"
     t.boolean "will_attend_satsang"
     t.boolean "attended_practice"
@@ -89,15 +90,13 @@ ActiveRecord::Schema.define(version: 20190819194834) do
     t.integer "weekend_id"
     t.integer "person_id"
     t.integer "practice_request_id"
-    t.integer "practice_bhajan_id"
     t.integer "satsang_request_id"
-    t.integer "satsang_bhajan_id"
-    t.index ["person_id"], name: "index_satsangs_on_person_id"
-    t.index ["practice_bhajan_id"], name: "index_satsangs_on_practice_bhajan_id"
-    t.index ["practice_request_id"], name: "index_satsangs_on_practice_request_id"
-    t.index ["satsang_bhajan_id"], name: "index_satsangs_on_satsang_bhajan_id"
-    t.index ["satsang_request_id"], name: "index_satsangs_on_satsang_request_id"
-    t.index ["weekend_id"], name: "index_satsangs_on_weekend_id"
+    t.string "practice_note"
+    t.string "satsang_note"
+    t.index ["person_id"], name: "index_requests_on_person_id"
+    t.index ["practice_request_id"], name: "index_requests_on_practice_request_id"
+    t.index ["satsang_request_id"], name: "index_requests_on_satsang_request_id"
+    t.index ["weekend_id"], name: "index_requests_on_weekend_id"
   end
 
   create_table "soundsystem_rendition", id: false, force: :cascade do |t|
