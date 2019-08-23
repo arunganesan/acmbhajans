@@ -65,7 +65,6 @@ export class ModelEditor extends React.Component {
 
     handleSubmit(event) {
       this.setState({ showEditForm: false });
-
       fetch(this.props.URL, {
         method: 'POST', mode: 'cors', cache: 'no-cache',
         headers: { 'Content-type': 'application/json' },
@@ -136,7 +135,6 @@ export class ModelEditor extends React.Component {
         
         if (this.props.formatRow) {
             formattedRow = this.props.formatRow(datum);
-            console.log(formattedRow);
         } else if ('name' in datum) {
           formattedRow = datum['name'];
         } else {

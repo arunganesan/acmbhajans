@@ -3,11 +3,11 @@ import amma from './amma.jpg';
 import './App.css';
 
 import { LinkContainer } from "react-router-bootstrap";
-import { Nav, Navbar, NavItem } from "react-bootstrap";
+import { Nav, NavItem } from "react-bootstrap";
 
 import 'bootstrap/dist/css/bootstrap.css';
 
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import { Bhajans } from './Bhajans.js'
 import { Ragas } from './Ragas.js'

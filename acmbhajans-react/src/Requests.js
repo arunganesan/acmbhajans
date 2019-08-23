@@ -1,20 +1,18 @@
 import React from "react";
 import 'react-virtualized/styles.css'
-import { AutoSizer, List } from 'react-virtualized'
 
 import 'bootstrap/dist/css/bootstrap.css';
-import { Button, Modal, Form } from 'react-bootstrap';
-import { findEltName, DropdownField } from './Fields.js'
+import { IDField, findEltName, DropdownField, BooleanField } from './Fields.js'
 import { ModelEditor } from './ModelEditor'
 
 function initForm () {
     return {
         id: '',
-        will_attend_practice: '',
-        will_attend_satsang: '',
+        will_attend_practice: false,
+        will_attend_satsang: false,
         
-        attended_practice: '',
-        attended_satsang: '',
+        attended_practice: false,
+        attended_satsang: false,
 
         person_id: '',
         weekend_id: '',
@@ -36,11 +34,9 @@ export class Requests extends React.Component {
     }}
 
   renderForm () {
-    return [<Form.Control 
-      type="text" 
-      hidden={true} 
-      readOnly
-      value={this.state.form.id} />,
+    return [
+    
+      <IDField value={this.state.form.id} />,
 
       <DropdownField
         label='Weekend'
@@ -55,6 +51,35 @@ export class Requests extends React.Component {
         choices={this.state.people}
         state={this.state}
         setState={s => this.setState(s)} />,
+
+        <BooleanField
+          label='Will attend practice'
+          field='will_attend_practice'
+          state={this.state}
+          setState={s => this.setState(s)} />,
+
+
+        <DropdownField
+        label='Practice Request'
+        field='practice_request_id'
+        choices={this.state.bhajans}
+        state={this.state}
+        setState={s => this.setState(s)} />,
+
+
+        <BooleanField
+          label='Will attend satsang'
+          field='will_attend_satsang'
+         state={this.state}
+         setState={s => this.setState(s)} />,
+
+        <DropdownField
+        label='Satsang Request'
+        field='satsang_request_id'
+        choices={this.state.bhajans}
+        state={this.state}
+        setState={s => this.setState(s)} />,
+
       ];
     }
   

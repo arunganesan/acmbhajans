@@ -2,8 +2,37 @@ import React from "react";
 import { Form } from 'react-bootstrap';
 
 
+export function IDField (props) {
+  return (
+  <Form.Control 
+      type="text" 
+      hidden={true} 
+      readOnly
+      value={props.value} />)
+}
 
 
+
+export function BooleanField (props) {
+  let label = props.label;
+  if (!props.label) {
+    label = props.field.charAt(0).toUpperCase() + props.field.slice(1)
+  }
+
+  return (
+  <Form.Group>
+    <Form.Check 
+      type="checkbox" 
+      label={label}
+      checked={props.state.form[props.field]} 
+      onChange={event => 
+        props.setState({ 
+        form: {
+          ...props.state.form,
+          [props.field]: event.target.checked
+        }})}/>
+  </Form.Group>)
+}
 
 export function TextField (props) {
   let label = props.label;
