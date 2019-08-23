@@ -1,7 +1,7 @@
 import React from "react";
 import 'react-virtualized/styles.css'
+import 'bootstrap/dist/css/bootstrap.css'
 
-import 'bootstrap/dist/css/bootstrap.css';
 import { IDField, findEltName, DropdownField, BooleanField } from './Fields.js'
 import { ModelEditor } from './ModelEditor'
 
@@ -77,6 +77,7 @@ export class Requests extends React.Component {
         label='Satsang Request'
         field='satsang_request_id'
         choices={this.state.bhajans}
+        filterBy={() => this.state.ready_list[this.state.form.person_id]}
         state={this.state}
         setState={s => this.setState(s)} />,
 
@@ -90,12 +91,8 @@ export class Requests extends React.Component {
       pageName="Request"
       editForm={this.renderForm()}
       URL="http://localhost:1234/request/edit"
-      populateForm={(datum, currState) => {
-        return {
-
-        }
-      }}
-
+      populateForm={(datum, currState) => {}}
+      
       formatRow={(datum) => {
         let personName = findEltName(datum['person_id'], this.state.people);
         let weekendName = findEltName(datum['weekend_id'], this.state.weekends);

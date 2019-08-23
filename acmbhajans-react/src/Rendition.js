@@ -1,10 +1,8 @@
 import React from "react";
 import 'react-virtualized/styles.css'
-import { AutoSizer, List } from 'react-virtualized'
 
 import 'bootstrap/dist/css/bootstrap.css';
-import { Button, Modal, Form } from 'react-bootstrap';
-import { TextField, DropdownField, ArrayField } from './Fields.js'
+import { TextField, findEltName, IDField, DropdownField, ArrayField } from './Fields.js'
 import { ModelEditor } from './ModelEditor'
 
 function initForm () {
@@ -38,10 +36,7 @@ export class Rendition extends React.Component {
     }}
 
   renderForm () {
-    return [<Form.Control 
-      type="text" 
-      hidden={true} 
-      readOnly
+    return [<IDField
       value={this.state.form.id} />,
 
       <DropdownField
@@ -129,9 +124,8 @@ export class Rendition extends React.Component {
       }}
 
       formatRow={(datum) => {
-        // TODO this may not always work. It assumes the ID maps into the ordered array
-        let bhajanName = this.state.bhajans[datum['bhajan_id']-1]['name']
-        let weekendName = this.state.weekends[datum['weekend_id']-1]['name']
+        let bhajanName = findEltName(datum['bhajan_id'], this.state.bhajans);
+        let weekendName = findEltName(datum['weekend_id'], this.state.weekends);
         return '[' + weekendName + '] ' + bhajanName;
       }}
 

@@ -1,5 +1,11 @@
 import React from "react";
 import { Form } from 'react-bootstrap';
+import generate from "@babel/generator";
+
+// https://stackoverflow.com/questions/5999998/check-if-a-variable-is-of-function-type
+function isFunction(functionToCheck) {
+  return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
+ }
 
 
 export function IDField (props) {
@@ -56,6 +62,26 @@ export function TextField (props) {
 }
 
 
+function generateChoices (props) {
+  let filterBy = null;
+  if (isFunction(props.filterBy)) {
+    filterBy = props.filterBy();
+  }
+
+  let choices = [];
+  if (filterBy != null) {
+    choices = props.choices.filter(choice => filterBy.includes(choice.id));
+  } else {
+    choices = props.choices;
+  }
+
+  return choices.map(choice => <option
+      key={props.label + '-' + choice.id} 
+      value={choice.id}>
+        {choice.name}
+  </option>) 
+
+}
 
 export function DropdownField (props) {
   let label = props.label;
@@ -76,14 +102,7 @@ export function DropdownField (props) {
           }})}
       >
         <option value=''>None</option>
-        {
-            props.choices.map(choice => (
-            <option
-                key={props.label + '-' + choice.id} 
-                value={choice.id}>
-                  {choice.name}
-            </option>)) 
-        }
+        { generateChoices(props) }
     </Form.Control>
   </Form.Group>);
 }

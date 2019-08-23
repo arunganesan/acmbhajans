@@ -1,10 +1,8 @@
 import React from "react";
 import 'react-virtualized/styles.css'
-import { AutoSizer, List } from 'react-virtualized'
 
 import 'bootstrap/dist/css/bootstrap.css';
-import { Button, Modal, Form } from 'react-bootstrap';
-import { TextField } from './Fields.js'
+import { TextField, IDField } from './Fields.js'
 import { ModelEditor } from './ModelEditor.js'
 
 function initForm () {
@@ -23,11 +21,7 @@ export class Language extends React.Component {
     }}
 
   renderForm () {
-    return [<Form.Control 
-        type="text" 
-        hidden={true} 
-        value={this.state.form.id}
-        />,
+    return [<IDField value={this.state.form.id} />,
       <TextField
         field='name'
         state={this.state}

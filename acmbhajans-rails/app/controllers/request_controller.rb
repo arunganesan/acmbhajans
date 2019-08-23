@@ -26,11 +26,20 @@ class RequestController < ApplicationController
       request_obj.save!
     end
 
+    all_people = Person.all
+
+    ready_list_indices = {}
+    all_people.each do | person | 
+      ready_list_indices[person['id']] = person.ready_list.map { | bhajan | bhajan.id }
+    end
+
+
     render :json => {
       'contents': Request.all,
       'bhajans': Bhajan.all.as_json,
-      'people': Person.all.as_json,
+      'people': all_people,
       'weekends': Weekend.all.as_json,
+      'ready_list': ready_list_indices
     }
   end
 end
