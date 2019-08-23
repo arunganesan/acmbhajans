@@ -136,6 +136,7 @@ export class ModelEditor extends React.Component {
         
         if (this.props.formatRow) {
             formattedRow = this.props.formatRow(datum);
+            console.log(formattedRow);
         } else if ('name' in datum) {
           formattedRow = datum['name'];
         } else {

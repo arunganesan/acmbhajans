@@ -63,7 +63,7 @@ export function DropdownField (props) {
 
 
 
-function findEltName (element_id, choices) {
+export function findEltName (element_id, choices) {
     for (let i = 0; i < choices.length; i++) {
         let choice = choices[i];
         if (element_id == choice.id) {

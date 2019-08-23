@@ -149,6 +149,13 @@ def main():
 
     people = read_and_get_fields('people.csv', ['name', 'phone', 'email'])
     people['Group'] = { 'name': 'Group' }
+    coordinators = ['Arun Ganesan', 'Vyshnavi Krishna', 'Ramakrishna Kamath', 'Krishna Kumar', 'Shambavi (Susan) Witt']
+    for name, person in people.items():
+        if name in coordinators:
+            person['coordinator'] = 'true'
+        else
+            person['coordinator'] = 'false'
+
     first_name_mapping = {}
     for name in people.keys():
         firstname = name.split()[0]

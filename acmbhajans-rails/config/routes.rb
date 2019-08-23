@@ -10,9 +10,12 @@ Rails.application.routes.draw do
 
   post 'raga/edit'
   get 'raga/edit'
-  
+
   post 'deity/edit'
   get 'deity/edit'
+
+  post 'request/edit'
+  get 'request/edit'
 
   post 'weekend/edit'
   get 'weekend/edit'
@@ -31,7 +34,6 @@ Rails.application.routes.draw do
   post 'renditions/edit'
   
   get 'individual/graduated'
-
   get 'individual/request'
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

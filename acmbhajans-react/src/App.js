@@ -17,6 +17,7 @@ import { Event } from './Event.js'
 import { People } from './People.js'
 import { Rendition } from './Rendition.js'
 import { Weekends } from './Weekends.js'
+import { Requests } from './Requests.js'
 import { InputPage } from './InputPage.js'
 
 
@@ -66,6 +67,7 @@ function AppRouter() {
             <MyLink to="events" />
             <MyLink to="people" />
             <MyLink to="weekends" />
+            <MyLink to="requests" />
             <MyLink to="rendition" />
           </Nav>
 
@@ -80,6 +82,7 @@ function AppRouter() {
           <Route path="/events" component={Event} />
           <Route path="/people" component={People} />
           <Route path="/weekends" component={Weekends} />
+          <Route path="/requests" component={Requests} />
           <Route path="/rendition" component={Rendition} />
         </div>
       </div>

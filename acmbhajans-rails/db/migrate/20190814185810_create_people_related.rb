@@ -4,6 +4,7 @@ class CreatePeopleRelated < ActiveRecord::Migration[5.1]
       t.string :name
       t.string :phone
       t.string :email
+      t.boolean :coordinator
     end
   end
 end

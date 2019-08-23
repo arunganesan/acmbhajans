@@ -14,7 +14,7 @@ class WeekendController < ApplicationController
     end
 
     render :json => {
-      'contents': Weekend.all.order(id: :desc)
+      'contents': Weekend.all.order(name: :desc)
     }
   end
 end

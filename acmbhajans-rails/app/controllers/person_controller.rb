@@ -23,7 +23,7 @@ class PersonController < ApplicationController
     end
 
 
-    all_persons = Person.all
+    all_persons = Person.all.order(name: :asc)
     ready_list_indices = {}
     all_persons.each do | person | 
       ready_list_indices[person['id']] = person.ready_list.map { | bhajan | bhajan.id }
