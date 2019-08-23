@@ -53,10 +53,28 @@ function MyLink (props) {
 class AppRouter extends React.Component {
   constructor(props) {
     super(props);
+
+    let loggedInLocal = JSON.parse(window.localStorage.getItem('loggedIn'));
+    console.log('local storage has: ', loggedInLocal);
     this.state = {
-      showLoginForm: true
+      showLoginForm: true,
+      people: [],
+      loggedIn: loggedInLocal,
     }
   }
+
+
+  componentDidMount() {
+    fetch("http://localhost:1234/person/edit")
+    .then(res => res.json())
+    .then(data => {
+        this.setState({
+            'people': data.contents
+        })
+    });
+}
+
+
   
   generateLoginForm() {
     let onHide = () => this.setState({ showLoginForm: false })
@@ -69,7 +87,23 @@ class AppRouter extends React.Component {
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      Helo log in first pleae
+        { 
+          this.state.people.map((person, idx) => (
+          <div 
+            className="ready_bhajan"
+            onClick={() => {
+                window.localStorage.setItem('loggedIn', JSON.stringify(person));
+                this.setState({
+                  loggedIn: person,
+                  showLoginForm: false,
+                });
+            }}
+            
+            key={'logging-in-' + person.id}>
+            {person.name}
+            </div>
+        ))
+         }
     </Modal>);
   }
   
@@ -77,21 +111,27 @@ class AppRouter extends React.Component {
   return (
     <Router>
       <div id='navigation'>
-          <Nav fill={true} variant="tabs">
+          <Nav variant="tabs">
             <MyLink to="home" label="Home" />
             <MyLink to="input" label="Next Week" />
-            <MyLink to="language" />
-            <MyLink to="deities" />
-            <MyLink to="ragas" />
-            <MyLink to="bhajans" />
-            <MyLink to="events" />
-            <MyLink to="people" />
-            <MyLink to="weekends" />
-            <MyLink to="requests" />
-            <MyLink to="rendition" />
+
+            {
+              this.state.loggedIn && this.state.loggedIn.coordinator &&
+               ( <>
+                  <MyLink to="language" />
+                  <MyLink to="deities" />
+                  <MyLink to="ragas" />
+                  <MyLink to="bhajans" />
+                  <MyLink to="events" />
+                  <MyLink to="people" />
+                  <MyLink to="weekends" />
+                  <MyLink to="requests" />
+                  <MyLink to="rendition" />
+                </>)
+            }
           </Nav>
 
-        { this.generateLoginForm() }
+        { this.state.loggedIn == null && this.generateLoginForm() }
 
         <div id='content'>
           <Route path="/home" exact component={Index} />
