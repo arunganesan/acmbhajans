@@ -2,7 +2,7 @@ import React from "react";
 import 'react-virtualized/styles.css'
 import 'bootstrap/dist/css/bootstrap.css'
 
-import { IDField, findEltName, DropdownField, BooleanField } from './Fields.js'
+import { IDField, TextField, findEltName, DropdownField, BooleanField } from './Fields.js'
 import { ModelEditor } from './ModelEditor'
 
 function initForm () {
@@ -13,6 +13,10 @@ function initForm () {
         
         attended_practice: false,
         attended_satsang: false,
+
+        practice_note: '',
+        satsang_note: '',
+
 
         person_id: '',
         weekend_id: '',
@@ -66,6 +70,13 @@ export class Requests extends React.Component {
         state={this.state}
         setState={s => this.setState(s)} />,
 
+        <TextField
+        label='Note for practice bhajan'
+        field='practice_note'
+        state={this.state}
+        setState={s => this.setState(s)}
+        />,
+
 
         <BooleanField
           label='Will attend satsang'
@@ -80,6 +91,16 @@ export class Requests extends React.Component {
         filterBy={() => this.state.ready_list[this.state.form.person_id]}
         state={this.state}
         setState={s => this.setState(s)} />,
+
+
+        <TextField
+        label='Note for satsang bhajan'
+        field='satsang_note'
+        state={this.state}
+        setState={s => this.setState(s)}
+        />,
+
+
 
       ];
     }

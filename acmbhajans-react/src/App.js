@@ -4,6 +4,7 @@ import './App.css';
 
 import { LinkContainer } from "react-router-bootstrap";
 import { Nav, NavItem } from "react-bootstrap";
+import { Modal } from 'react-bootstrap';
 
 import 'bootstrap/dist/css/bootstrap.css';
 
@@ -19,6 +20,7 @@ import { Rendition } from './Rendition.js'
 import { Weekends } from './Weekends.js'
 import { Requests } from './Requests.js'
 import { InputPage } from './InputPage.js'
+
 
 function capitalize (word) {
   return word.charAt(0).toUpperCase() + word.slice(1);
@@ -46,13 +48,38 @@ function MyLink (props) {
   </NavItem>);
 }
 
-function AppRouter() {
+
+
+class AppRouter extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showLoginForm: true
+    }
+  }
+  
+  generateLoginForm() {
+    let onHide = () => this.setState({ showLoginForm: false })
+    
+    return (<Modal
+      show={this.state.showLoginForm}
+      onHide={onHide}
+      {...this.props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      Helo log in first pleae
+    </Modal>);
+  }
+  
+  render () {
   return (
     <Router>
       <div id='navigation'>
           <Nav fill={true} variant="tabs">
             <MyLink to="home" label="Home" />
-            <MyLink to="input" />
+            <MyLink to="input" label="Next Week" />
             <MyLink to="language" />
             <MyLink to="deities" />
             <MyLink to="ragas" />
@@ -64,6 +91,7 @@ function AppRouter() {
             <MyLink to="rendition" />
           </Nav>
 
+        { this.generateLoginForm() }
 
         <div id='content'>
           <Route path="/home" exact component={Index} />
@@ -80,7 +108,7 @@ function AppRouter() {
         </div>
       </div>
     </Router>
-  );
+  )};
 }
 
 export default AppRouter;

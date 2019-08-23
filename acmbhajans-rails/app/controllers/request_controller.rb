@@ -16,6 +16,9 @@ class RequestController < ApplicationController
 
       request_obj.attended_practice = params['attended_practice']
       request_obj.attended_satsang = params['attended_satsang']
+      
+      request_obj.practice_note = params['practice_note']
+      request_obj.satsang_note = params['satsang_note']
 
       request_obj.weekend = Weekend.find_by(id: params['weekend_id'])
       request_obj.person = Person.find_by(id: params['person_id'])
