@@ -282,8 +282,6 @@ def main():
 
             renditions[rendition_id] = rendition
             rendition_id += 1
-            if rendition_id > 10: 
-                break
     
 
     
@@ -340,8 +338,6 @@ def main():
         satsangs[satsang_idx] = satsang
         satsang_idx += 1
 
-        if satsang_idx > 10:
-            break
 
         # actually this is tricky. This is actually a rendition, which ...
         # technically can be auto-calculated now.

@@ -93,11 +93,11 @@ class AppRouter extends React.Component {
       Please log in
         </Modal.Title>
       </Modal.Header>
-
+        <div className="login_people">
         { 
           this.state.people.map((person, idx) => (
           <div 
-            className="ready_bhajan"
+            className="login_person"
             onClick={() => {
                 window.localStorage.setItem('loggedIn', JSON.stringify(person));
                 this.setState({
@@ -110,7 +110,8 @@ class AppRouter extends React.Component {
             {person.name}
             </div>
         ))
-         }
+        }
+         </div>
     </Modal>);
   }
   

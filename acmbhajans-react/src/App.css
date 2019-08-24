@@ -84,6 +84,23 @@
   background-color: var(--highlight-color);
 }
 
+.login_people {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.login_person {
+  text-align: center;
+  border-radius: 5px;
+  border: solid thin black;
+  padding: 5px;
+  margin-left: 15px;
+  margin: 5px 15px;
+  width: 100px;
+  cursor:pointer;
+  
+  
+}
 
 .ready_bhajan {
   border-radius: 5px;
