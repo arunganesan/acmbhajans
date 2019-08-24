@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 
 import { IDField, TextField, findEltName, DropdownField, BooleanField } from './Fields.js'
 import { ModelEditor } from './ModelEditor'
+import { Row } from "react-bootstrap";
 
 function initForm () {
     return {
@@ -16,7 +17,6 @@ function initForm () {
 
         practice_note: '',
         satsang_note: '',
-
 
         person_id: '',
         weekend_id: '',
@@ -117,7 +117,25 @@ export class Requests extends React.Component {
       formatRow={(datum) => {
         let personName = findEltName(datum['person_id'], this.state.people);
         let weekendName = findEltName(datum['weekend_id'], this.state.weekends);
-        return '[' + weekendName + '] ' + personName;
+        let will_attend_practice = datum['will_attend_practice']
+        let will_attend_satsang =  datum['will_attend_satsang']
+
+        let practiceRequestId = datum['practice_request_id'];
+        let satsangRequestId = datum['satsang_request_id'];
+        let practiceRequestName = (practiceRequestId == '') ? '' : findEltName(practiceRequestId, this.state.bhajans);
+        let satsangRequestName = (satsangRequestId == '') ? '' : findEltName(satsangRequestId, this.state.bhajans);
+        
+        let row =  '' + weekendName + '. ' + personName;
+
+        if (will_attend_practice) {
+          row += ` - will attend practice (${practiceRequestName})`
+        } 
+
+        if (will_attend_satsang) {
+          row += ` - will attend satsang (${satsangRequestName})`
+        }
+
+        return row;
       }}
       
       state={this.state}
