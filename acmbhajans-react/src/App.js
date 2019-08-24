@@ -3,7 +3,7 @@ import amma from './amma.jpg';
 import './App.css';
 
 import { LinkContainer } from "react-router-bootstrap";
-import { Nav, NavItem } from "react-bootstrap";
+import { Nav, NavItem, Navbar, Button } from "react-bootstrap";
 import { Modal } from 'react-bootstrap';
 
 import 'bootstrap/dist/css/bootstrap.css';
@@ -87,6 +87,13 @@ class AppRouter extends React.Component {
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
+
+<Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+      Please log in
+        </Modal.Title>
+      </Modal.Header>
+
         { 
           this.state.people.map((person, idx) => (
           <div 
@@ -107,11 +114,27 @@ class AppRouter extends React.Component {
     </Modal>);
   }
   
+  renderLogin() {
+    if (this.state.loggedIn) {
+      return (<Button 
+        variant="light" 
+        onClick={() => this.setState({ loggedIn: null })}
+      >{this.state.loggedIn.name}</Button>);
+    }
+    else {
+      return (<Button 
+        variant="light" 
+        onClick={() => this.setState({ showLoginForm: true })}
+      >Log in</Button>);
+    }
+  }
+
   render () {
   return (
     <Router>
       <div id='navigation'>
-          <Nav variant="tabs">
+        <Navbar expand="lg" bg="primary" variant="dark" >
+          <Nav className="mr-auto">
             <MyLink to="home" label="Home" />
             <MyLink to="input" label="Next Week" />
 
@@ -129,7 +152,14 @@ class AppRouter extends React.Component {
                   <MyLink to="rendition" />
                 </>)
             }
+            
           </Nav>
+            <Navbar.Collapse className="justify-content-end">
+                <Navbar.Text>
+                  { this.renderLogin() }
+                </Navbar.Text>
+                </Navbar.Collapse>
+          </Navbar>
 
         { this.state.loggedIn == null && this.generateLoginForm() }
 
