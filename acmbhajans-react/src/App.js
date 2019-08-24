@@ -20,6 +20,8 @@ import { Rendition } from './Rendition.js'
 import { Weekends } from './Weekends.js'
 import { Requests } from './Requests.js'
 import { InputPage } from './InputPage.js'
+import { Summary } from './Summary'
+import { Recordings } from './Recordings'
 
 
 function capitalize (word) {
@@ -31,7 +33,7 @@ function Index() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={amma} className="App-logo" alt="logo" />
+        <img src={amma} height="540" className="App-logo" alt="logo" />
       </header>
     </div>
   );
@@ -138,10 +140,12 @@ class AppRouter extends React.Component {
           <Nav className="mr-auto">
             <MyLink to="home" label="Home" />
             <MyLink to="input" label="Next Week" />
+            <MyLink to="recordings" />
+            <MyLink to="summary" />
 
             {
               this.state.loggedIn && this.state.loggedIn.coordinator &&
-               ( <>
+               (<>
                   <MyLink to="language" />
                   <MyLink to="deities" />
                   <MyLink to="ragas" />
@@ -167,6 +171,9 @@ class AppRouter extends React.Component {
         <div id='content'>
           <Route path="/home" exact component={Index} />
           <Route path="/input" component={InputPage} />
+          <Route path="/recordings" component={Recordings} />
+          <Route path="/summary" component={Summary} />
+
           <Route path="/bhajans" component={Bhajans} />
           <Route path="/ragas" component={Ragas} />
           <Route path="/deities" component={Deities} />
