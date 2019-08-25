@@ -66,7 +66,7 @@ class AppRouter extends React.Component {
     .then(res => res.json())
     .then(data => {
         this.setState({
-            'people': data.contents
+            'people': data.people
         })
     });
 }
@@ -84,31 +84,35 @@ class AppRouter extends React.Component {
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-
-<Modal.Header closeButton>
+      <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-      Please log in
+          Please log in
         </Modal.Title>
       </Modal.Header>
-        <div className="login_people">
-        { 
-          this.state.people.map((person, idx) => (
-          <div 
-            className="login_person"
-            onClick={() => {
-                window.localStorage.setItem('loggedIn', JSON.stringify(person));
-                this.setState({
-                  loggedIn: person,
-                  showLoginForm: false,
-                });
-            }}
-            
-            key={'logging-in-' + person.id}>
-            {person.name}
-            </div>
-        ))
-        }
-         </div>
+      
+      <Modal.Body>
+      <div className="login_people">
+      { 
+        this.state.people.map((person, idx) => (
+        <div 
+          className="login_person"
+          onClick={() => {
+              window.localStorage.setItem('loggedIn', JSON.stringify(person));
+              this.setState({
+                loggedIn: person,
+                showLoginForm: false,
+              });
+          }}
+          
+          key={'logging-in-' + person.id}>
+          {person.name}
+          </div>
+      ))}
+      </div></Modal.Body>
+
+      <Modal.Footer>
+            <Button onClick={onHide}>Log out</Button>
+      </Modal.Footer>
     </Modal>);
   }
   

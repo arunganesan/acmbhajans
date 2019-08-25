@@ -2,25 +2,26 @@ import React from "react";
 import 'react-virtualized/styles.css'
 import 'bootstrap/dist/css/bootstrap.css'
 
-import { IDField, TextField, DateField, findEltName, DropdownField, BooleanField } from './Fields.js'
+import { IDField,ArrayField, TextField, DateField, findEltName, DropdownField, BooleanField } from './Fields.js'
 import { ModelEditor } from './ModelEditor'
 
-function initForm () {
-    return {
-        id: '',
-        will_attend_practice: false,
-        will_attend_satsang: false,
-        
-        attended_practice: false,
-        attended_satsang: false,
 
-        practice_note: '',
-        satsang_note: '',
+const initForms = {
+  'requests': () => { return {
+    id: '',
+    will_attend_practice: false,
+    will_attend_satsang: false,
+    
+    attended_practice: false,
+    attended_satsang: false,
 
-        person_id: '',
-        weekend: '',
-    }
-}
+    practice_note: '',
+    satsang_note: '',
+
+    person_id: '',
+    weekend: '',
+}}};
+
 
 
 
@@ -28,89 +29,99 @@ export class Requests extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-        contents: [],
-        form: initForm(),
+        
+        forms: {
+          'requests': initForms['requests']()
+        },
 
+        requests: [],
         bhajans: [],
-        weekends: [],
         people: [],
     }}
 
-  renderForm () {
-    return [
+
     
-      <IDField value={this.state.form.id} />,
+  renderForm () {
+    let key = 'requests';
+    let spec = [
+                { 'type': 'id'},
+                { 'type': 'date', 'field': 'weekend'},
+                { 'type': 'dropdown', 'label': 'Person', 'field': 'person_id', 'choices': this.state.people},
+                { 'type': 'boolean', 'label': 'Will attend practice', 'field': 'will_attend_practice'},
+                { 'type': 'dropdown', 'label': 'Practice Request', 'field': 'practice_request_id', 'choices': this.state.bhajans},
+                { 'type': 'text', 'label': 'Note for practice bhajan', field: 'practice_note'},
 
-      <DateField
-        field='weekend'
+                { 'type': 'boolean', 'label': 'Will attend Satsang', 'field': 'will_attend_satsang'},
+                { 
+                  'type': 'dropdown', 
+                  'label': 'Satsang Request', 
+                  'field': 'satsang_request_id', 
+                  'choices': this.state.bhajans, 
+                  'filterBy':() => this.state.ready_list[this.state.forms['requests'].person_id]
+                },
+                { 'type': 'text', 'label': 'Note for satsang bhajan', field: 'satsang_note'},
+            ];
+        
+    return spec.map((details) => {
+      let placeholder = details['placeholder'] ? details['placeholder'] : '';
+      if (details['type'] === 'id') 
+          return (<IDField 
+              modelfield={key}
+              value={this.state.forms[key].id} />);
+      else if (details['type'] === 'boolean')
+            return (<BooleanField
+              label={details['label']}
+              field={details['field']}
+              state={this.state}
+              modelfield={key}
+              setState={s => this.setState(s)} />);
+      else if (details['type'] === 'date') 
+        return (<DateField
+        field={details['field']}
+        
+        modelfield={key}
         state={this.state}
-        setState={s => this.setState(s)} />,
-
-        <DropdownField
-        label='Person'
-        field='person_id'
-        choices={this.state.people}
-        state={this.state}
-        setState={s => this.setState(s)} />,
-
-        <BooleanField
-          label='Will attend practice'
-          field='will_attend_practice'
-          state={this.state}
-          setState={s => this.setState(s)} />,
-
-
-        <DropdownField
-        label='Practice Request'
-        field='practice_request_id'
-        choices={this.state.bhajans}
-        state={this.state}
-        setState={s => this.setState(s)} />,
-
-        <TextField
-        label='Note for practice bhajan'
-        field='practice_note'
-        state={this.state}
-        setState={s => this.setState(s)}
-        />,
-
-
-        <BooleanField
-          label='Will attend satsang'
-          field='will_attend_satsang'
-         state={this.state}
-         setState={s => this.setState(s)} />,
-
-        <DropdownField
-        label='Satsang Request'
-        field='satsang_request_id'
-        choices={this.state.bhajans}
-        filterBy={() => this.state.ready_list[this.state.form.person_id]}
-        state={this.state}
-        setState={s => this.setState(s)} />,
-
-
-        <TextField
-        label='Note for satsang bhajan'
-        field='satsang_note'
-        state={this.state}
-        setState={s => this.setState(s)}
-        />,
-
-
-
-      ];
+        setState={s => this.setState(s)} />)
+      else if (details['type'] === 'text')
+          return (<TextField
+              field={details['field']}
+              placeholder={placeholder}
+              state={this.state}
+              modelfield={key}
+              setState={s => this.setState(s)} />);
+      else if (details['type'] === 'dropdown')
+          return (<DropdownField 
+              label={details['label']}
+              field={details['field']}
+              choices={details['choices']}
+              placeholder={placeholder}
+              modelfield={key}
+              state={this.state}
+              setState={s => this.setState(s)}/>);
+      else if (details['type'] === 'array') 
+          return (<ArrayField 
+              label={details['label']}
+              field={details['field']}
+              choices={details['choices']}
+              placeholder={placeholder}
+              modelfield={key}
+              state={this.state}
+              setState={s => this.setState(s)}/>);
+  });
     }
-  
+
+
+
   render() {
     return (
     <ModelEditor
-      initForm={initForm}
+      initForms={initForms}
       pageName="Request"
       editForm={this.renderForm()}
       URL="http://localhost:1234/request/edit"
       populateForm={(datum, currState) => {}}
       
+      modelfield='requests'
       formatRow={(datum) => {
         let personName = findEltName(datum['person_id'], this.state.people);
         let weekendName = datum['weekend'];

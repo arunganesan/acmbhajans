@@ -5,9 +5,6 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { IDField, ArrayField, TextField, DropdownField } from './Fields.js'
 import { ModelEditor } from './ModelEditor'
 
-function initForm () {
-    
-}
 
 const initForms = {
   'people': () => { return {
@@ -77,7 +74,7 @@ export class People extends React.Component {
   render() {
     return (
     <ModelEditor
-      initForm={initForm}
+      initForms={initForms}
       pageName="Person"
       modelfield='people'
       editForm={this.renderForm()}

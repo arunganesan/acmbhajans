@@ -39,7 +39,7 @@ class RequestController < ApplicationController
 
 
     render :json => {
-      'contents': Request.all.order(weekend: :desc),
+      'requests': Request.all.order(weekend: :desc),
       'bhajans': Bhajan.all.as_json,
       'people': all_people,
       'ready_list': ready_list_indices

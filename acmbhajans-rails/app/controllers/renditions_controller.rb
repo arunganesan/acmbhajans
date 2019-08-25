@@ -57,11 +57,13 @@ class RenditionsController < ApplicationController
   
   
       render :json => {
-        'contents': all_renditions,
-        
-        # reference into the bhajan/event
+        'renditions': all_renditions,
         'bhajans': Bhajan.all,
         'events': Event.all,
+        'people': Person.all,
+        
+        # reference into the bhajan/event
+        
 
         # unique list
         'lead_list': lead_list_indices,
@@ -70,7 +72,7 @@ class RenditionsController < ApplicationController
         'soundsystem_list': soundsystem_list_indices,
         
         # index into above lists
-        'people': Person.all,
+        
       }
     end
   end

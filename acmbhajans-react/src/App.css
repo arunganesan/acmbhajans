@@ -83,10 +83,12 @@
   padding: 5px;
   margin-left: 15px;
   margin: 5px 15px;
-  width: 100px;
-  cursor:pointer;
-  
-  
+  width: 150px;
+  cursor:pointer; 
+}
+
+.login_person:hover {
+  background-color: var(--positive-action-color);
 }
 
 .ready_bhajan {

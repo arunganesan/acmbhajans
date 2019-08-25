@@ -30,9 +30,9 @@ export function DateField (props) {
   }
 
   let selectedDate = '';
-  if (props.state.form[props.field]) 
+  if (props.state.forms[props.modelfield][props.field]) 
     selectedDate = new Date(
-      props.state.form[props.field] + " GMT-0400");
+      props.state.forms[props.modelfield][props.field] + " GMT-0400");
     
   return (
   <Form.Group>
@@ -43,10 +43,12 @@ export function DateField (props) {
       selected={selectedDate}
       onChange={date => {
         props.setState({ 
-          form: {
-            ...props.state.form,
-            [props.field]: moment(date).format("YYYY-MM-DD")
-          }})}}
+          forms: {
+            ...props.state.forms,
+            [props.modelfield]: {
+              ...props.state.forms[props.modelfield],
+              [props.field]: moment(date).format("YYYY-MM-DD")
+          }}})}}
       filterDate={date => {
           const day = getDay(date);
           return day === 6;
@@ -67,13 +69,17 @@ export function BooleanField (props) {
     <Form.Check 
       type="checkbox" 
       label={label}
-      checked={props.state.form[props.field]} 
+      checked={props.state.forms[props.modelfield][props.field]} 
       onChange={event => 
         props.setState({ 
-        form: {
-          ...props.state.form,
-          [props.field]: event.target.checked
-        }})}/>
+          forms: {
+            ...props.state.forms,
+            [props.modelfield]: {
+              ...props.state.forms[props.modelfield],
+              [props.field]: event.target.checked
+            }
+          }
+        })}/>
   </Form.Group>)
 }
 
