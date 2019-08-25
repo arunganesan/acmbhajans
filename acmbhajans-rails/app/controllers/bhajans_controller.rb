@@ -47,10 +47,10 @@ class BhajansController < ApplicationController
 
     
     render :json => {
-      'contents': Bhajan.all.order(name: :asc),
-      'ragas': Raga.all,
-      'deities': Deity.all,
-      'languages': Language.all,
+      'bhajans': Bhajan.all.order(name: :asc),
+      # 'ragas': Raga.all,
+      # 'deities': Deity.all,
+      # 'languages': Language.all,
     }
   end
 end

@@ -307,7 +307,7 @@ def main():
 
         assert 'weekend' in row
         weekend = row['weekend']
-        satsang['weekend'] = 'Date.strptime("{}", "%m/%d/%Y")'.format(week)
+        satsang['weekend'] = 'Date.strptime("{}", "%m/%d/%Y")'.format(weekend)
 
         assert 'name' in row
         person_name = row['name']

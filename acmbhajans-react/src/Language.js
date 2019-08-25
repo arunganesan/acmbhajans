@@ -21,7 +21,8 @@ export class Language extends React.Component {
     }}
 
   renderForm () {
-    return [<IDField value={this.state.form.id} />,
+    return [
+    <IDField value={this.state.form.id} />,
       <TextField
         field='name'
         state={this.state}

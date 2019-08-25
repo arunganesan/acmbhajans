@@ -133,7 +133,7 @@ export class Rendition extends React.Component {
          else
           bhajanName = findEltName(datum['bhajan_id'], this.state.bhajans);
         let weekendName = datum['weekend']
-        return '[' + weekendName + '] ' + bhajanName;
+        return weekendName + '. ' + bhajanName;
       }}
 
       state={this.state}

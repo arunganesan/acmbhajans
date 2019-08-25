@@ -13,10 +13,9 @@ class EventController < ApplicationController
       event.save!
     end
 
-    @contents = Event.all.order(id: :desc)
 
     render :json => {
-      'contents': @contents,
+      'events': Event.all.order(id: :desc)
     }
   end
 end

@@ -13,10 +13,8 @@ class DeityController < ApplicationController
       deity.save!
     end
 
-    @contents = Deity.all.order(id: :desc)
-
     render :json => {
-      'contents': @contents,
+      'deities': Deity.all.order(id: :desc)
     }
   end
 end

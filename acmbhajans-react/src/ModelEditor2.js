@@ -4,7 +4,7 @@ import { AutoSizer, List } from 'react-virtualized'
 import 'bootstrap/dist/css/bootstrap.css';
 import { Button, Modal, Form } from 'react-bootstrap';
 
-export class ModelEditor extends React.Component {
+export class ModelEditor2 extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -13,9 +13,9 @@ export class ModelEditor extends React.Component {
             showEditForm: false,
         };
         
-        this.props.setState({
-          form: this.props.initForm()
-        });
+        // this.props.setState({
+        //   form: this.props.initForm()
+        // });
 
         this.renderRow = this.renderRow.bind(this);
         this.generateForm = this.generateForm.bind(this);
@@ -68,11 +68,11 @@ export class ModelEditor extends React.Component {
       fetch(this.props.URL, {
         method: 'POST', mode: 'cors', cache: 'no-cache',
         headers: { 'Content-type': 'application/json' },
-        body: JSON.stringify(this.props.state.form)})
+        body: JSON.stringify(this.props.state.forms[this.props.modelfield])})
       .then(response => response.json())
       .then(data => {
             this.props.setState({ 
-                contents: data['contents']
+                ...data
             })
             this.list.forceUpdateGrid();
         });
@@ -85,8 +85,11 @@ export class ModelEditor extends React.Component {
              <Button 
                 variant="primary" 
                 onClick={() => {
-                    this.props.setState({ 
-                      form: this.props.initForm()
+                    this.props.setState({                        
+                        forms: { 
+                            ...this.props.state.forms,
+                            [this.props.modelfield]: this.props.initForm[this.props.modelfield]()
+                        }
                     });
                     this.setState({
                       showEditForm: true 
@@ -103,7 +106,7 @@ export class ModelEditor extends React.Component {
                     className="List"
                     height={500}
                     overscanRowCount={10}
-                    rowCount={this.props.state.contents.length}
+                    rowCount={this.props.state[this.props.modelfield].length}
                     rowHeight={50}
                     rowRenderer={this.renderRow}
                     width={width}
@@ -117,15 +120,19 @@ export class ModelEditor extends React.Component {
     
 
     renderRow({index, key, style}) {
-        const datum = this.props.state.contents[index];
+        const datum = this.props.state[this.props.modelfield][index];
         
         let loadForm = () => {
           this.props.setState({
-            form: {
-                ...this.state.form,
-                ...datum,
-                ...this.props.populateForm(datum, this.props.state) 
-              }});
+            forms: { 
+                ...this.props.state.forms,
+                [this.props.modelfield]: {
+                    ...this.props.state.forms[this.props.modelfield],
+                    ...datum,
+                    ...this.props.populateForm(datum, this.props.state) 
+                }
+              }
+        });
           
           this.setState({
             showEditForm: true 

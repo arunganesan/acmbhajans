@@ -83,16 +83,21 @@ export function TextField (props) {
     label = props.field.charAt(0).toUpperCase() + props.field.slice(1)
   }
 
+  console.log('Props: ', props)
+
   return (
   <Form.Group>
     <Form.Label>{label}</Form.Label>
     <Form.Control 
-      type="text" 
-      value={props.state.form[props.field]} 
+      type='text'
+      value={props.state.forms[props.modelfield][props.field]}
       onChange={event => props.setState({ 
-        form: {
-          ...props.state.form,
-          [props.field]: event.target.value
+        forms: {
+          ...props.state.forms,
+          [props.modelfield]: {
+            ...props.state.forms[props.modelfield],
+            [props.field]: event.target.value 
+          },
         }})}
       placeholder={props.placeholder} />
   </Form.Group>)
@@ -132,11 +137,14 @@ export function DropdownField (props) {
     <Form.Label>{label}</Form.Label>
     <Form.Control 
         as="select"
-        value={props.state.form[props.field]}
+        value={props.state.forms[props.modelfield][props.field]}
         onChange={event => props.setState({ 
-          form: {
-            ...props.state.form,
-            [props.field]: event.target.value
+          forms: {
+            ...props.state.forms,
+            [props.modelfield]: {
+              ...props.state.forms[props.modelfield],
+              [props.field]: event.target.value
+            },
           }})}
       >
         <option value=''>None</option>

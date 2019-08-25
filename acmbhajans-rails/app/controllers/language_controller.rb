@@ -12,11 +12,9 @@ class LanguageController < ApplicationController
       language.name = params['name']
       language.save!
     end
-
-    @contents = Language.all.order(id: :desc)
-
+    
     render :json => {
-      'contents': @contents,
+      'languages': Language.all.order(id: :desc)
     }
   end
 end

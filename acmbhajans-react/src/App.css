@@ -50,7 +50,7 @@
   margin-top: 15px;
 }
 
-.row {
+.database-row {
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -64,9 +64,12 @@
 }
 
 
-.row:hover {
+.database-row:hover {
   background-color: var(--highlight-color);
 }
+
+
+
 
 .login_people {
   display: flex;

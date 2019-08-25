@@ -18,7 +18,7 @@ class RagaController < ApplicationController
     end
     
     render :json => {
-      'contents':Raga.all.order(name: :asc)
+      'ragas':Raga.all.order(name: :asc)
     }
   end
 end

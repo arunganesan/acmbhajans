@@ -21,6 +21,7 @@ import { Requests } from './Requests.js'
 import { InputPage } from './InputPage.js'
 import { Summary } from './Summary'
 import { Recordings } from './Recordings'
+import { Database } from './Database'
 
 
 function capitalize (word) {
@@ -145,6 +146,7 @@ class AppRouter extends React.Component {
             {
               this.state.loggedIn && this.state.loggedIn.coordinator &&
                (<>
+                  <MyLink to="database" />
                   <MyLink to="language" />
                   <MyLink to="deities" />
                   <MyLink to="ragas" />
@@ -172,6 +174,7 @@ class AppRouter extends React.Component {
           <Route path="/recordings" component={Recordings} />
           <Route path="/summary" component={Summary} />
 
+          <Route path="/database" component={Database} />
           <Route path="/bhajans" component={Bhajans} />
           <Route path="/ragas" component={Ragas} />
           <Route path="/deities" component={Deities} />
