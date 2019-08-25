@@ -1,9 +1,9 @@
 import React from "react";
 import 'react-virtualized/styles.css'
-import { AutoSizer, List } from 'react-virtualized'
+
 
 import 'bootstrap/dist/css/bootstrap.css';
-import { Button, Modal, Form } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import { TextField } from './Fields.js'
 import { ModelEditor } from './ModelEditor.js'
 

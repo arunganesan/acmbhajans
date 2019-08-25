@@ -15,10 +15,9 @@ class BhajansController < ApplicationController
       Language.create(:name => "Language #{i}")
       Raga.create(:name =>"Raga #{i}")
       Deity.create(:name => "Deity #{i}")
-      Person.create(:name => "Person #{i}")
+      Person.create(:name => "Person #{i}", :coordinator => true)
       Bhajan.create(:name => "Bhajan #{i}")
       Event.create(:name => "Event #{i}")
-      Weekend.create(:name => "Weekend #{i}")
     end
     
     render :json => {

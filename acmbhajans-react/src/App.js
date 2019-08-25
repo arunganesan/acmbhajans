@@ -17,7 +17,6 @@ import { Language } from './Language.js'
 import { Event } from './Event.js'
 import { People } from './People.js'
 import { Rendition } from './Rendition.js'
-import { Weekends } from './Weekends.js'
 import { Requests } from './Requests.js'
 import { InputPage } from './InputPage.js'
 import { Summary } from './Summary'
@@ -152,7 +151,6 @@ class AppRouter extends React.Component {
                   <MyLink to="bhajans" />
                   <MyLink to="events" />
                   <MyLink to="people" />
-                  <MyLink to="weekends" />
                   <MyLink to="requests" />
                   <MyLink to="rendition" />
                 </>)
@@ -180,7 +178,6 @@ class AppRouter extends React.Component {
           <Route path="/language" component={Language} />
           <Route path="/events" component={Event} />
           <Route path="/people" component={People} />
-          <Route path="/weekends" component={Weekends} />
           <Route path="/requests" component={Requests} />
           <Route path="/rendition" component={Rendition} />
         </div>

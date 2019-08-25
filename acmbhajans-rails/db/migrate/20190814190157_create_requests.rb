@@ -5,8 +5,8 @@ class CreateRequests < ActiveRecord::Migration[5.1]
       t.boolean :will_attend_satsang
       t.boolean :attended_practice
       t.boolean :attended_satsang
-      
-      t.references :weekend, foreign_key: true
+      t.date :weekend
+
       t.references :person, foreign_key: true
       
       t.references :practice_request, foreign_key: {to_table: :bhajans}

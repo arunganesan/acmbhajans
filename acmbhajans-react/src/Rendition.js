@@ -2,7 +2,13 @@ import React from "react";
 import 'react-virtualized/styles.css'
 
 import 'bootstrap/dist/css/bootstrap.css';
-import { TextField, findEltName, IDField, DropdownField, ArrayField } from './Fields.js'
+import { 
+  ArrayField,
+  DateField,
+  DropdownField,
+  findEltName,
+  IDField,
+  TextField } from './Fields.js'
 import { ModelEditor } from './ModelEditor'
 
 function initForm () {
@@ -14,7 +20,7 @@ function initForm () {
         bhajan_id: '',
         event_id: '',
         weekend_id: '',
-
+        
         lead: [],
         backup: [],
         instrumentalists: [],
@@ -39,9 +45,11 @@ export class Rendition extends React.Component {
     return [<IDField
       value={this.state.form.id} />,
 
-      <DropdownField
+
+
+      <DateField
         label='Weekend'
-        field='weekend_id'
+        field='weekend'
         choices={this.state.weekends}
         state={this.state}
         setState={s => this.setState(s)} />,
@@ -57,8 +65,6 @@ export class Rendition extends React.Component {
       field='shruti'
       state={this.state}
       setState={s => this.setState(s)} />,
-
-
 
     <DropdownField
       label='Bhajan'
@@ -125,7 +131,7 @@ export class Rendition extends React.Component {
 
       formatRow={(datum) => {
         let bhajanName = findEltName(datum['bhajan_id'], this.state.bhajans);
-        let weekendName = findEltName(datum['weekend_id'], this.state.weekends);
+        let weekendName = datum['weekend']
         return '[' + weekendName + '] ' + bhajanName;
       }}
 

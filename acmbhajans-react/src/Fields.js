@@ -1,6 +1,12 @@
 import React from "react";
-import { Form } from 'react-bootstrap';
-import generate from "@babel/generator";
+import { Form } from 'react-bootstrap'
+// import {addDays } from 'react-datepicker'
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import moment from 'moment'
+import getDay from "date-fns/getDay";
+
+
 
 // https://stackoverflow.com/questions/5999998/check-if-a-variable-is-of-function-type
 function isFunction(functionToCheck) {
@@ -17,6 +23,37 @@ export function IDField (props) {
       value={props.value} />)
 }
 
+export function DateField (props) {
+  let label = props.label;
+  if (!props.label) {
+    label = props.field.charAt(0).toUpperCase() + props.field.slice(1)
+  }
+
+  let selectedDate = '';
+  if (props.state.form[props.field]) 
+    selectedDate = new Date(
+      props.state.form[props.field] + " GMT-0400");
+    
+  return (
+  <Form.Group>
+    <Form.Label>{label}</Form.Label>
+    <br />
+
+    <DatePicker
+      selected={selectedDate}
+      onChange={date => {
+        props.setState({ 
+          form: {
+            ...props.state.form,
+            [props.field]: moment(date).format("YYYY-MM-DD")
+          }})}}
+      filterDate={date => {
+          const day = getDay(date);
+          return day === 6;
+        }}
+      placeholderText="Select date" />
+  </Form.Group>)
+}
 
 
 export function BooleanField (props) {
@@ -72,7 +109,8 @@ function generateChoices (props) {
   if (filterBy != null) {
     choices = props.choices.filter(choice => filterBy.includes(choice.id));
   } else {
-    choices = props.choices;
+    if (props.choices !== undefined)
+      choices = props.choices;
   }
 
   return choices.map(choice => <option
@@ -127,12 +165,20 @@ export function ArrayField (props) {
   if (!props.label) {
     label = props.field.charAt(0).toUpperCase() + props.field.slice(1)
   }
+  
+  let maplist = [];
+  if (props.state.form[props.field] !== undefined) 
+    maplist = props.state.form[props.field];
+  
+  let choicelist = [];
+  if (props.choices !== undefined)
+    choicelist = props.choices;
 
   return (
   <Form.Group>
     <Form.Label>{label}</Form.Label>
     {
-        props.state.form[props.field].map((elt_id, idx) => (
+        maplist.map((elt_id, idx) => (
         <div 
             className="ready_bhajan"
             onClick={() => {
@@ -165,7 +211,7 @@ export function ArrayField (props) {
         >
         <option value=''>None</option>
         { 
-            props.choices.map(item => (
+            choicelist.map(item => (
             <option
                 key={props.field + '-' + item.id} 
                 value={item.id}

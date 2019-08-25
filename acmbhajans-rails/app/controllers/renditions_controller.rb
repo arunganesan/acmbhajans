@@ -1,4 +1,5 @@
 class RenditionsController < ApplicationController
+    require "time"
     skip_before_action :verify_authenticity_token
 
     def edit
@@ -12,7 +13,9 @@ class RenditionsController < ApplicationController
         rendition.recording_url = params['recording_url']
         rendition.shruti = params['shruti']
 
-        rendition.weekend = Weekend.find_by(id: params['weekend_id'])
+        save_date = Date.parse(params['weekend'])
+        rendition.weekend = save_date
+
         rendition.bhajan = Bhajan.find_by(id: params['bhajan_id'])
         rendition.event = Event.find_by(id: params['event_id'])
         
@@ -45,7 +48,7 @@ class RenditionsController < ApplicationController
       instrumentalists_list_indices = {}
       soundsystem_list_indices = {}
 
-      all_renditions = Rendition.all.order(weekend_id: :desc, bhajan_id: :desc)
+      all_renditions = Rendition.all.order(weekend: :desc, bhajan_id: :desc)
       all_renditions.each do | rendition | 
         lead_list_indices[rendition['id']] = rendition.lead.map { | person | person.id }
         backup_list_indices[rendition['id']] = rendition.backup.map { | person | person.id }
@@ -60,7 +63,6 @@ class RenditionsController < ApplicationController
         # reference into the bhajan/event
         'bhajans': Bhajan.all,
         'events': Event.all,
-        'weekends': Weekend.all,
 
         # unique list
         'lead_list': lead_list_indices,
