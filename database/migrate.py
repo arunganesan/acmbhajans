@@ -10,7 +10,7 @@ deities = {}
 ragas = {}
 bhajans = {}
 events = {}
-weekends = {}
+
 people = {}
 renditions = {}
 
@@ -37,13 +37,15 @@ def read_and_get_fields (filename, table_fields):
 
 
 
-def print_ruby (model_name, rows, reference_fields=[], list_fields=[]):
+def print_ruby (model_name, rows, literal_fields=[], reference_fields=[], list_fields=[]):
     lines = []
     for name in sorted(rows.keys()):
         keyvals = []
         for k, v in rows[name].items():
             if k in list_fields:
                continue
+            if k in literal_fields:
+                keyvals.append(":{} => {}".format(k, v))
             elif k in reference_fields:
                 keyvals.append(":{}_id => {}".format(k, v))
             else:
@@ -142,10 +144,6 @@ def main():
         events[evt] = {'name': evt}
 
 
-    for filename in weekly_files:
-        basename, _ = os.path.splitext(filename)
-        week = basename.split(' ')[-1].replace('_', '/')
-        weekends[week] = {'name': week}
 
     people = read_and_get_fields('people.csv', ['name', 'phone', 'email'])
     people['Group'] = { 'name': 'Group' }
@@ -163,6 +161,7 @@ def main():
 
     rendition_id = 0
     for filename in weekly_files:
+        # if rendition_id > 25: break
         ifile = open(filename, 'r')
         reader = csv.DictReader(ifile)
         for row in reader:
@@ -197,7 +196,7 @@ def main():
                 bhajans.setdefault(bhajan_name, {'name': bhajan_name})
                 rendition['bhajan'] = 'Bhajan.find_by(name: "{}").id'.format(bhajan_name)
             
-            rendition['weekend'] = 'Weekend.find_by(name: "{}").id'.format(week)
+            rendition['weekend'] = 'Date.strptime("{}", "%m/%d/%Y")'.format(week) # 'Weekend.find_by(name: "{}").id'.format(week)
 
             if 'P' in order:
                 rendition['event'] = 'Event.find_by(name: "practice").id'
@@ -300,21 +299,15 @@ def main():
         'Vaishnavi Krishna': 'Vyshnavi Krishna'
     }
 
-    weekends['5/4/2019'] = {'name': '5/4/2019'}
-    weekends['7/13/2019'] = {'name': '7/13/2019'}
     
     for row in reader:
-        satsang = {}
+        # if satsang_idx > 25: break
 
+        satsang = {}
 
         assert 'weekend' in row
         weekend = row['weekend']
-
-        if weekend in ['8/24/2019', '8/31/2019']: 
-            continue
-
-        assert weekend in weekends, 'New weekend found {}:{}'.format(satsang_idx, weekend)
-        satsang['weekend'] = 'Weekend.find_by(name: "{}").id'.format(weekend)
+        satsang['weekend'] = 'Date.strptime("{}", "%m/%d/%Y")'.format(week)
 
         assert 'name' in row
         person_name = row['name']
@@ -351,21 +344,22 @@ def main():
         #         weekends.setdefault(weekend, {'name': weekend})
         #         satsang['weekend'] = 'Weekend.find_by(name: "{}").id'.format(weekend)
 
-    
+    # Date.parse(params['weekend'])
+
     print_ruby('Raga', ragas)
     print_ruby('Language', languages)
     print_ruby('Deity', deities)
     print_ruby('Bhajan', bhajans, reference_fields=['language', 'deity', 'raga'])
     
     print_ruby('Event', events)
-    print_ruby('Weekend', weekends)
     print_ruby('Person', people)
 
     print_ruby("Rendition", renditions, 
-        reference_fields=['weekend', 'event', 'bhajan'], 
+        reference_fields=['event', 'bhajan'], 
+        literal_fields=['weekend'],
         list_fields=['instrumentalists', 'soundsystem', 'lead', 'backup'])
 
-    print_ruby('Request', satsangs, reference_fields=['weekend', 'person'])
+    print_ruby('Request', satsangs, literal_fields=['weekend'], reference_fields=['person'])
 
 if __name__ == '__main__':
     main()

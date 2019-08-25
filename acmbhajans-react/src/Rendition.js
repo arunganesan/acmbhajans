@@ -19,8 +19,8 @@ function initForm () {
 
         bhajan_id: '',
         event_id: '',
-        weekend_id: '',
-        
+        weekend: '',
+
         lead: [],
         backup: [],
         instrumentalists: [],
@@ -38,7 +38,6 @@ export class Rendition extends React.Component {
         form: initForm(),
 
         bhajans: [],
-        weekends: [],
     }}
 
   renderForm () {
@@ -48,9 +47,7 @@ export class Rendition extends React.Component {
 
 
       <DateField
-        label='Weekend'
         field='weekend'
-        choices={this.state.weekends}
         state={this.state}
         setState={s => this.setState(s)} />,
 
@@ -130,7 +127,11 @@ export class Rendition extends React.Component {
       }}
 
       formatRow={(datum) => {
-        let bhajanName = findEltName(datum['bhajan_id'], this.state.bhajans);
+        let bhajanName;
+        if (datum['bhajan_id'] == null) 
+          bhajanName = ' - No bhajan listed';
+         else
+          bhajanName = findEltName(datum['bhajan_id'], this.state.bhajans);
         let weekendName = datum['weekend']
         return '[' + weekendName + '] ' + bhajanName;
       }}

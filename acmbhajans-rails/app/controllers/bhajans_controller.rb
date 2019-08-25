@@ -1,7 +1,9 @@
 class BhajansController < ApplicationController
+    require "time"
     skip_before_action :verify_authenticity_token
 
   def import_migration 
+
     render :json => {
       'contents': Bhajan.all.order(id: :desc),
       'ragas': Raga.all,

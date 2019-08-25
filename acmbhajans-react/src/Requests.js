@@ -2,9 +2,8 @@ import React from "react";
 import 'react-virtualized/styles.css'
 import 'bootstrap/dist/css/bootstrap.css'
 
-import { IDField, TextField, findEltName, DropdownField, BooleanField } from './Fields.js'
+import { IDField, TextField, DateField, findEltName, DropdownField, BooleanField } from './Fields.js'
 import { ModelEditor } from './ModelEditor'
-import { Row } from "react-bootstrap";
 
 function initForm () {
     return {
@@ -19,7 +18,7 @@ function initForm () {
         satsang_note: '',
 
         person_id: '',
-        weekend_id: '',
+        weekend: '',
     }
 }
 
@@ -42,10 +41,8 @@ export class Requests extends React.Component {
     
       <IDField value={this.state.form.id} />,
 
-      <DropdownField
-        label='Weekend'
-        field='weekend_id'
-        choices={this.state.weekends}
+      <DateField
+        field='weekend'
         state={this.state}
         setState={s => this.setState(s)} />,
 
@@ -116,7 +113,7 @@ export class Requests extends React.Component {
       
       formatRow={(datum) => {
         let personName = findEltName(datum['person_id'], this.state.people);
-        let weekendName = findEltName(datum['weekend_id'], this.state.weekends);
+        let weekendName = datum['weekend'];
         let will_attend_practice = datum['will_attend_practice']
         let will_attend_satsang =  datum['will_attend_satsang']
 

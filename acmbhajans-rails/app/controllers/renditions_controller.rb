@@ -13,8 +13,7 @@ class RenditionsController < ApplicationController
         rendition.recording_url = params['recording_url']
         rendition.shruti = params['shruti']
 
-        save_date = Date.parse(params['weekend'])
-        rendition.weekend = save_date
+        rendition.weekend = Date.parse(params['weekend'])
 
         rendition.bhajan = Bhajan.find_by(id: params['bhajan_id'])
         rendition.event = Event.find_by(id: params['event_id'])

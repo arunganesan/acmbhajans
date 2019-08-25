@@ -1,4 +1,5 @@
 class RequestController < ApplicationController
+  require "time"
   skip_before_action :verify_authenticity_token
 
   def edit
@@ -20,7 +21,7 @@ class RequestController < ApplicationController
       request_obj.practice_note = params['practice_note']
       request_obj.satsang_note = params['satsang_note']
 
-      request_obj.weekend = Weekend.find_by(id: params['weekend_id'])
+      request_obj.weekend = Date.parse(params['weekend'])
       request_obj.person = Person.find_by(id: params['person_id'])
 
       request_obj.practice_request = Bhajan.find_by(id: params['practice_request_id'])
@@ -41,7 +42,6 @@ class RequestController < ApplicationController
       'contents': Request.all,
       'bhajans': Bhajan.all.as_json,
       'people': all_people,
-      'weekends': Weekend.all.as_json,
       'ready_list': ready_list_indices
     }
   end
