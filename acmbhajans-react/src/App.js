@@ -10,11 +10,6 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
-import { Bhajans } from './Bhajans.js'
-import { Ragas } from './Ragas.js'
-import { Deities } from './Deities.js'
-import { Language } from './Language.js'
-import { Event } from './Event.js'
 import { People } from './People.js'
 import { Rendition } from './Rendition.js'
 import { Requests } from './Requests.js'
@@ -147,11 +142,6 @@ class AppRouter extends React.Component {
               this.state.loggedIn && this.state.loggedIn.coordinator &&
                (<>
                   <MyLink to="database" />
-                  <MyLink to="language" />
-                  <MyLink to="deities" />
-                  <MyLink to="ragas" />
-                  <MyLink to="bhajans" />
-                  <MyLink to="events" />
                   <MyLink to="people" />
                   <MyLink to="requests" />
                   <MyLink to="rendition" />
@@ -175,11 +165,6 @@ class AppRouter extends React.Component {
           <Route path="/summary" component={Summary} />
 
           <Route path="/database" component={Database} />
-          <Route path="/bhajans" component={Bhajans} />
-          <Route path="/ragas" component={Ragas} />
-          <Route path="/deities" component={Deities} />
-          <Route path="/language" component={Language} />
-          <Route path="/events" component={Event} />
           <Route path="/people" component={People} />
           <Route path="/requests" component={Requests} />
           <Route path="/rendition" component={Rendition} />

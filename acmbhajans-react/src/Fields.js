@@ -123,7 +123,6 @@ function generateChoices (props) {
       value={choice.id}>
         {choice.name}
   </option>) 
-
 }
 
 export function DropdownField (props) {
@@ -175,8 +174,8 @@ export function ArrayField (props) {
   }
   
   let maplist = [];
-  if (props.state.form[props.field] !== undefined) 
-    maplist = props.state.form[props.field];
+  if (props.state.forms[props.modelfield][props.field] !== undefined) 
+    maplist = props.state.forms[props.modelfield][props.field];
   
   let choicelist = [];
   if (props.choices !== undefined)
@@ -190,16 +189,19 @@ export function ArrayField (props) {
         <div 
             className="ready_bhajan"
             onClick={() => {
-                let new_list = props.state.form[props.field].filter((v, i, a) => i != idx);
+                let new_list = props.state.forms[props.modelfield][props.field].filter((v, i, a) => i != idx);
                 props.setState({
-                    form: {
-                        ...props.state.form,
-                        [props.field]: new_list
+                    forms: {
+                        ...props.state.forms,
+                        [props.modelfield]: {
+                          ...props.state.forms[props.modelfield],
+                          [props.field]: new_list
+                        }
                     }
                 });
             }}
             key={props.field + '-' + elt_id}>
-            {findEltName(elt_id, props.choices)}
+              {findEltName(elt_id, props.choices)}
             </div>
         ))
     }
@@ -207,15 +209,19 @@ export function ArrayField (props) {
     <Form.Control 
         as="select"
         onChange={(event) => {
-            let new_list = props.state.form[props.field];
+            let new_list = props.state.forms[props.modelfield][props.field];
             new_list.push(event.target.value);
             
             props.setState({
-                form: {
-                    ...props.state.form,
+                forms: {
+                  ...props.state.forms,
+                  [props.modelfield]: {
+                    ...props.state.forms[props.modelfield],
                     [props.field]: new_list,
+                  }
                 }
-            })}}
+            })
+          }}
         >
         <option value=''>None</option>
         { 
@@ -230,3 +236,4 @@ export function ArrayField (props) {
     </Form.Control>
   </Form.Group>);
 }
+

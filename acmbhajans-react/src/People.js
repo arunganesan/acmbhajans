@@ -2,66 +2,76 @@ import React from "react";
 import 'react-virtualized/styles.css'
 
 import 'bootstrap/dist/css/bootstrap.css';
-import { Form } from 'react-bootstrap';
-import { TextField, ArrayField } from './Fields.js'
+import { IDField, ArrayField, TextField, DropdownField } from './Fields.js'
 import { ModelEditor } from './ModelEditor'
 
 function initForm () {
-    return {
-        id: '',
-        name: '',
-        phone: '',
-        email: '',
-        ready_list: [],
-    }
+    
 }
 
+const initForms = {
+  'people': () => { return {
+    id: '',
+    name: '',
+    phone: '',
+    email: '',
+    ready_list: [],
+}}};
 
 export class People extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-        contents: [],
-        form: initForm(),
-
+        forms: {
+          'people': initForms['people'](),
+        },
+        
+        people: [],
         bhajans: [],
     }}
 
   renderForm () {
-    return [<Form.Control 
-      type="text" 
-      hidden={true} 
-      readOnly
-      value={this.state.form.id} />,
-
-    <TextField
-      field='name'
-      state={this.state}
-      setState={s => this.setState(s)}
-      />,
-
-
-    <TextField  
-      field='phone'
-      state={this.state}
-      setState={s => this.setState(s)}
-      />,
-    
-    <TextField  
-      field='email'
-      state={this.state}
-      setState={s => this.setState(s)}
-      />,
-
-
-    <ArrayField
-      label='Ready list'
-      field='ready_list'
-      state={this.state}
-      choices={this.state.bhajans}
-      setState={s => this.setState(s)}
-      />
-      ];
+    let key = 'people';
+    let spec = [
+                { 'type': 'id'},
+                { 'type': 'text', 'field': 'name'},
+                { 'type': 'text', 'field': 'phone'},
+                { 'type': 'text', 'field': 'email'},
+                { 'type': 'array', 'label': 'Ready list', 'field': 'ready_list', 'choices': this.state.bhajans},
+            ];
+        
+    return spec.map((details) => {
+      let placeholder = details['placeholder'] ? details['placeholder'] : '';
+      if (details['type'] === 'id') 
+          return (<IDField 
+              modelfield={key}
+              value={this.state.forms[key].id} />);
+      else if (details['type'] === 'text')
+          return (<TextField
+              field={details['field']}
+              placeholder={placeholder}
+              state={this.state}
+              modelfield={key}
+              setState={s => this.setState(s)} />);
+      else if (details['type'] === 'dropdown')
+          return (<DropdownField 
+              label={details['label']}
+              field={details['field']}
+              choices={details['choices']}
+              placeholder={placeholder}
+              modelfield={key}
+              state={this.state}
+              setState={s => this.setState(s)}/>);
+      else if (details['type'] === 'array') 
+          return (<ArrayField 
+              label={details['label']}
+              field={details['field']}
+              choices={details['choices']}
+              placeholder={placeholder}
+              modelfield={key}
+              state={this.state}
+              setState={s => this.setState(s)}/>);
+  });
     }
   
   render() {
@@ -69,6 +79,7 @@ export class People extends React.Component {
     <ModelEditor
       initForm={initForm}
       pageName="Person"
+      modelfield='people'
       editForm={this.renderForm()}
       URL="http://localhost:1234/person/edit"
       populateForm={(datum, currState) => {

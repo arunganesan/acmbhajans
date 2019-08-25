@@ -30,7 +30,7 @@ class PersonController < ApplicationController
     end
 
     render :json => {
-      'contents': all_persons,
+      'people': all_persons,
       'ready_list': ready_list_indices,
       'bhajans': Bhajan.all.as_json,
     }

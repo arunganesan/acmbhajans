@@ -4,7 +4,7 @@ import 'react-virtualized/styles.css'
 import 'bootstrap/dist/css/bootstrap.css';
 import { IDField, ArrayField, TextField, DropdownField } from './Fields.js'
 import { Container, Row, Col } from 'react-bootstrap'
-import { ModelEditor2 } from './ModelEditor2'
+import { ModelEditor } from './ModelEditor'
 
 
 const initForms = {
@@ -31,10 +31,8 @@ const initForms = {
     }}, 'deities':  () => { return {
         id: '',
         name: ''
-}}, 
-        
+    }}, 
 }
-
 
 export class Database extends React.Component {
   constructor(props) {
@@ -64,8 +62,8 @@ export class Database extends React.Component {
                 { 'type': 'id'},
                 { 'type': 'text', 'field': 'name'},
                 { 'type': 'dropdown', 'label': 'Raga', 'field': 'raga_id', 'choices': this.state.ragas},
-                { 'type': 'dropdown', 'label': 'Deity', 'field': 'deity_id'},
-                { 'type': 'dropdown', 'label': 'Language', 'field': 'language_id'},
+                { 'type': 'dropdown', 'label': 'Deity', 'field': 'deity_id', 'choices': this.state.deities},
+                { 'type': 'dropdown', 'label': 'Language', 'field': 'language_id', 'choices': this.state.languages},
                 { 'type': 'text', 'field': 'beat', 'placehoder': 'e.g. 8 beat cycle - Keherewa'},
                 { 'type': 'text', 'field': 'speed', 'placehoder': 'e.g. 100 BPM'},
             ];
@@ -131,7 +129,7 @@ export class Database extends React.Component {
   render() {
     return (
         <Container><Row>
-                <Col><ModelEditor2
+                <Col><ModelEditor
                     initForm={initForms}
                     pageName='Bhajans'
                     modelfield='bhajans'
@@ -140,71 +138,51 @@ export class Database extends React.Component {
                     populateForm={(datum, currState) => {
                         return {}
                     }}
-
                     state={this.state}
                     setState={(s) => this.setState(s)}
                 /></Col>
     
-                <Col><ModelEditor2
+                <Col><ModelEditor
                     initForm={initForms}
                     pageName='Languages'
                     modelfield='languages'
                     editForm={this.renderForm('languages')}
                     URL="http://localhost:1234/language/edit"
-                    populateForm={(datum, currState) => {
-                        return {}
-                    }}
-
                     state={this.state}
                     setState={(s) => this.setState(s)}
                 /></Col>
 
-                <Col><ModelEditor2
+                <Col><ModelEditor
                     initForm={initForms}
                     pageName='Events'
                     modelfield='events'
                     editForm={this.renderForm('events')}
                     URL="http://localhost:1234/event/edit"
-                    populateForm={(datum, currState) => {
-                        return {}
-                    }}
-
                     state={this.state}
                     setState={(s) => this.setState(s)}
                 /></Col>
 
 
-                <Col><ModelEditor2
+                <Col><ModelEditor
                     initForm={initForms}
                     pageName='Ragas'
                     modelfield='ragas'
                     editForm={this.renderForm('ragas')}
                     URL="http://localhost:1234/raga/edit"
-                    populateForm={(datum, currState) => {
-                        return {}
-                    }}
-
                     state={this.state}
                     setState={(s) => this.setState(s)}
                 /></Col>
 
                 
-                <Col><ModelEditor2
+                <Col><ModelEditor
                     initForm={initForms}
                     pageName='Deities'
                     modelfield='deities'
                     editForm={this.renderForm('deities')}
                     URL="http://localhost:1234/deity/edit"
-                    populateForm={(datum, currState) => {
-                        return {}
-                    }}
-
                     state={this.state}
                     setState={(s) => this.setState(s)}
                 /></Col>
-
-
-
 
 
         </Row></Container>
