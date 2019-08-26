@@ -49,7 +49,12 @@ export class ModelEditor extends React.Component {
 
     
     componentDidMount() {
-        fetch(this.props.URL)
+      
+        let loadUrl = this.props.URL;
+        if (this.props.urlparams)
+          loadUrl += this.props.urlparams();
+
+        fetch(loadUrl)
         .then(res => res.json())
         .then(data => {
             this.props.setState({
@@ -60,8 +65,12 @@ export class ModelEditor extends React.Component {
 
 
     handleSubmit(event) {
+      let loadUrl = this.props.URL;
+      if (this.props.urlparams)
+        loadUrl += this.props.urlparams();
+
       this.setState({ showEditForm: false });
-      fetch(this.props.URL, {
+      fetch(loadUrl, {
         method: 'POST', mode: 'cors', cache: 'no-cache',
         headers: { 'Content-type': 'application/json' },
         body: JSON.stringify(this.props.state.forms[this.props.modelfield])})
@@ -78,6 +87,7 @@ export class ModelEditor extends React.Component {
 
     render() {
         return (<div>
+            <div className="actionbar">
              <Button 
                 variant="primary" 
                 onClick={() => {
@@ -92,6 +102,9 @@ export class ModelEditor extends React.Component {
                     })}}>
                 Add {this.props.pageName}
             </Button>
+
+            { this.props.additionalButtons && this.props.additionalButtons}
+            </div>
             
             { this.state.showEditForm && this.generateForm() }
             

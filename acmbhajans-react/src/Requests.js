@@ -5,6 +5,12 @@ import 'bootstrap/dist/css/bootstrap.css'
 import { generateFields, findEltName } from './Fields.js'
 import { ModelEditor } from './ModelEditor'
 
+import { Form } from 'react-bootstrap'
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import moment from 'moment'
+import { getDay, addDays, subDays }  from "date-fns";
+
 
 const initForms = {
   'requests': () => { return {
@@ -35,8 +41,10 @@ export class Requests extends React.Component {
         requests: [],
         bhajans: [],
         people: [],
-    }}
 
+        fromDate: subDays(new Date(), 7),
+        toDate: addDays(new Date(), 7),
+    }}
 
     
   renderForm () {
@@ -73,6 +81,34 @@ export class Requests extends React.Component {
       URL="http://localhost:1234/request/edit"
       populateForm={(datum, currState) => {}}
       
+
+      additionalButtons={
+         [(<Form.Group>
+            <Form.Label>From</Form.Label>
+            <DatePicker
+              selected={this.state.fromDate}
+              onChange={date =>  this.setState({ fromDate: date })}
+              filterDate={date => getDay(date) === 6}
+              />
+          </Form.Group>),
+          (<Form.Group>
+          <Form.Label>To</Form.Label>
+          <DatePicker
+            selected={this.state.toDate}
+            onChange={date =>  this.setState({ toDate: date })}
+            filterDate={date => getDay(date) === 6}
+            />
+        </Form.Group>)]
+      }
+
+
+      urlparams={() => {
+        let fromStr = moment(this.state.fromDate).format("YYYY-MM-DD");
+        let toStr = moment(this.state.toDate).format("YYYY-MM-DD");
+        return `?from=${fromStr}&to=${toStr}`;
+      }}
+
+
       modelfield='requests'
       formatRow={(datum) => {
         let personName = findEltName(datum['person_id'], this.state.people);

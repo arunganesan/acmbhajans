@@ -39,7 +39,10 @@ class RequestController < ApplicationController
 
 
     render :json => {
-      'requests': Request.all.order(weekend: :desc),
+      'requests': Request.where('weekend >= :from AND weekend <= :to', {
+        from: params[:from],
+        to: params[:to]
+      }).order(weekend: :desc),
       'bhajans': Bhajan.all.as_json,
       'people': all_people,
       'ready_list': ready_list_indices

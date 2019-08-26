@@ -36,6 +36,15 @@
 
 
 
+.actionbar {
+  display: flex;
+  flex-direction: row;
+}
+
+.actionbar * {
+  margin: 0 5px;
+}
+
 
 
 

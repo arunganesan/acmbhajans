@@ -47,7 +47,11 @@ class RenditionsController < ApplicationController
       instrumentalists_list_indices = {}
       soundsystem_list_indices = {}
 
-      all_renditions = Rendition.all.order(weekend: :desc, bhajan_id: :desc)
+      all_renditions = Rendition.where('weekend >= :from AND weekend <= :to', {
+        from: params[:from],
+        to: params[:to]
+      }).all.order(weekend: :desc, bhajan_id: :desc)
+      
       all_renditions.each do | rendition | 
         lead_list_indices[rendition['id']] = rendition.lead.map { | person | person.id }
         backup_list_indices[rendition['id']] = rendition.backup.map { | person | person.id }

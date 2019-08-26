@@ -7,6 +7,11 @@ import {
   findEltName,
   } from './Fields.js'
 import { ModelEditor } from './ModelEditor'
+import { Form } from 'react-bootstrap'
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import moment from 'moment'
+import { getDay, addDays, subDays }  from "date-fns";
 
 
 const initForms = {
@@ -39,6 +44,9 @@ export class Rendition extends React.Component {
         renditions: [],
         people: [],
         bhajans: [],
+
+        fromDate: subDays(new Date(), 7),
+        toDate: addDays(new Date(), 7),
     }}
 
 
@@ -81,6 +89,34 @@ export class Rendition extends React.Component {
         }
       }}
 
+      additionalButtons={
+        [(<Form.Group>
+           <Form.Label>From</Form.Label>
+           <DatePicker
+             selected={this.state.fromDate}
+             onChange={date =>  this.setState({ fromDate: date })}
+             filterDate={date => getDay(date) === 6}
+             />
+         </Form.Group>),
+         (<Form.Group>
+         <Form.Label>To</Form.Label>
+         <DatePicker
+           selected={this.state.toDate}
+           onChange={date =>  this.setState({ toDate: date })}
+           filterDate={date => getDay(date) === 6}
+           />
+       </Form.Group>)]
+     }
+
+
+     urlparams={() => {
+       let fromStr = moment(this.state.fromDate).format("YYYY-MM-DD");
+       let toStr = moment(this.state.toDate).format("YYYY-MM-DD");
+       return `?from=${fromStr}&to=${toStr}`;
+     }}
+
+
+     
       formatRow={(datum) => {
         let bhajanName;
         if (datum['bhajan_id'] == null) 
