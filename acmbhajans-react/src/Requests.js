@@ -2,7 +2,7 @@ import React from "react";
 import 'react-virtualized/styles.css'
 import 'bootstrap/dist/css/bootstrap.css'
 
-import { IDField,ArrayField, TextField, DateField, findEltName, DropdownField, BooleanField } from './Fields.js'
+import { generateFields, findEltName } from './Fields.js'
 import { ModelEditor } from './ModelEditor'
 
 
@@ -21,8 +21,6 @@ const initForms = {
     person_id: '',
     weekend: '',
 }}};
-
-
 
 
 export class Requests extends React.Component {
@@ -62,54 +60,8 @@ export class Requests extends React.Component {
                 { 'type': 'text', 'label': 'Note for satsang bhajan', field: 'satsang_note'},
             ];
         
-    return spec.map((details) => {
-      let placeholder = details['placeholder'] ? details['placeholder'] : '';
-      if (details['type'] === 'id') 
-          return (<IDField 
-              modelfield={key}
-              value={this.state.forms[key].id} />);
-      else if (details['type'] === 'boolean')
-            return (<BooleanField
-              label={details['label']}
-              field={details['field']}
-              state={this.state}
-              modelfield={key}
-              setState={s => this.setState(s)} />);
-      else if (details['type'] === 'date') 
-        return (<DateField
-        field={details['field']}
-        
-        modelfield={key}
-        state={this.state}
-        setState={s => this.setState(s)} />)
-      else if (details['type'] === 'text')
-          return (<TextField
-              field={details['field']}
-              placeholder={placeholder}
-              state={this.state}
-              modelfield={key}
-              setState={s => this.setState(s)} />);
-      else if (details['type'] === 'dropdown')
-          return (<DropdownField 
-              label={details['label']}
-              field={details['field']}
-              choices={details['choices']}
-              placeholder={placeholder}
-              modelfield={key}
-              state={this.state}
-              setState={s => this.setState(s)}/>);
-      else if (details['type'] === 'array') 
-          return (<ArrayField 
-              label={details['label']}
-              field={details['field']}
-              choices={details['choices']}
-              placeholder={placeholder}
-              modelfield={key}
-              state={this.state}
-              setState={s => this.setState(s)}/>);
-  });
-    }
-
+    return generateFields(spec, key, this.state, (s) => { this.setState(s) });
+  }
 
 
   render() {

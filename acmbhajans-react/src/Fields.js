@@ -8,11 +8,61 @@ import getDay from "date-fns/getDay";
 
 
 
+
+
 // https://stackoverflow.com/questions/5999998/check-if-a-variable-is-of-function-type
 function isFunction(functionToCheck) {
   return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
  }
 
+
+export function generateFields (spec, key, state, setState) {
+  return spec.map((details) => {
+    let placeholder = details['placeholder'] ? details['placeholder'] : '';
+    if (details['type'] === 'id') 
+      return (<IDField 
+        modelfield={key}
+        value={state.forms[key].id} />);
+    else if (details['type'] === 'boolean')
+      return (<BooleanField
+        label={details['label']}
+        field={details['field']}
+        state={state}
+        modelfield={key}
+        setState={setState} />);
+    else if (details['type'] === 'date') 
+      return (<DateField
+        field={details['field']}
+        modelfield={key}
+        state={state}
+        setState={setState} />)
+    else if (details['type'] === 'text')
+      return (<TextField
+        field={details['field']}
+        placeholder={placeholder}
+        state={state}
+        modelfield={key}
+        setState={setState} />);
+    else if (details['type'] === 'dropdown')
+      return (<DropdownField 
+        label={details['label']}
+        field={details['field']}
+        choices={details['choices']}
+        placeholder={placeholder}
+        modelfield={key}
+        state={state}
+        setState={setState}/>);
+    else if (details['type'] === 'array') 
+      return (<ArrayField 
+        label={details['label']}
+        field={details['field']}
+        choices={details['choices']}
+        placeholder={placeholder}
+        modelfield={key}
+        state={state}
+        setState={setState}/>);
+  });
+}
 
 export function IDField (props) {
   return (

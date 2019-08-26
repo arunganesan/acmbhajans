@@ -2,7 +2,7 @@ import React from "react";
 import 'react-virtualized/styles.css'
 
 import 'bootstrap/dist/css/bootstrap.css';
-import { IDField, ArrayField, TextField, DropdownField } from './Fields.js'
+import { generateFields } from './Fields.js'
 import { Container, Row, Col } from 'react-bootstrap'
 import { ModelEditor } from './ModelEditor'
 
@@ -92,38 +92,7 @@ export class Database extends React.Component {
             ];
         }
         
-        return spec.map((details) => {
-            let placeholder = details['placeholder'] ? details['placeholder'] : '';
-            if (details['type'] === 'id') 
-                return (<IDField 
-                    modelfield={key}
-                    value={this.state.forms[key].id} />);
-            else if (details['type'] === 'text')
-                return (<TextField
-                    field={details['field']}
-                    placeholder={placeholder}
-                    state={this.state}
-                    modelfield={key}
-                    setState={s => this.setState(s)} />);
-            else if (details['type'] === 'dropdown')
-                return (<DropdownField 
-                    label={details['label']}
-                    field={details['field']}
-                    choices={details['choices']}
-                    placeholder={placeholder}
-                    modelfield={key}
-                    state={this.state}
-                    setState={s => this.setState(s)}/>);
-            else if (details['type'] === 'array') 
-                return (<ArrayField 
-                    label={details['label']}
-                    field={details['field']}
-                    choices={details['choices']}
-                    placeholder={placeholder}
-                    modelfield={key}
-                    state={this.state}
-                    setState={s => this.setState(s)}/>);
-        });
+        return generateFields(spec, key, this.state, (s) => { this.setState(s) });
     }
     
   render() {
