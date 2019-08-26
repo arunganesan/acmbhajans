@@ -49,7 +49,11 @@
 
 
 
-
+.inputgroup {
+  border: solid 0.25pt gray;
+  margin: 15px;  
+  padding: 25px;
+}
 
 
 

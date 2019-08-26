@@ -138,9 +138,13 @@ class AppRouter extends React.Component {
         <Navbar expand="lg" bg="primary" variant="dark" >
           <Nav className="mr-auto">
             <MyLink to="home" label="Home" />
-            <MyLink to="input" label="Next Week" />
+
+            { this.state.loggedIn && 
+              <MyLink to="input" label="Next Week" />
+            }
             <MyLink to="recordings" />
             <MyLink to="summary" />
+            
 
             {
               this.state.loggedIn && this.state.loggedIn.coordinator &&
