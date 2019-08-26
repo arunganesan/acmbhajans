@@ -21,8 +21,7 @@ class PersonController < ApplicationController
       
       person.save!
     end
-
-
+    
     all_persons = Person.all.order(name: :asc)
     ready_list_indices = {}
     all_persons.each do | person | 

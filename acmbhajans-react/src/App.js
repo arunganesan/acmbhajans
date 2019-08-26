@@ -66,7 +66,7 @@ class AppRouter extends React.Component {
     .then(res => res.json())
     .then(data => {
         this.setState({
-            'people': data.people
+          ...data
         })
     });
 }
@@ -168,7 +168,9 @@ class AppRouter extends React.Component {
 
         <div id='content'>
           <Route path="/home" exact component={Index} />
-          <Route path="/input" component={InputPage} />
+          <Route 
+            path="/input" 
+            render={(props) => <InputPage personId={this.state.loggedIn ? this.state.loggedIn.id : null} />} />
           <Route path="/recordings" component={Recordings} />
           <Route path="/summary" component={Summary} />
 

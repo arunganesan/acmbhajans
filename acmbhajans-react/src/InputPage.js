@@ -1,26 +1,35 @@
 import React from "react";
-import { Button, Form, Row, Col, Container } from 'react-bootstrap'
+import { Card, Button, Form, Row, Col, Container } from 'react-bootstrap'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import moment from 'moment'
- 
-import { eachWeekendOfYear, getDay, addDays } from "date-fns";
+
+import moment from 'moment';
+import { getDay, addDays } from "date-fns";
 
 
 export class InputPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            date: this.getNextWeekendDate(),
-            attending_practice: false,
-            attending_satsang: false,
+            form: {
+                weekend: this.getNextWeekendDate(),
+                id: '',
 
-            practice_bhajan: '',
-            satsang_bhajan: '', 
-            
-            practice_note: '',
-            satsang_note: '',
+                will_attend_practice: false,
+                practice_request_id: '',
+                practice_note: '',
+
+                will_attend_satsang: false,
+                satsang_request_id: '',
+                satsang_note: '',
+            },
+            bhajans: [],
+            ready_list: {},
         };
+
+
+        this.fetchRequest = this.fetchRequest.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
    
     getNextWeekendDate() {
@@ -38,8 +47,28 @@ export class InputPage extends React.Component {
     }
 
     componentDidMount() {
-        // TODO
-        // need to load the list of bhajans, this person's ready list, and their input for this week if possible
+        // need to load the list of bhajans, 
+        // this person's ready list, and their 
+        // input for this week if possible
+
+       this.fetchRequest();
+    }
+
+    fetchRequest() {
+        console.log('This.props has ', this.props);
+        let loadUrl = 'http://localhost:1234/request/edit'
+        loadUrl += '?date=' + moment(this.state.form.weekend).format('YYYY-MM-DD');
+        loadUrl += '&person_id=' + this.props.personId;
+        fetch(loadUrl)
+        .then(res => res.json())
+        .then(data => {
+            this.setState({
+              ...data,
+              form: {
+                  ...data.requests[0]
+              }
+            })
+        });
     }
 
     componentWillUnmount() {
@@ -50,11 +79,41 @@ export class InputPage extends React.Component {
     handleSubmit(event) {
         // Send to server
         // Show a "saved" message
+        console.log('This.props has ', this.props);
+        let loadUrl = 'http://localhost:1234/request/edit'
+        loadUrl += '?date=' + moment(this.state.form.weekend).format('YYYY-MM-DD');
+        loadUrl += '&person_id=' + this.props.personId;
+        
+
+        fetch(loadUrl, {
+          method: 'POST', mode: 'cors', cache: 'no-cache',
+          headers: { 'Content-type': 'application/json' },
+          body: JSON.stringify(this.state.form)})
+        .then(response => response.json())
+        .then(data => {
+            console.log("Got response: ", data);
+              this.setState({ 
+                  ...data,
+                  form: {
+                      ...data.requests[0]
+                  }
+              })
+          });
+
         event.preventDefault();
     }
 
-    generateBhajans () {
-        return [1,2,3,4]
+    generateBhajans (label, filterBy) {
+        let choices = this.state.bhajans;
+        if (filterBy != null) 
+            choices = choices.filter(choice => filterBy.includes(choice.id));
+        
+
+        return choices.map(choice => <option
+            key={label + '-' + choice.id} 
+            value={choice.id}>
+                {choice.name}
+        </option>);
     }
 
     render() {
@@ -66,25 +125,37 @@ export class InputPage extends React.Component {
                     <Form.Group>
                         <Form.Label>Date &nbsp;&nbsp;</Form.Label>
                         <DatePicker 
-                            selected={this.state.date} 
-                            onChange={this.handleChange}
-                            filterDate={date => {
-                                const day = getDay(date);
-                                return day === 6;
+                            selected={new Date(this.state.form.weekend + " GMT-0400")} 
+                            onChange={date => {
+                                this.setState({ 
+                                    form: {
+                                        ...this.state.form,
+                                        weekend: moment(date).format("YYYY-MM-DD")
+                                    }
+                                });
+
+                                this.fetchRequest();
                             }}
+                            filterDate={date => getDay(date) === 6}
                             />
                     </Form.Group>
                     </Col>
                 </Row>
                 <Row>
-                    <Col className="inputgroup">
-                    <Form.Group>
+                    
+                    <Card>
+                        <Card.Title>Practice</Card.Title>
+                        <Card.Body>
+                        <Form.Group>
                         <Form.Check 
                             type="checkbox" 
                             label="Attending Practice"
-                            checked={this.state.attending_practice} 
+                            checked={this.state.form.will_attend_practice} 
                             onChange={event => this.setState({
-                                attending_practice: event.target.checked
+                                form: {
+                                    ...this.state.form,
+                                    will_attend_practice: event.target.checked
+                                }
                             })}/>
                     </Form.Group>
 
@@ -92,12 +163,15 @@ export class InputPage extends React.Component {
                         <Form.Label>Practice Bhajan</Form.Label>
                         <Form.Control 
                             as="select"
-                            value={this.state.practice_bhajan}
-                            disabled={!this.state.attending_practice}
-                            onChange={event => this.setState({ practice_bhajan: event.target.value })}
-                        >
+                            value={this.state.form.practice_request_id}
+                            disabled={!this.state.form.will_attend_practice}
+                            onChange={event => this.setState({ 
+                                form: {
+                                    ...this.state.form,
+                                    practice_request_id: event.target.value }})}
+                            >
                             <option value=''>None</option>
-                            { this.generateBhajans() }
+                            { this.generateBhajans('practice', null) }
                         </Form.Control>
                     </Form.Group>
 
@@ -105,22 +179,31 @@ export class InputPage extends React.Component {
                         <Form.Label>Practice Note</Form.Label>
                         <Form.Control 
                             type="text"
-                            disabled={!this.state.attending_practice}
-                            value={this.state.practice_note}
+                            disabled={!this.state.form.will_attend_practice}
+                            value={this.state.form.practice_note}
                             onChange={event => this.setState({ 
-                                practice_note: event.target.value })}
+                                form: {
+                                    ...this.state.form,
+                                    practice_note: event.target.value}})}
                             />
                     </Form.Group>
-                    </Col>
+                        </Card.Body>
+                        </Card>
+           
 
-                    <Col className="inputgroup">
+                        <Card>
+                        <Card.Title>Satsang</Card.Title>
+                        <Card.Body>
                     <Form.Group>
                         <Form.Check 
                             type="checkbox" 
                             label="Attending Satsang"
-                            checked={this.state.attending_satsang} 
+                            checked={this.state.form.will_attend_satsang} 
                             onChange={event => this.setState({
-                                attending_satsang: event.target.checked
+                                form: {
+                                    ...this.state.form,
+                                    will_attend_satsang: event.target.checked
+                                }
                             })}/>
                     </Form.Group>
 
@@ -128,13 +211,21 @@ export class InputPage extends React.Component {
                         <Form.Label>Satsang Bhajan</Form.Label>
                         <Form.Control 
                             as="select"
-                            disabled={!this.state.attending_satsang}
-                            value={this.state.satsang_bhajan}
+                            disabled={!this.state.form.will_attend_satsang}
+                            value={this.state.form.satsang_request_id}
                             onChange={event => this.setState({ 
-                                satsang_bhajan: event.target.value })}
+                                form: {
+                                    ...this.state.form,
+                                    satsang_request_id: event.target.value
+                                }
+                                 })}
                         >
                             <option value=''>None</option>
-                            { this.generateBhajans() }
+                            { this.generateBhajans(
+                                'satsang', 
+                                this.props.personId in this.state.ready_list ? 
+                                this.state.ready_list[this.props.personId] :
+                                null )}
                         </Form.Control>
                     </Form.Group>
 
@@ -142,18 +233,22 @@ export class InputPage extends React.Component {
                         <Form.Label>Satsang Note</Form.Label>
                         <Form.Control 
                             type="text"
-                            disabled={!this.state.attending_satsang}
-                            value={this.state.satsang_note}
+                            disabled={!this.state.form.will_attend_satsang}
+                            value={this.state.form.satsang_note}
                             onChange={event => this.setState({ 
-                                satsang_note: event.target.value })}
+                                form: {
+                                    ...this.state.form,
+                                    satsang_note: event.target.value
+                                }
+                                 })}
                             />
                     </Form.Group>
-                    </Col>
+                    </Card.Body>
+                    </Card>
                 </Row>
 
                 <Row>
-                    <Col><Button type="submit">Save</Button></Col>
-                    
+                    <Col><Button onClick={this.handleSubmit}>Save</Button></Col>
                 </Row>
             </Container>
             </Form>

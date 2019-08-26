@@ -45,9 +45,13 @@
   margin: 0 5px;
 }
 
+.card {
+  margin: 25px;
+}
 
-
-
+.card-title {
+padding: 1.25rem;
+}
 
 .inputgroup {
   border: solid 0.25pt gray;
