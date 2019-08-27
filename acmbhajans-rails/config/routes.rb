@@ -32,9 +32,8 @@ Rails.application.routes.draw do
 
   get 'renditions/edit'
   post 'renditions/edit'
+  get 'renditions/summarize'
   
   get 'individual/graduated'
   get 'individual/request'
-
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

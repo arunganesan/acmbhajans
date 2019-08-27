@@ -65,18 +65,60 @@ class RenditionsController < ApplicationController
         'bhajans': Bhajan.all,
         'events': Event.all,
         'people': Person.all,
-        
-        # reference into the bhajan/event
-        
 
         # unique list
         'lead_list': lead_list_indices,
         'backup_list': backup_list_indices,
         'instrumentalists_list': instrumentalists_list_indices,
-        'soundsystem_list': soundsystem_list_indices,
+        'soundsystem_list': soundsystem_list_indices, 
+      }
+    end
+
+
+    def summarize
+      event = Event.find_by(name: params[:event])
+      renditions = Rendition.where(event: event)
+      #, weekend: Date.parse('2019-08-17'))
+      # eventually store in format:
+      # [week][person] = list of bhajans
+
+      bhajan_summary = {}
+      attendance_summary = {}
+
+      renditions.each do | rendition |
+        date = rendition.weekend
+        if !bhajan_summary.key? date
+          bhajan_summary[date] = {}
+          attendance_summary[date] = {}
+        end
         
-        # index into above lists
-        
+        rendition.lead.each do | person |
+          if !bhajan_summary[date].key? person.name
+            bhajan_summary[date][person.name] = []
+            attendance_summary[date][person.name] = false
+          end
+
+          request_obj = Request.find_by(person_id: person.id, weekend: date)
+          if !request_obj.blank?
+            if params[:event] == 'practice'
+              attendance_summary[date][person.name] = request_obj.attended_practice
+            else
+              attendance_summary[date][person.name] = request_obj.attended_satsang
+            end
+          end
+          
+          if !rendition.bhajan.blank? 
+            bhajan_summary[date][person.name] << rendition.bhajan.name
+          end
+        end
+      end
+      
+      render :json => {
+        'bhajan_summary': bhajan_summary,
+        'attendance_summary': attendance_summary,
+        'bhajans': Bhajan.all,
+        'events': Event.all,
+        'people': Person.all,
       }
     end
   end

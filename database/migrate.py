@@ -192,8 +192,8 @@ def main():
                 #     bhajan_name,
                 #     difflib.get_close_matches(bhajan_name, bhajans.keys())))
                 bhajans.setdefault(bhajan_name, {'name': bhajan_name})
-                rendition['bhajan'] = 'Bhajan.find_by(name: "{}").id'.format(bhajan_name)
             
+            rendition['bhajan'] = 'Bhajan.find_by(name: "{}").id'.format(bhajan_name)
             rendition['weekend'] = 'Date.strptime("{}", "%m/%d/%Y")'.format(week) # 'Weekend.find_by(name: "{}").id'.format(week)
 
             if 'P' in order:

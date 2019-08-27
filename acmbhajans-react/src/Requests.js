@@ -42,7 +42,7 @@ export class Requests extends React.Component {
         bhajans: [],
         people: [],
 
-        fromDate: subDays(new Date(), 7),
+        fromDate: subDays(new Date(), 27),
         toDate: addDays(new Date(), 7),
     }}
 
@@ -54,10 +54,11 @@ export class Requests extends React.Component {
                 { 'type': 'date', 'field': 'weekend'},
                 { 'type': 'dropdown', 'label': 'Person', 'field': 'person_id', 'choices': this.state.people},
                 { 'type': 'boolean', 'label': 'Will attend practice', 'field': 'will_attend_practice'},
+                { 'type': 'boolean', 'label': 'Attended practice', 'field': 'attended_practice'},
                 { 'type': 'dropdown', 'label': 'Practice Request', 'field': 'practice_request_id', 'choices': this.state.bhajans},
                 { 'type': 'text', 'label': 'Note for practice bhajan', field: 'practice_note'},
-
                 { 'type': 'boolean', 'label': 'Will attend Satsang', 'field': 'will_attend_satsang'},
+                { 'type': 'boolean', 'label': 'Attended satsang', 'field': 'attended_satsang'},
                 { 
                   'type': 'dropdown', 
                   'label': 'Satsang Request', 
@@ -80,7 +81,6 @@ export class Requests extends React.Component {
       editForm={this.renderForm()}
       URL="http://localhost:1234/request/edit"
       populateForm={(datum, currState) => {}}
-      
 
       additionalButtons={
          [(<Form.Group>
@@ -118,6 +118,7 @@ export class Requests extends React.Component {
 
         let practiceRequestId = datum['practice_request_id'];
         let satsangRequestId = datum['satsang_request_id'];
+
         let practiceRequestName = (practiceRequestId == '') ? '' : findEltName(practiceRequestId, this.state.bhajans);
         let satsangRequestName = (satsangRequestId == '') ? '' : findEltName(satsangRequestId, this.state.bhajans);
         
