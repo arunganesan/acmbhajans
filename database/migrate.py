@@ -143,8 +143,6 @@ def main():
     for evt in ['practice', 'satsang']:
         events[evt] = {'name': evt}
 
-
-
     people = read_and_get_fields('people.csv', ['name', 'phone', 'email'])
     people['Group'] = { 'name': 'Group' }
     coordinators = ['Arun Ganesan', 'Vyshnavi Krishna', 'Ramakrishna Kamath', 'Krishna Kumar', 'Shambavi (Susan) Witt']

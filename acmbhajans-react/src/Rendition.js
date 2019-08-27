@@ -45,7 +45,7 @@ export class Rendition extends React.Component {
         people: [],
         bhajans: [],
 
-        fromDate: subDays(new Date(), 7),
+        fromDate: subDays(new Date(), 26),
         toDate: addDays(new Date(), 7),
     }}
 
