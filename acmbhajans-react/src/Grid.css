@@ -20,6 +20,20 @@
   border: solid thin black;;
 }
 
+.datesGrid {
+  background-color: white;
+  border-bottom: none;
+}
+
+.namesGrid {
+  background-color: white;
+  border-right: none;
+}
+
+.topLeftGrid {
+  border: none;
+}
+
 .evenRow,
 .oddRow {
   border-bottom: 1px solid #e0e0e0;

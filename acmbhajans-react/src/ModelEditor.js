@@ -49,18 +49,17 @@ export class ModelEditor extends React.Component {
 
     
     componentDidMount() {
-      
-        let loadUrl = this.props.URL;
-        if (this.props.urlparams)
-          loadUrl += this.props.urlparams();
+      let loadUrl = this.props.URL;
+      if (this.props.urlparams)
+        loadUrl += this.props.urlparams();
 
-        fetch(loadUrl)
-        .then(res => res.json())
-        .then(data => {
-            this.props.setState({
-              ...data
-            })
-        });
+      fetch(loadUrl)
+      .then(res => res.json())
+      .then(data => {
+          this.props.setState({
+            ...data
+          })
+      });
     }
 
 

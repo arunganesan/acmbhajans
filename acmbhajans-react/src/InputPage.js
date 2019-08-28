@@ -3,8 +3,10 @@ import { Card, Button, Form, Row, Col, Container } from 'react-bootstrap'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
+import _ from 'lodash'
 import moment from 'moment';
 import { getDay, addDays } from "date-fns";
+import { findEltName } from './Fields'
 
 
 export class InputPage extends React.Component {
@@ -84,7 +86,6 @@ export class InputPage extends React.Component {
         loadUrl += '?date=' + moment(this.state.form.weekend).format('YYYY-MM-DD');
         loadUrl += '&person_id=' + this.props.personId;
         
-
         fetch(loadUrl, {
           method: 'POST', mode: 'cors', cache: 'no-cache',
           headers: { 'Content-type': 'application/json' },
@@ -116,6 +117,16 @@ export class InputPage extends React.Component {
         </option>);
     }
 
+    selectBhajan(bhajan_id) {
+        this.setState({
+            form: {
+                ...this.state.form,
+                will_attend_satsang: true,
+                satsang_request_id: bhajan_id,
+            }
+        })
+    }
+
     render() {
         return (<div>
             <Form onSubmit={this.handleSubmit}>
@@ -143,7 +154,7 @@ export class InputPage extends React.Component {
                 </Row>
                 <Row>
                     
-                    <Card>
+                    <Card className='next-week-card'>
                         <Card.Title>Practice</Card.Title>
                         <Card.Body>
                         <Form.Group>
@@ -157,94 +168,108 @@ export class InputPage extends React.Component {
                                     will_attend_practice: event.target.checked
                                 }
                             })}/>
-                    </Form.Group>
+                        </Form.Group>
 
-                    <Form.Group>
-                        <Form.Label>Practice Bhajan</Form.Label>
-                        <Form.Control 
-                            as="select"
-                            value={this.state.form.practice_request_id}
-                            disabled={!this.state.form.will_attend_practice}
-                            onChange={event => this.setState({ 
-                                form: {
-                                    ...this.state.form,
-                                    practice_request_id: event.target.value }})}
-                            >
-                            <option value=''>None</option>
-                            { this.generateBhajans('practice', null) }
-                        </Form.Control>
-                    </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Practice Bhajan</Form.Label>
+                            <Form.Control 
+                                as="select"
+                                value={this.state.form.practice_request_id}
+                                disabled={!this.state.form.will_attend_practice}
+                                onChange={event => this.setState({ 
+                                    form: {
+                                        ...this.state.form,
+                                        practice_request_id: event.target.value }})}
+                                >
+                                <option value=''>None</option>
+                                { this.generateBhajans('practice', null) }
+                            </Form.Control>
+                        </Form.Group>
 
-                    <Form.Group>
-                        <Form.Label>Practice Note</Form.Label>
-                        <Form.Control 
-                            type="text"
-                            disabled={!this.state.form.will_attend_practice}
-                            value={this.state.form.practice_note}
-                            onChange={event => this.setState({ 
-                                form: {
-                                    ...this.state.form,
-                                    practice_note: event.target.value}})}
-                            />
-                    </Form.Group>
-                        </Card.Body>
-                        </Card>
-           
-
-                        <Card>
-                        <Card.Title>Satsang</Card.Title>
-                        <Card.Body>
-                    <Form.Group>
-                        <Form.Check 
-                            type="checkbox" 
-                            label="Attending Satsang"
-                            checked={this.state.form.will_attend_satsang} 
-                            onChange={event => this.setState({
-                                form: {
-                                    ...this.state.form,
-                                    will_attend_satsang: event.target.checked
-                                }
-                            })}/>
-                    </Form.Group>
-
-                    <Form.Group>
-                        <Form.Label>Satsang Bhajan</Form.Label>
-                        <Form.Control 
-                            as="select"
-                            disabled={!this.state.form.will_attend_satsang}
-                            value={this.state.form.satsang_request_id}
-                            onChange={event => this.setState({ 
-                                form: {
-                                    ...this.state.form,
-                                    satsang_request_id: event.target.value
-                                }
-                                 })}
-                        >
-                            <option value=''>None</option>
-                            { this.generateBhajans(
-                                'satsang', 
-                                this.props.personId in this.state.ready_list ? 
-                                this.state.ready_list[this.props.personId] :
-                                null )}
-                        </Form.Control>
-                    </Form.Group>
-
-                    <Form.Group>
-                        <Form.Label>Satsang Note</Form.Label>
-                        <Form.Control 
-                            type="text"
-                            disabled={!this.state.form.will_attend_satsang}
-                            value={this.state.form.satsang_note}
-                            onChange={event => this.setState({ 
-                                form: {
-                                    ...this.state.form,
-                                    satsang_note: event.target.value
-                                }
-                                 })}
-                            />
-                    </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Practice Note</Form.Label>
+                            <Form.Control 
+                                type="text"
+                                disabled={!this.state.form.will_attend_practice}
+                                value={this.state.form.practice_note}
+                                onChange={event => this.setState({ 
+                                    form: {
+                                        ...this.state.form,
+                                        practice_note: event.target.value}})}
+                                />
+                        </Form.Group>
                     </Card.Body>
                     </Card>
+           
+
+                    <Card className='next-week-card'>
+                    <Card.Title>Satsang</Card.Title>
+                        <Card.Body>
+                        <Form.Group>
+                            <Form.Check 
+                                type="checkbox" 
+                                label="Attending Satsang"
+                                checked={this.state.form.will_attend_satsang} 
+                                onChange={event => this.setState({
+                                    form: {
+                                        ...this.state.form,
+                                        will_attend_satsang: event.target.checked
+                                    }
+                                })}/>
+                        </Form.Group>
+
+                        <Form.Group>
+                            <Form.Label>Satsang Bhajan</Form.Label>
+                            <Form.Control 
+                                as="select"
+                                disabled={!this.state.form.will_attend_satsang}
+                                value={this.state.form.satsang_request_id}
+                                onChange={event => this.setState({ 
+                                    form: {
+                                        ...this.state.form,
+                                        satsang_request_id: event.target.value
+                                    }
+                                    })}
+                            >
+                                <option value=''>None</option>
+                                { this.generateBhajans(
+                                    'satsang', 
+                                    this.props.personId in this.state.ready_list ? 
+                                    this.state.ready_list[this.props.personId] :
+                                    null )}
+                            </Form.Control>
+                        </Form.Group>
+
+                        <Form.Group>
+                            <Form.Label>Satsang Note</Form.Label>
+                            <Form.Control 
+                                type="text"
+                                disabled={!this.state.form.will_attend_satsang}
+                                value={this.state.form.satsang_note}
+                                onChange={event => this.setState({ 
+                                    form: {
+                                        ...this.state.form,
+                                        satsang_note: event.target.value
+                                    }
+                                    })}
+                                />
+                        </Form.Group>
+                    </Card.Body>
+                    </Card>
+                    
+                    { this.props.personId && _.has(this.state.ready_list, this.props.personId) &&
+                    <Card className='next-week-card'>
+                        <Card.Title>Ready-list</Card.Title>
+                        <Card.Body>
+                        { this.state.ready_list[this.props.personId].map(bhajan_id => 
+                            <Button variant='outline-primary' onClick={evt => this.selectBhajan(bhajan_id)} block>
+                                {findEltName(bhajan_id, this.state.bhajans)}
+                            </Button>
+                        )}
+                        </Card.Body>
+                    </Card>
+                    }
+                    
                 </Row>
 
                 <Row>

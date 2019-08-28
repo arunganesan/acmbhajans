@@ -107,8 +107,7 @@ export class Rendition extends React.Component {
            />
        </Form.Group>)]
      }
-
-
+     
      urlparams={() => {
        let fromStr = moment(this.state.fromDate).format("YYYY-MM-DD");
        let toStr = moment(this.state.toDate).format("YYYY-MM-DD");

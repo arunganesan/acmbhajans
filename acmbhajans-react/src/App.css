@@ -108,7 +108,7 @@ padding: 1.25rem;
   background-color: var(--positive-action-color);
 }
 
-.ready_bhajan {
+.ready_bhajan, .my-ready-list-item {
   border-radius: 5px;
   border: solid thin black;
   padding: 5px;
@@ -122,14 +122,14 @@ padding: 1.25rem;
 
 .ready_bhajan:hover {
   background-color: var(--delete-action-color);
+  cursor: not-allowed;
 }
 
 
 
-
-
-
-
+.next-week-card {
+  width: 250px;
+}
 
 
 

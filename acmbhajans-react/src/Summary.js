@@ -35,6 +35,7 @@ export class Summary extends React.Component {
     }
    
     componentDidMount() {
+        this.fetchSummaryTable();
     }
 
     componentWillUnmount() {
@@ -79,7 +80,7 @@ export class Summary extends React.Component {
         let rowClassName = this._getRowClassName(rowIndex);
         if (columnIndex === 0 && rowIndex === 0)  {
             if (this.state.sortedDates.length === 0) return null;
-            else return <div className={`cell`} style={style}>{}</div>
+            else return <div className={`cell`} style={style}></div>
         }
 
         let dateStr = this.state.sortedDates[columnIndex - 1];
@@ -95,7 +96,7 @@ export class Summary extends React.Component {
     }
 
     _noContentRenderer() {
-        return <div className="noCells">No cells</div>;
+        return null; //<div className="noCells">No cells</div>;
       }    
 
 
@@ -134,9 +135,18 @@ export class Summary extends React.Component {
             <Row>
             <AutoSizer disableHeight>
             {({width}) => (
-                <Grid
+                <MultiGrid
+                fixedColumnCount={1}
+                fixedRowCount={1}
+
                 cellRenderer={this._cellRenderer}
-                className="BodyGrid"
+                
+                classNameBottomLeftGrid="BodyGrid namesGrid"
+                classNameBottomRightGrid="BodyGrid"
+                classNameTopLeftGrid="BodyGrid topLeftGrid"
+                classNameTopRightGrid="BodyGrid datesGrid"
+                
+
                 columnWidth={this._getColumnWidth}
                 rowHeight={this._getRowHeight}
                 
