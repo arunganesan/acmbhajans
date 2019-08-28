@@ -16,7 +16,8 @@
 
 .BodyGrid {
   width: 100%;
-  border: 1px solid #e0e0e0;
+  margin-top: 25px;
+  border: solid thin black;;
 }
 
 .evenRow,
@@ -27,6 +28,15 @@
   background-color: #fafafa;
 }
 
+.leftRow {
+  width: 250px;
+}
+
+.topRow {
+  /* writing-mode:vertical-rl; */
+  height: 200px;
+}
+
 .cell,
 .headerCell {
   width: 100%;
@@ -35,6 +45,7 @@
   flex-direction: column;
   justify-content: center;
   padding: 0 .5em;
+  overflow: hidden;
 }
 
 .cell {

@@ -5,8 +5,9 @@ import {
     Row,
     ToggleButton,
     ToggleButtonGroup } from 'react-bootstrap'
-import { AutoSizer, Grid } from 'react-virtualized'
+import { AutoSizer, Grid, MultiGrid } from 'react-virtualized'
 import styles from './Grid.css';
+import _ from 'lodash'
 
 
 export class Summary extends React.Component {
@@ -17,6 +18,8 @@ export class Summary extends React.Component {
             bhajan_summary: {},
             attendance_summary: {},
 
+            sortedDates: [],
+            sortedPeople: [],
 
             overscanColumnCount: 0,
             overscanRowCount: 10,
@@ -28,7 +31,7 @@ export class Summary extends React.Component {
         this._getColumnWidth = this._getColumnWidth.bind(this);
         this._getRowClassName = this._getRowClassName.bind(this);
         this._noContentRenderer = this._noContentRenderer.bind(this);
-
+        this._getRowHeight = this._getRowHeight.bind(this);
     }
    
     componentDidMount() {
@@ -43,8 +46,20 @@ export class Summary extends React.Component {
         fetch(loadUrl)
         .then(res => res.json())
         .then(data => {
+            // Create indexes
+            let dates = _.sortBy(_.keys(data.bhajan_summary));
+            let people = [];
+            for (let _people of _.values(data.bhajan_summary))  {
+                people = people.concat(_.keys(_people))
+            }
+            
+            let uniqPeople = _.sortBy(_.uniq(people));
+            
+            console.log(dates, uniqPeople)
             this.setState({
-                ...data
+                ...data,
+                sortedDates: dates,
+                sortedPeople: uniqPeople,
             })
         });
     }
@@ -56,30 +71,46 @@ export class Summary extends React.Component {
 
 
     _getRowClassName(row) {
-        return row % 2 === 0 ? styles.evenRow : styles.oddRow;
-      }
+        return row % 2 === 0 ? "evenRow" : "oddRow";
+    }
       
       
     _cellRenderer({columnIndex, key, rowIndex, style}) {
-        const rowClass = this._getRowClassName(rowIndex);
+        let rowClassName = this._getRowClassName(rowIndex);
+        if (columnIndex === 0 && rowIndex === 0)  {
+            if (this.state.sortedDates.length === 0) return null;
+            else return <div className={`cell`} style={style}>{}</div>
+        }
+
+        let dateStr = this.state.sortedDates[columnIndex - 1];
+        let peopleStr = this.state.sortedPeople[rowIndex - 1];
         
-        return <div className="cell" style={style}>{rowIndex}///{columnIndex}</div>;
+        if (rowIndex === 0) {
+            return <div className="cell topRow" style={style}>{this.state.sortedDates[columnIndex-1]}</div>;
+        } else if (columnIndex === 0) {
+            return <div className="cell leftRow" style={style}>{this.state.sortedPeople[rowIndex-1]}</div>;
+        } else {
+            return <div className={`cell ${rowClassName}`} style={style}>{_.join(this.state.bhajan_summary[dateStr][peopleStr])}</div>;
+        }
     }
 
     _noContentRenderer() {
         return <div className="noCells">No cells</div>;
       }    
 
+
+    _getRowHeight({index}) {
+        switch (index) {
+            default:
+              return 80;
+          }
+      }
     _getColumnWidth({index}) {
         switch (index) {
           case 0:
-            return 50;
-          case 1:
-            return 100;
-          case 2:
-            return 300;
+            return 250;
           default:
-            return 80;
+            return 125;
         }
       }
 
@@ -105,15 +136,18 @@ export class Summary extends React.Component {
             {({width}) => (
                 <Grid
                 cellRenderer={this._cellRenderer}
-                className={styles.BodyGrid}
+                className="BodyGrid"
                 columnWidth={this._getColumnWidth}
-                columnCount={Object.keys(this.state.attendance_summary).length}
+                rowHeight={this._getRowHeight}
+                
+                columnCount={this.state.sortedDates.length+1}
+                rowCount={this.state.sortedPeople.length+1}
+
                 height={500}
                 noContentRenderer={this._noContentRenderer}
                 overscanColumnCount={this.state.overscanColumnCount}
                 overscanRowCount={this.state.overscanRowCount}
-                rowHeight={this.state.rowHeight}
-                rowCount={50}
+                
                 width={width}
                 />
             )}
