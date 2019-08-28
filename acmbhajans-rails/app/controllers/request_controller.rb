@@ -31,27 +31,27 @@ class RequestController < ApplicationController
     end
 
     
+    personal_request = []
     if params.has_key? :person_id
       # if not found
-      all_requests = Request.where('weekend = :date AND person_id = :person_id', {
+      personal_request = Request.where('weekend = :date AND person_id = :person_id', {
         date: params[:date],
         person_id: params[:person_id],
       })
 
-      if all_requests.blank?
+      if personal_request.blank?
         obj = Request.new
         obj.weekend = Date.parse(params[:date])
         obj.person = Person.find_by(id: params['person_id'])
         obj.save!
-        all_requests = [obj]
+        personal_request = [obj]
       end
-      
-    else
-      all_requests = Request.where('weekend >= :from AND weekend <= :to', {
-        from: params[:from],
-        to: params[:to]
-      }).order(weekend: :desc)
     end
+    
+    all_requests = Request.where('weekend >= :from AND weekend <= :to', {
+      from: params[:from],
+      to: params[:to]
+    }).order(weekend: :desc)
     
     all_people = Person.all
     ready_list_indices = {}
@@ -60,6 +60,7 @@ class RequestController < ApplicationController
     end
 
     render :json => {
+      'personal_request': personal_request,
       'requests': all_requests,
       'bhajans': Bhajan.all.as_json,
       'people': all_people,

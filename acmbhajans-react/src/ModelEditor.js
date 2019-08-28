@@ -77,8 +77,8 @@ export class ModelEditor extends React.Component {
       .then(data => {
             this.props.setState({ 
                 ...data
-            })
-            this.list.forceUpdateGrid();
+            }, () => this.list.forceUpdateGrid())
+            
         });
 
       event.preventDefault();

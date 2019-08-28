@@ -209,18 +209,22 @@ export function DropdownField (props) {
 }
 
 
-
+export function findElt (element_id, choices) {
+  for (let i = 0; i < choices.length; i++) {
+      let choice = choices[i];
+      if (element_id == choice.id) {
+          return choice;
+      }
+  }
+  return null;
+}
 
 
 export function findEltName (element_id, choices) {
-    for (let i = 0; i < choices.length; i++) {
-        let choice = choices[i];
-        if (element_id == choice.id) {
-            return choice.name;
-        }
-    }
-
-    return 'Error - ID not found'
+    let elt = findElt(element_id, choices);
+    if (elt === null) 
+      return 'Error - ID not found'
+    return elt.name;
 }
 
 export function ArrayField (props) {

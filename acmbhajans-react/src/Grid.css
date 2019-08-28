@@ -20,6 +20,12 @@
   border: solid thin black;;
 }
 
+
+.nextweek-table {
+  margin-top: 25px;
+  
+}
+
 .datesGrid {
   background-color: white;
   border-bottom: none;
@@ -44,6 +50,16 @@
 
 .leftRow {
   width: 250px;
+}
+
+
+.next-week-first-column {
+  border-left: 1px solid #e0e0e0;
+}
+
+.top-next-week-row { 
+  border-top: 1px solid #e0e0e0;
+  border-left: 1px solid #e0e0e0;
 }
 
 .topRow {

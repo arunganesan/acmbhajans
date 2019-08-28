@@ -5,7 +5,7 @@ import {
     Row,
     ToggleButton,
     ToggleButtonGroup } from 'react-bootstrap'
-import { AutoSizer, Grid, MultiGrid } from 'react-virtualized'
+import { AutoSizer, MultiGrid } from 'react-virtualized'
 import styles from './Grid.css';
 import _ from 'lodash'
 

@@ -6,7 +6,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import _ from 'lodash'
 import moment from 'moment';
 import { getDay, addDays } from "date-fns";
-import { findEltName } from './Fields'
+import { findElt, findEltName } from './Fields'
+
+import { AutoSizer, Grid } from 'react-virtualized'
 
 
 export class InputPage extends React.Component {
@@ -25,13 +27,25 @@ export class InputPage extends React.Component {
                 satsang_request_id: '',
                 satsang_note: '',
             },
+            requests: [],
             bhajans: [],
+            people: [],
             ready_list: {},
+
+            overscanColumnCount: 0,
+            overscanRowCount: 10,
+            rowHeight: 40,
         };
 
 
         this.fetchRequest = this.fetchRequest.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+
+        this._cellRenderer = this._cellRenderer.bind(this);
+        this._getColumnWidth = this._getColumnWidth.bind(this);
+        this._getRowClassName = this._getRowClassName.bind(this);
+        this._noContentRenderer = this._noContentRenderer.bind(this);
+        this._getRowHeight = this._getRowHeight.bind(this);
     }
    
     getNextWeekendDate() {
@@ -59,7 +73,8 @@ export class InputPage extends React.Component {
     fetchRequest() {
         console.log('This.props has ', this.props);
         let loadUrl = 'http://localhost:1234/request/edit'
-        loadUrl += '?date=' + moment(this.state.form.weekend).format('YYYY-MM-DD');
+        let dateStr = moment(this.state.form.weekend).format('YYYY-MM-DD');;
+        loadUrl += `?date=${dateStr}&from=${dateStr}&to=${dateStr}`;
         loadUrl += '&person_id=' + this.props.personId;
         fetch(loadUrl)
         .then(res => res.json())
@@ -67,9 +82,9 @@ export class InputPage extends React.Component {
             this.setState({
               ...data,
               form: {
-                  ...data.requests[0]
-              }
-            })
+                  ...data.personal_request[0]
+              },
+            }, () => { this.list && this.list.forceUpdate && this.list.forceUpdate() });
         });
     }
 
@@ -83,7 +98,8 @@ export class InputPage extends React.Component {
         // Show a "saved" message
         console.log('This.props has ', this.props);
         let loadUrl = 'http://localhost:1234/request/edit'
-        loadUrl += '?date=' + moment(this.state.form.weekend).format('YYYY-MM-DD');
+        let dateStr = moment(this.state.form.weekend).format('YYYY-MM-DD');;
+        loadUrl += `?date=${dateStr}&from=${dateStr}&to=${dateStr}`;
         loadUrl += '&person_id=' + this.props.personId;
         
         fetch(loadUrl, {
@@ -96,9 +112,9 @@ export class InputPage extends React.Component {
               this.setState({ 
                   ...data,
                   form: {
-                      ...data.requests[0]
+                      ...data.personal_request[0]
                   }
-              })
+              }, () => this.list.forceUpdate())
           });
 
         event.preventDefault();
@@ -127,9 +143,111 @@ export class InputPage extends React.Component {
         })
     }
 
+
+    _getRowClassName(row) {
+        return row % 2 === 0 ? "evenRow" : "oddRow";
+    }
+      
+      
+    _cellRenderer({columnIndex, key, rowIndex, style}) {
+        let rowClassName = this._getRowClassName(rowIndex);
+        
+        if (rowIndex === 0) {
+            let header = ''
+            if (columnIndex === 0)
+                header = 'name'
+            if (columnIndex === 1)
+                header = 'will attend practice'
+            else if (columnIndex === 2)
+                header = 'practice request'
+            else if (columnIndex === 3)
+                header = 'will attend practice'
+            else if (columnIndex === 4)
+                header = 'bhajan request'
+            
+            return <div className="cell top-next-week-row" style={style}>{header}</div>;
+        } else {
+            let content = ''
+            let request = this.state.requests[rowIndex-1];
+            let firstColumnClass = 'next-week-first-column';
+            if (columnIndex === 0) {
+                content = findEltName(request.person_id, this.state.people)
+            } else if (columnIndex === 2) {
+                let bhajan = findElt(request.practice_request_id, this.state.bhajans)
+                if (bhajan !== null) 
+                    content = bhajan.name;
+                
+            } else if (columnIndex === 4) {
+                let bhajan = findElt(request.satsang_request_id, this.state.bhajans)
+                if (bhajan !== null) 
+                    content = bhajan.name;
+            }
+            
+            return <div className={`cell ${rowClassName} ` + (columnIndex === 0 ? firstColumnClass : '')} style={style}>{content}</div>;
+        }
+    }
+
+    _noContentRenderer() {
+        console.log("NO CONRENT REDERER??");
+        return null; //<div className="noCells">No cells</div>;
+      }    
+
+
+    _getRowHeight({index}) {
+        switch (index) {
+            default:
+              return 50;
+          }
+      }
+    _getColumnWidth({index}) {
+        switch (index) {
+          case 0:
+            return 250;
+          default:
+            return 125;
+        }
+      }
+
+
     render() {
         return (<div>
-            <Form onSubmit={this.handleSubmit}>
+            { this.generateForm() }
+
+            <Container><Row>
+                <Col>
+                <AutoSizer disableHeight>
+            {({width}) => (
+                <Grid
+                    fixedColumnCount={1}
+                    fixedRowCount={1}
+                    ref={ref => { this.list = ref }}
+                    cellRenderer={this._cellRenderer}
+                    className="nextweek-table"
+                    columnWidth={this._getColumnWidth}
+                    rowHeight={this._getRowHeight}
+                    columnCount={5}
+                    rowCount={this.state.requests.length+1}
+                    height={1000}
+                    noContentRenderer={this._noContentRenderer}
+                    overscanColumnCount={this.state.overscanColumnCount}
+                    overscanRowCount={this.state.overscanRowCount}
+                    width={width}
+                    autoContainerWidth={true}
+                />
+            )}
+            </AutoSizer>
+            </Col>
+                </Row></Container>
+
+           
+    
+        </div>);
+    }
+
+
+
+    generateForm() {
+        return (<Form onSubmit={this.handleSubmit}>
             <Container>
                 <Row>
                     <Col>
@@ -143,9 +261,7 @@ export class InputPage extends React.Component {
                                         ...this.state.form,
                                         weekend: moment(date).format("YYYY-MM-DD")
                                     }
-                                });
-
-                                this.fetchRequest();
+                                }, () => this.fetchRequest());
                             }}
                             filterDate={date => getDay(date) === 6}
                             />
@@ -275,8 +391,7 @@ export class InputPage extends React.Component {
                 <Row>
                     <Col><Button onClick={this.handleSubmit}>Save</Button></Col>
                 </Row>
-            </Container>
-            </Form>
-        </div>);
+        </Container>
+    </Form>)
     }
 }
