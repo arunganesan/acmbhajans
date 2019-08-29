@@ -49,6 +49,11 @@ export class ModelEditor extends React.Component {
 
     
     componentDidMount() {
+     this.fetchNewData();
+    }
+
+    fetchNewData() {
+      console.log("Fetching new data");
       let loadUrl = this.props.URL;
       if (this.props.urlparams)
         loadUrl += this.props.urlparams();
@@ -62,6 +67,9 @@ export class ModelEditor extends React.Component {
       });
     }
 
+    componentDidUpdate() {
+      console.log('componentDidUpdate');
+    }
 
     handleSubmit(event) {
       let loadUrl = this.props.URL;
@@ -84,7 +92,11 @@ export class ModelEditor extends React.Component {
       event.preventDefault();
     }
 
+
+
     render() {
+        console.log('Re-rendering');
+
         return (<div>
             <div className="actionbar">
              <Button 

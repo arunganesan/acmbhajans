@@ -32,6 +32,8 @@ const initForms = {
 export class Requests extends React.Component {
   constructor(props) {
     super(props);
+    this.child = React.createRef();
+
     this.state = {
         
         forms: {
@@ -76,6 +78,7 @@ export class Requests extends React.Component {
   render() {
     return (
     <ModelEditor
+      ref={this.child}
       initForms={initForms}
       pageName="Request"
       editForm={this.renderForm()}
@@ -87,7 +90,7 @@ export class Requests extends React.Component {
             <Form.Label>From</Form.Label>
             <DatePicker
               selected={this.state.fromDate}
-              onChange={date =>  this.setState({ fromDate: date })}
+              onChange={date =>  this.setState({ fromDate: date }, () => this.child.current.fetchNewData())}
               filterDate={date => getDay(date) === 6}
               />
           </Form.Group>),
@@ -95,7 +98,7 @@ export class Requests extends React.Component {
           <Form.Label>To</Form.Label>
           <DatePicker
             selected={this.state.toDate}
-            onChange={date =>  this.setState({ toDate: date })}
+            onChange={date =>  this.setState({ toDate: date }, () => this.child.current.fetchNewData())}
             filterDate={date => getDay(date) === 6}
             />
         </Form.Group>)]

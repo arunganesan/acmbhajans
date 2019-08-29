@@ -36,6 +36,8 @@ const initForms = {
 export class Rendition extends React.Component {
   constructor(props) {
     super(props);
+
+    this.child = React.createRef();
     this.state = {
         forms:{
           'renditions': initForms['renditions'](),
@@ -71,11 +73,18 @@ export class Rendition extends React.Component {
             ];
         
         return generateFields(spec, key, this.state, (s) => { this.setState(s) });
-    }
+  }
+
+  generateDateRange() {
+    let fromStr = moment(this.state.fromDate).format("YYYY-MM-DD");
+    let toStr = moment(this.state.toDate).format("YYYY-MM-DD");
+    return `?from=${fromStr}&to=${toStr}`;
+  }
 
   render() {
     return (
     <ModelEditor
+      ref={this.child}
       initForms={initForms}
       pageName="Rendition"
       editForm={this.renderForm()}
@@ -91,29 +100,29 @@ export class Rendition extends React.Component {
 
       additionalButtons={
         [(<Form.Group>
-           <Form.Label>From</Form.Label>
-           <DatePicker
-             selected={this.state.fromDate}
-             onChange={date =>  this.setState({ fromDate: date })}
-             filterDate={date => getDay(date) === 6}
-             />
+            <Form.Label>From</Form.Label>
+            <DatePicker
+              selected={this.state.fromDate}
+              onChange={date => {
+                this.setState({ fromDate: date }, () => this.child.current.fetchNewData());
+              }}
+            filterDate={date => getDay(date) === 6}
+            />
          </Form.Group>),
          (<Form.Group>
-         <Form.Label>To</Form.Label>
-         <DatePicker
-           selected={this.state.toDate}
-           onChange={date =>  this.setState({ toDate: date })}
-           filterDate={date => getDay(date) === 6}
-           />
+          <Form.Label>To</Form.Label>
+          <DatePicker
+            selected={this.state.toDate}
+            onChange={date => {
+             this.setState({ toDate: date }, () => this.child.current.fetchNewData());
+             
+            }}
+            filterDate={date => getDay(date) === 6}
+          />
        </Form.Group>)]
-     }
+      }
      
-     urlparams={() => {
-       let fromStr = moment(this.state.fromDate).format("YYYY-MM-DD");
-       let toStr = moment(this.state.toDate).format("YYYY-MM-DD");
-       return `?from=${fromStr}&to=${toStr}`;
-     }}
-
+      urlparams={ () => this.generateDateRange() }
 
      
       formatRow={(datum) => {
