@@ -38,7 +38,7 @@ function MyLink (props) {
   return (
   <NavItem>
     <LinkContainer to={"/" + props.to}>
-    <Nav.Link eventKey={props.to}>
+    <Nav.Link style={{color: 'red'}} eventKey={props.to}>
         {props.label ? props.label : capitalize(props.to)}
     </Nav.Link>
     </LinkContainer>
@@ -135,7 +135,7 @@ class AppRouter extends React.Component {
   return (
     <Router>
       <div id='navigation'>
-        <Navbar expand="lg" bg="primary" variant="dark" >
+        <Navbar expand="lg" bg="primary" variant="dark">
           <Nav className="mr-auto">
             <MyLink to="home" label="Home" />
 
@@ -170,8 +170,14 @@ class AppRouter extends React.Component {
           <Route path="/home" exact component={Index} />
           <Route 
             path="/input" 
-            render={(props) => <InputPage personId={this.state.loggedIn ? this.state.loggedIn.id : null} />} />
-          <Route path="/recordings" component={Recordings} />
+            render={props => <InputPage personId={this.state.loggedIn ? this.state.loggedIn.id : null} />} />
+
+          <Route 
+            path="/recordings" 
+            render={props => <Recordings personId={this.state.loggedIn ? this.state.loggedIn.id : null} />}
+             />
+
+
           <Route path="/summary" component={Summary} />
 
           <Route path="/database" component={Database} />

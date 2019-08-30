@@ -132,4 +132,14 @@ padding: 1.25rem;
 }
 
 
+.recordings-input-col .row {
+  margin-top: 25px;
+}
 
+.recordings-calendar {
+  margin-top: 25px;
+}
+
+.recordings-input-col .react-datepicker {
+  margin-top: 25px;
+}

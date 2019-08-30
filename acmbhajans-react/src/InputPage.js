@@ -155,15 +155,15 @@ export class InputPage extends React.Component {
         if (rowIndex === 0) {
             let header = ''
             if (columnIndex === 0)
-                header = 'name'
+                header = 'Name'
             if (columnIndex === 1)
-                header = 'will attend practice'
+                header = 'Will attend practice'
             else if (columnIndex === 2)
-                header = 'practice request'
+                header = 'Practice request'
             else if (columnIndex === 3)
-                header = 'will attend practice'
+                header = 'Will attend practice'
             else if (columnIndex === 4)
-                header = 'bhajan request'
+                header = 'Bhajan request'
             
             return <div className="cell top-next-week-row" style={style}>{header}</div>;
         } else {

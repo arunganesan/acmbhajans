@@ -46,11 +46,17 @@ class RenditionsController < ApplicationController
       backup_list_indices = {}
       instrumentalists_list_indices = {}
       soundsystem_list_indices = {}
-
-      all_renditions = Rendition.where('weekend >= :from AND weekend <= :to', {
-        from: params[:from],
-        to: params[:to]
-      }).all.order(weekend: :desc, bhajan_id: :desc)
+      
+      all_renditions = []
+      if params.has_key? :person_id
+        person = Person.find_by(id: params[:person_id])
+        all_renditions = Rendition.all.select { | rendition | rendition.lead.include? person }
+      else
+        all_renditions = Rendition.where('weekend >= :from AND weekend <= :to', {
+          from: params[:from],
+          to: params[:to]
+        }).all.order(weekend: :desc, order: :asc)
+      end
       
       all_renditions.each do | rendition | 
         lead_list_indices[rendition['id']] = rendition.lead.map { | person | person.id }
@@ -59,13 +65,12 @@ class RenditionsController < ApplicationController
         soundsystem_list_indices[rendition['id']] = rendition.soundsystem.map { | person | person.id }
       end
   
-  
       render :json => {
         'renditions': all_renditions,
         'bhajans': Bhajan.all,
         'events': Event.all,
         'people': Person.all,
-
+        
         # unique list
         'lead_list': lead_list_indices,
         'backup_list': backup_list_indices,
