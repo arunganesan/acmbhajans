@@ -54,7 +54,7 @@ class AppRouter extends React.Component {
     let loggedInLocal = JSON.parse(window.localStorage.getItem('loggedIn'));
     console.log('local storage has: ', loggedInLocal);
     this.state = {
-      showLoginForm: true,
+      showLoginForm: false,
       people: [],
       loggedIn: loggedInLocal,
     }
@@ -111,17 +111,28 @@ class AppRouter extends React.Component {
       </div></Modal.Body>
 
       <Modal.Footer>
-            <Button onClick={onHide}>Log out</Button>
+          <Button onClick={() => this.logoutPerson()}>Log out</Button>
       </Modal.Footer>
     </Modal>);
   }
   
+  logoutPerson () {
+    window.localStorage.setItem('loggedIn', null);
+    this.setState({
+      loggedIn: null,
+      showLoginForm: false
+    });
+  }
+
   renderLogin() {
     if (this.state.loggedIn) {
-      return (<Button 
+      return (<>
+      Logged in as 
+      <div className="loggedInName">{this.state.loggedIn.name}</div>
+      <Button 
         variant="light" 
-        onClick={() => this.setState({ loggedIn: null })}
-      >{this.state.loggedIn.name}</Button>);
+        onClick={() => this.logoutPerson()}
+      >Log out</Button></>);
     }
     else {
       return (<Button 
@@ -164,7 +175,7 @@ class AppRouter extends React.Component {
                 </Navbar.Collapse>
           </Navbar>
 
-        { this.state.loggedIn == null && this.generateLoginForm() }
+        { this.state.showLoginForm && this.generateLoginForm() }
 
         <div id='content'>
           <Route path="/home" exact component={Index} />

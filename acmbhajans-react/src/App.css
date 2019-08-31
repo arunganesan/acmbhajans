@@ -35,6 +35,13 @@
 }
 
 
+.loggedInName {
+  display: inline-block;
+  margin: 0 15px 0 10px;
+  /* color: black; */
+  /* font-style: italic; */
+  text-transform: capitalize;
+}
 
 .actionbar {
   display: flex;

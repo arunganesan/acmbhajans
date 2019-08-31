@@ -176,7 +176,7 @@ export class Recordings extends React.Component {
                     value={this.state.recordingType} 
                     onChange={(e) => this.setRecordingsType(e)}>
                 
-                <ToggleButton variant='outline-primary' value='mine'>My Recordings</ToggleButton>
+                <ToggleButton disabled={this.props.personId == null} variant='outline-primary' value='mine'>My Recordings</ToggleButton>
                 <ToggleButton variant='outline-primary' value='weekly'>Weekly Recordings</ToggleButton>
                 </ToggleButtonGroup>
 
