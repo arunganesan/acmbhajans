@@ -2,6 +2,10 @@
   --highlight-color: #ddd;
   --delete-action-color: rgba(255, 0, 0, 0.25);
   --positive-action-color: rgba(0, 255, 0, 0.25);
+
+  --attended-color: #ffcb05;
+  --not-attended-color: #00274c;
+
   --normal-color: #fff;
   --select-color: #007bff;
 }
@@ -149,4 +153,13 @@ padding: 1.25rem;
 
 .recordings-input-col .react-datepicker {
   margin-top: 25px;
+}
+
+
+.summary-attended {
+  background-color:  var(--attended-color);
+}
+
+.summary-not-attended {
+  background-color:  var(--positive-action-color);
 }

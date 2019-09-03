@@ -31,6 +31,7 @@ export class Recordings extends React.Component {
             overscanColumnCount: 0,
             overscanRowCount: 10,
             rowHeight: 40,
+            columnCount: 5,
         };
 
 
@@ -87,33 +88,56 @@ export class Recordings extends React.Component {
         
         if (rowIndex === 0) {
             let header = ''
-            if (columnIndex === 0)
-                header = 'Date'
-            else if (columnIndex === 1)
-                header = 'Lead(s)'
-            else if (columnIndex === 2)
-                header = 'Order'
-            else if (columnIndex === 3)
-                header = 'Bhajan'
+
+            switch (columnIndex) {
+                case 0:
+                    header = 'Date'
+                    break
+                case 1:
+                    header = 'Lead(s)'
+                    break
+                case 2:
+                    header = 'Order'
+                    break
+                case 3:
+                    header = 'Bhajan'
+                    break
+                case 4:
+                    header = 'URL'
+                    break
+                default:
+                    header = '.'
+            }
             
             return <div className="cell top-next-week-row" style={style}>{header}</div>;
         } else {
             let firstColumnClass = 'next-week-first-column';
             let content = ''
             let rendition = this.state.renditions[rowIndex-1];
-            if (columnIndex === 0) {
-                content = rendition.weekend;
-            } else if (columnIndex === 1) {
-                let lead_list = this.state.lead_list[rendition.id];
-                let people_list = lead_list.map( pid => findEltName(pid, this.state.people));
-                content = _.join(people_list, ', ')
-            } else if (columnIndex === 2) {
-                content = rendition.order;
-                content = content == 0 ? 'Practice' : content;
-            } else if (columnIndex === 3) {
-                let bhajan = findElt(rendition.bhajan_id, this.state.bhajans)
-                if (bhajan !== null) 
-                    content = bhajan.name;
+
+            switch (columnIndex) {
+                case 0:
+                    content = rendition.weekend;
+                    break;
+                case 1:
+                    let lead_list = this.state.lead_list[rendition.id];
+                    let people_list = lead_list.map( pid => findEltName(pid, this.state.people));
+                    content = _.join(people_list, ', ')
+                    break
+                case 2:
+                    content = rendition.order;
+                    content = content == 0 ? 'Practice' : content;
+                    break
+                case 3:
+                    let bhajan = findElt(rendition.bhajan_id, this.state.bhajans)
+                    if (bhajan !== null) 
+                        content = bhajan.name;
+                    break;
+                case 4:
+                    content = (<a href='#'>Link</a>)
+                    break
+                default:
+                    content = '.'
             }
             
             return <div className={`cell ${rowClassName} ` + (columnIndex === 0 ? firstColumnClass : '')} style={style}>{content}</div>;
@@ -131,16 +155,17 @@ export class Recordings extends React.Component {
               return 50;
           }
       }
+
+
     _getColumnWidth({index}) {
         switch (index) {
-          case 1:
+            case 1:
         case 3:
             return 200;
-          default:
+            default:
             return 125;
         }
-      }
-
+    }
 
 
     getLastWeekendDate() {
@@ -206,7 +231,7 @@ export class Recordings extends React.Component {
                     className="nextweek-table"
                     columnWidth={this._getColumnWidth}
                     rowHeight={this._getRowHeight}
-                    columnCount={4}
+                    columnCount={this.state.columnCount}
                     rowCount={this.state.renditions.length+1}
                     height={1000}
                     noContentRenderer={this._noContentRenderer}

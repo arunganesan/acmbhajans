@@ -48,6 +48,8 @@ export class Summary extends React.Component {
         .then(res => res.json())
         .then(data => {
             // Create indexes
+            console.log(data.attendance_summary);
+
             let dates = _.sortBy(_.keys(data.bhajan_summary));
             let people = [];
             for (let _people of _.values(data.bhajan_summary))  {
@@ -91,7 +93,13 @@ export class Summary extends React.Component {
         } else if (columnIndex === 0) {
             return <div className="cell leftRow" style={style}>{this.state.sortedPeople[rowIndex-1]}</div>;
         } else {
-            return <div className={`cell ${rowClassName}`} style={style}>{_.join(this.state.bhajan_summary[dateStr][peopleStr])}</div>;
+            let classNames = `cell ${rowClassName} `
+            if (this.state.attendance_summary[dateStr][peopleStr] === true)
+                classNames += 'summary-attended'
+            else if (this.state.attendance_summary[dateStr][peopleStr] === false)
+                classNames += 'summary-not-attended'
+            
+            return <div className={classNames} style={style}>{_.join(this.state.bhajan_summary[dateStr][peopleStr])}</div>;
         }
     }
 
