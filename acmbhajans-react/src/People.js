@@ -4,7 +4,7 @@ import 'react-virtualized/styles.css'
 import 'bootstrap/dist/css/bootstrap.css';
 import { generateFields } from './Fields.js'
 import { ModelEditor } from './ModelEditor'
-
+import { URLBASE } from './Config'
 
 const initForms = {
   'people': () => { return {
@@ -47,7 +47,7 @@ export class People extends React.Component {
       pageName="Person"
       modelfield='people'
       editForm={this.renderForm()}
-      URL="http://localhost:1234/person/edit"
+      URL={`${URLBASE}/person/edit`}
       populateForm={(datum, currState) => {
         return {
           ready_list: this.state.ready_list[datum.id]

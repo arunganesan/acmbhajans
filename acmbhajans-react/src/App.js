@@ -18,6 +18,7 @@ import { Summary } from './Summary'
 import { Recordings } from './Recordings'
 import { Database } from './Database'
 
+import {URLBASE} from './Config'
 
 function capitalize (word) {
   return word.charAt(0).toUpperCase() + word.slice(1);
@@ -62,7 +63,7 @@ class AppRouter extends React.Component {
 
 
   componentDidMount() {
-    fetch("http://localhost:1234/person/edit")
+    fetch(`${URLBASE}/person/edit`)
     .then(res => res.json())
     .then(data => {
         this.setState({

@@ -11,6 +11,8 @@ import DatePicker from "react-datepicker";
 import _ from 'lodash'
 import moment from 'moment'
 
+import { URLBASE } from './Config'
+
 import "react-datepicker/dist/react-datepicker.css";
 import { getDay, addDays, subDays }  from "date-fns";
 import { findElt, findEltName } from './Fields'
@@ -43,13 +45,13 @@ export class Recordings extends React.Component {
     }
    
     loadByPerson () {
-        let loadUrl = 'http://localhost:1234/renditions/edit'
+        let loadUrl = `${URLBASE}/renditions/edit`
         loadUrl += '?person_id=' + this.props.personId;
         return loadUrl;
     }
 
     loadByDate () {
-        let loadUrl = 'http://localhost:1234/renditions/edit'
+        let loadUrl = `${URLBASE}/renditions/edit`
         let dateStr = moment(this.state.chosenWeek).format('YYYY-MM-DD');;
         loadUrl += `?from=${dateStr}&to=${dateStr}`;
         return loadUrl;

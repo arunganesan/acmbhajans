@@ -12,7 +12,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment'
 import { getDay, addDays, subDays }  from "date-fns";
-
+import { URLBASE } from  './Config'
 
 const initForms = {
   'renditions': () => { return {
@@ -88,7 +88,7 @@ export class Rendition extends React.Component {
       initForms={initForms}
       pageName="Rendition"
       editForm={this.renderForm()}
-      URL="http://localhost:1234/renditions/edit"
+      URL={`${URLBASE}/renditions/edit`}
       populateForm={(datum, currState) => {
         return {
           lead: this.state.lead_list[datum.id],

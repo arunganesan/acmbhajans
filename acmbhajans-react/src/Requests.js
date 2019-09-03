@@ -10,7 +10,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment'
 import { getDay, addDays, subDays }  from "date-fns";
-
+import { URLBASE } from './Config'
 
 const initForms = {
   'requests': () => { return {
@@ -82,7 +82,7 @@ export class Requests extends React.Component {
       initForms={initForms}
       pageName="Request"
       editForm={this.renderForm()}
-      URL="http://localhost:1234/request/edit"
+      URL={`${URLBASE}/request/edit`}
       populateForm={(datum, currState) => {}}
 
       additionalButtons={

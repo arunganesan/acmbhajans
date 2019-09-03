@@ -8,7 +8,7 @@ import {
 import { AutoSizer, MultiGrid } from 'react-virtualized'
 import styles from './Grid.css';
 import _ from 'lodash'
-
+import { URLBASE } from './Config'
 
 export class Summary extends React.Component {
     constructor(props) {
@@ -43,7 +43,7 @@ export class Summary extends React.Component {
     }
 
     fetchSummaryTable() {
-        let loadUrl = `http://localhost:1234/renditions/summarize?event=${this.state.event}`; 
+        let loadUrl = `${URLBASE}/renditions/summarize?event=${this.state.event}`; 
         fetch(loadUrl)
         .then(res => res.json())
         .then(data => {
