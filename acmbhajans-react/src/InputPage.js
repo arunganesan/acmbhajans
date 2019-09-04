@@ -102,6 +102,7 @@ export class InputPage extends React.Component {
         let dateStr = moment(this.state.form.weekend).format('YYYY-MM-DD');;
         loadUrl += `?date=${dateStr}&from=${dateStr}&to=${dateStr}`;
         loadUrl += '&person_id=' + this.props.personId;
+        loadUrl += '&personal_request'
         
         fetch(loadUrl, {
           method: 'POST', mode: 'cors', cache: 'no-cache',

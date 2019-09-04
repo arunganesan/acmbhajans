@@ -56,8 +56,9 @@ export class ModelEditor extends React.Component {
       console.log("Fetching new data");
       let loadUrl = this.props.URL;
       if (this.props.urlparams)
-        loadUrl += this.props.urlparams();
-
+      loadUrl += this.props.urlparams();
+      console.log('Loading URL --- ', loadUrl);
+      
       fetch(loadUrl)
       .then(res => res.json())
       .then(data => {
@@ -75,6 +76,7 @@ export class ModelEditor extends React.Component {
       let loadUrl = this.props.URL;
       if (this.props.urlparams)
         loadUrl += this.props.urlparams();
+      console.log('Loading URL --- ', loadUrl);
 
       this.setState({ showEditForm: false });
       fetch(loadUrl, {
@@ -83,10 +85,16 @@ export class ModelEditor extends React.Component {
         body: JSON.stringify(this.props.state.forms[this.props.modelfield])})
       .then(response => response.json())
       .then(data => {
+            console.log('Got response: ', data);
+            let updateFunc = () => {
+              console.log('Updating grid');
+              this.list.forceUpdateGrid()}
+            
             this.props.setState({ 
                 ...data
-            }, () => this.list.forceUpdateGrid())
-            
+            }, updateFunc);
+
+            setTimeout(updateFunc, 500);
         });
 
       event.preventDefault();

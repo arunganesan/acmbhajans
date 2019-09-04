@@ -32,7 +32,7 @@ class RequestController < ApplicationController
 
     
     personal_request = []
-    if params.has_key? :person_id
+    if params.has_key? :personal_request
       # if not found
       personal_request = Request.where('weekend = :date AND person_id = :person_id', {
         date: params[:date],
@@ -59,12 +59,15 @@ class RequestController < ApplicationController
       ready_list_indices[person['id']] = person.ready_list.map { | bhajan | bhajan.id }
     end
 
-    render :json => {
+    
+    obj = {
       'personal_request': personal_request,
       'requests': all_requests,
       'bhajans': Bhajan.all.as_json,
       'people': all_people,
       'ready_list': ready_list_indices
     }
+    
+    render :json =>  obj
   end
 end
