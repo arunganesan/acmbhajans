@@ -102,10 +102,12 @@ export class Summary extends React.Component {
             let classNames = `cell ${rowClassName} `
 
             // console.log(dateStr, peopleStr, this.state.attendance_summary[dateStr][peopleStr])
-            if (this.state.attendance_summary[dateStr][peopleStr] == true)
-                classNames += ' summary-attended'
-            else if (this.state.attendance_summary[dateStr][peopleStr] == false)
-                classNames += ' summary-not-attended'
+            if (_.has(this.state.attendance_summary, dateStr) && _.has(this.state.attendance_summary[dateStr], peopleStr)) {
+                if (this.state.attendance_summary[dateStr][peopleStr] == true)
+                    classNames += ' summary-attended'
+                else if (this.state.attendance_summary[dateStr][peopleStr] == false)
+                    classNames += ' summary-not-attended'
+            }
             
             let bhajans_led_by_person = ''
             if (_.has(this.state.bhajan_summary, dateStr) && _.has(this.state.bhajan_summary[dateStr], peopleStr))

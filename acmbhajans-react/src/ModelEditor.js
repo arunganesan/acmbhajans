@@ -113,7 +113,7 @@ export class ModelEditor extends React.Component {
                     this.props.setState({                        
                         forms: { 
                             ...this.props.state.forms,
-                            [this.props.modelfield]: this.props.initForm[this.props.modelfield]()
+                            [this.props.modelfield]: this.props.initForms[this.props.modelfield]()
                         }
                     });
                     this.setState({

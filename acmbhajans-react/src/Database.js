@@ -101,7 +101,7 @@ export class Database extends React.Component {
     return (
         <Container><Row>
                 <Col><ModelEditor
-                    initForm={initForms}
+                    initForms={initForms}
                     pageName='Bhajans'
                     modelfield='bhajans'
                     editForm={this.renderForm('bhajans')}
@@ -114,7 +114,7 @@ export class Database extends React.Component {
                 /></Col>
     
                 <Col><ModelEditor
-                    initForm={initForms}
+                    initForms={initForms}
                     pageName='Languages'
                     modelfield='languages'
                     editForm={this.renderForm('languages')}
@@ -124,7 +124,7 @@ export class Database extends React.Component {
                 /></Col>
 
                 <Col><ModelEditor
-                    initForm={initForms}
+                    initForms={initForms}
                     pageName='Events'
                     modelfield='events'
                     editForm={this.renderForm('events')}
@@ -135,7 +135,7 @@ export class Database extends React.Component {
 
 
                 <Col><ModelEditor
-                    initForm={initForms}
+                    initForms={initForms}
                     pageName='Ragas'
                     modelfield='ragas'
                     editForm={this.renderForm('ragas')}
@@ -146,7 +146,7 @@ export class Database extends React.Component {
 
                 
                 <Col><ModelEditor
-                    initForm={initForms}
+                    initForms={initForms}
                     pageName='Deities'
                     modelfield='deities'
                     editForm={this.renderForm('deities')}
