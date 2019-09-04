@@ -60,7 +60,9 @@ export class InputPage extends React.Component {
             offset = 6;
         else
             offset = 6 - dayNum;
-        return addDays(today, offset);
+        let newDate = addDays(today, offset);
+        console.log('Returning ', newDate);
+        return newDate;
     }
 
     componentDidMount() {
@@ -77,6 +79,7 @@ export class InputPage extends React.Component {
         let dateStr = moment(this.state.form.weekend).format('YYYY-MM-DD');;
         loadUrl += `?date=${dateStr}&from=${dateStr}&to=${dateStr}`;
         loadUrl += '&person_id=' + this.props.personId;
+        loadUrl += '&personal_request';
         fetch(loadUrl)
         .then(res => res.json())
         .then(data => {
@@ -239,7 +242,8 @@ export class InputPage extends React.Component {
             )}
             </AutoSizer>
             </Col>
-                </Row></Container>
+            </Row>
+            </Container>
 
            
     

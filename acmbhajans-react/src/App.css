@@ -3,8 +3,8 @@
   --delete-action-color: rgba(255, 0, 0, 0.25);
   --positive-action-color: rgba(0, 255, 0, 0.25);
 
-  --attended-color: rgba(255, 0, 0, 0.1);;
-  --not-attended-color: rgba(0, 255, 0, 0.1);
+  --attended-color: rgba(0, 255, 0, 0.1);
+  --not-attended-color: rgba(255, 0, 0, 0.1);
 
   --normal-color: #fff;
   --select-color: #007bff;
