@@ -81,6 +81,8 @@ class RenditionsController < ApplicationController
 
 
     def summarize
+      ActiveRecord::Base.logger = nil
+
       event = Event.find_by(name: params[:event])
       renditions = Rendition.where(event: event)
       #, weekend: Date.parse('2019-08-17'))
@@ -94,29 +96,41 @@ class RenditionsController < ApplicationController
         date = rendition.weekend
         if !bhajan_summary.key? date
           bhajan_summary[date] = {}
-          attendance_summary[date] = {}
         end
         
         rendition.lead.each do | person |
           if !bhajan_summary[date].key? person.name
             bhajan_summary[date][person.name] = []
-            attendance_summary[date][person.name] = false
           end
 
-          request_obj = Request.find_by(person_id: person.id, weekend: date)
-          if !request_obj.blank?
-            if params[:event] == 'practice'
-              attendance_summary[date][person.name] = request_obj.attended_practice
-            else
-              attendance_summary[date][person.name] = request_obj.attended_satsang
-            end
-          end
-          
           if !rendition.bhajan.blank? 
             bhajan_summary[date][person.name] << rendition.bhajan.name
           end
         end
       end
+
+      requests = Request.all()
+      requests.each do | request_obj |
+        # request_obj = Request.find_by(person_id: person.id, weekend: date)
+        
+        date = request_obj.weekend
+        person = request_obj.person
+
+        if person.nil? 
+          next
+        end
+        
+        if !attendance_summary.key? date
+          attendance_summary[date] = {}
+        end
+
+        if params[:event] == 'practice'
+          attendance_summary[date][person.name] = request_obj.attended_practice
+        else
+          attendance_summary[date][person.name] = request_obj.attended_satsang
+        end
+      end
+      
       
       render :json => {
         'bhajan_summary': bhajan_summary,

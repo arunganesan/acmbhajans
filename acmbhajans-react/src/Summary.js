@@ -14,13 +14,12 @@ export class Summary extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            event: 'practice',
+            event: 'satsang',
             bhajan_summary: {},
             attendance_summary: {},
 
             sortedDates: [],
             sortedPeople: [],
-
             overscanColumnCount: 0,
             overscanRowCount: 10,
             rowHeight: 40,
@@ -48,11 +47,16 @@ export class Summary extends React.Component {
         .then(res => res.json())
         .then(data => {
             // Create indexes
-            console.log(data.attendance_summary);
 
-            let dates = _.sortBy(_.keys(data.bhajan_summary));
+            let dates = _.sortBy(_.uniq(_.concat(
+                _.keys(data.attendance_summary), 
+                _.keys(data.bhajan_summary))));
+            dates = _.reverse(dates);
+
             let people = [];
-            for (let _people of _.values(data.bhajan_summary))  {
+            for (let _people of _.concat(
+                    _.values(data.attendance_summary), 
+                    _.values(data.bhajan_summary)))  {
                 people = people.concat(_.keys(_people))
             }
             
@@ -60,7 +64,8 @@ export class Summary extends React.Component {
             
             console.log(dates, uniqPeople)
             this.setState({
-                ...data,
+                attendance_summary: data.attendance_summary,
+                bhajan_summary: data.bhajan_summary,
                 sortedDates: dates,
                 sortedPeople: uniqPeople,
             })
@@ -74,7 +79,8 @@ export class Summary extends React.Component {
 
 
     _getRowClassName(row) {
-        return row % 2 === 0 ? "evenRow" : "oddRow";
+        // return row % 2 === 0 ? "evenRow" : "oddRow";
+        return '';
     }
       
       
@@ -94,12 +100,17 @@ export class Summary extends React.Component {
             return <div className="cell leftRow" style={style}>{this.state.sortedPeople[rowIndex-1]}</div>;
         } else {
             let classNames = `cell ${rowClassName} `
-            if (this.state.attendance_summary[dateStr][peopleStr] === true)
-                classNames += 'summary-attended'
-            else if (this.state.attendance_summary[dateStr][peopleStr] === false)
-                classNames += 'summary-not-attended'
+
+            // console.log(dateStr, peopleStr, this.state.attendance_summary[dateStr][peopleStr])
+            if (this.state.attendance_summary[dateStr][peopleStr] == true)
+                classNames += ' summary-attended'
+            else if (this.state.attendance_summary[dateStr][peopleStr] == false)
+                classNames += ' summary-not-attended'
             
-            return <div className={classNames} style={style}>{_.join(this.state.bhajan_summary[dateStr][peopleStr])}</div>;
+            let bhajans_led_by_person = ''
+            if (_.has(this.state.bhajan_summary, dateStr) && _.has(this.state.bhajan_summary[dateStr], peopleStr))
+                bhajans_led_by_person = _.join(this.state.bhajan_summary[dateStr][peopleStr])
+            return <div className={classNames} style={style}>{bhajans_led_by_person}</div>;
         }
     }
 
