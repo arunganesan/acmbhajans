@@ -18,7 +18,7 @@ import { Summary } from './Summary'
 import { Recordings } from './Recordings'
 import { Database } from './Database'
 
-import {URLBASE} from './Config'
+import { BASEDIR, URLBASE  } from './Config'
 
 function capitalize (word) {
   return word.charAt(0).toUpperCase() + word.slice(1);
@@ -38,7 +38,7 @@ function Index() {
 function MyLink (props) {
   return (
   <NavItem>
-    <LinkContainer to={"/" + props.to}>
+    <LinkContainer to={`/${BASEDIR}/${props.to}`}>
     <Nav.Link style={{color: 'red'}} eventKey={props.to}>
         {props.label ? props.label : capitalize(props.to)}
     </Nav.Link>
@@ -179,23 +179,22 @@ class AppRouter extends React.Component {
         { this.state.showLoginForm && this.generateLoginForm() }
 
         <div id='content'>
-          <Route path="/home" exact component={Index} />
+          <Route path={`/${BASEDIR}/home`} exact component={Index} />
           <Route 
-            path="/input" 
+            path={`/${BASEDIR}/input`} 
             render={props => <InputPage personId={this.state.loggedIn ? this.state.loggedIn.id : null} />} />
 
           <Route 
-            path="/recordings" 
+            path={`/${BASEDIR}/recordings`}
             render={props => <Recordings personId={this.state.loggedIn ? this.state.loggedIn.id : null} />}
              />
 
 
-          <Route path="/summary" component={Summary} />
-
-          <Route path="/database" component={Database} />
-          <Route path="/people" component={People} />
-          <Route path="/requests" component={Requests} />
-          <Route path="/rendition" component={Rendition} />
+          <Route path={`/${BASEDIR}/summary`} component={Summary} />
+          <Route path={`/${BASEDIR}/database`} component={Database} />
+          <Route path={`/${BASEDIR}/people`} component={People} />
+          <Route path={`/${BASEDIR}/requests`} component={Requests} />
+          <Route path={`/${BASEDIR}/rendition`} component={Rendition} />
         </div>
       </div>
     </Router>
