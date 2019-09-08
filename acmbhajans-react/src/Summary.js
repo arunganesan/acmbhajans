@@ -42,7 +42,7 @@ export class Summary extends React.Component {
     }
 
     fetchSummaryTable() {
-        let loadUrl = `${URLBASE}/renditions/summarize?event=${this.state.event}`; 
+        let loadUrl = `${URLBASE()}/renditions/summarize?event=${this.state.event}`; 
         fetch(loadUrl)
         .then(res => res.json())
         .then(data => {

@@ -88,7 +88,7 @@ export class Rendition extends React.Component {
       initForms={initForms}
       pageName="Rendition"
       editForm={this.renderForm()}
-      URL={`${URLBASE}/renditions/edit`}
+      URL={`${URLBASE()}/renditions/edit`}
       populateForm={(datum, currState) => {
         return {
           lead: this.state.lead_list[datum.id],

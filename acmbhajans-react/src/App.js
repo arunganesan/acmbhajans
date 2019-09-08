@@ -63,7 +63,7 @@ class AppRouter extends React.Component {
 
 
   componentDidMount() {
-    fetch(`${URLBASE}/person/edit`)
+    fetch(`${URLBASE()}/person/edit`)
     .then(res => res.json())
     .then(data => {
         this.setState({

@@ -47,7 +47,7 @@ export class People extends React.Component {
       pageName="Person"
       modelfield='people'
       editForm={this.renderForm()}
-      URL={`${URLBASE}/person/edit`}
+      URL={`${URLBASE()}/person/edit`}
       populateForm={(datum, currState) => {
         return {
           ready_list: this.state.ready_list[datum.id]

@@ -45,13 +45,13 @@ export class Recordings extends React.Component {
     }
    
     loadByPerson () {
-        let loadUrl = `${URLBASE}/renditions/edit`
+        let loadUrl = `${URLBASE()}/renditions/edit`
         loadUrl += '?person_id=' + this.props.personId;
         return loadUrl;
     }
 
     loadByDate () {
-        let loadUrl = `${URLBASE}/renditions/edit`
+        let loadUrl = `${URLBASE()}/renditions/edit`
         let dateStr = moment(this.state.chosenWeek).format('YYYY-MM-DD');;
         loadUrl += `?from=${dateStr}&to=${dateStr}`;
         return loadUrl;

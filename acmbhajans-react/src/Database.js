@@ -105,7 +105,7 @@ export class Database extends React.Component {
                     pageName='Bhajans'
                     modelfield='bhajans'
                     editForm={this.renderForm('bhajans')}
-                    URL={`${URLBASE}/bhajans/edit`}
+                    URL={`${(URLBASE())}/bhajans/edit`}
                     populateForm={(datum, currState) => {
                         return {}
                     }}
@@ -118,7 +118,7 @@ export class Database extends React.Component {
                     pageName='Languages'
                     modelfield='languages'
                     editForm={this.renderForm('languages')}
-                    URL={`${URLBASE}/language/edit`}
+                    URL={`${URLBASE()}/language/edit`}
                     state={this.state}
                     setState={(s) => this.setState(s)}
                 /></Col>
@@ -128,7 +128,7 @@ export class Database extends React.Component {
                     pageName='Events'
                     modelfield='events'
                     editForm={this.renderForm('events')}
-                    URL={`${URLBASE}/event/edit`}
+                    URL={`${URLBASE()}/event/edit`}
                     state={this.state}
                     setState={(s) => this.setState(s)}
                 /></Col>
@@ -139,7 +139,7 @@ export class Database extends React.Component {
                     pageName='Ragas'
                     modelfield='ragas'
                     editForm={this.renderForm('ragas')}
-                    URL={`${URLBASE}/raga/edit`}
+                    URL={`${URLBASE()}/raga/edit`}
                     state={this.state}
                     setState={(s) => this.setState(s)}
                 /></Col>
@@ -150,7 +150,7 @@ export class Database extends React.Component {
                     pageName='Deities'
                     modelfield='deities'
                     editForm={this.renderForm('deities')}
-                    URL={`${URLBASE}/deity/edit`}
+                    URL={`${URLBASE()}/deity/edit`}
                     state={this.state}
                     setState={(s) => this.setState(s)}
                 /></Col>

@@ -75,7 +75,7 @@ export class InputPage extends React.Component {
 
     fetchRequest() {
         console.log('This.props has ', this.props);
-        let loadUrl = `${URLBASE}/request/edit`
+        let loadUrl = `${URLBASE()}/request/edit`
         let dateStr = moment(this.state.form.weekend).format('YYYY-MM-DD');;
         loadUrl += `?date=${dateStr}&from=${dateStr}&to=${dateStr}`;
         loadUrl += '&person_id=' + this.props.personId;
@@ -101,7 +101,7 @@ export class InputPage extends React.Component {
         // Send to server
         // Show a "saved" message
         console.log('This.props has ', this.props);
-        let loadUrl = `${URLBASE}/request/edit`
+        let loadUrl = `${URLBASE()}/request/edit`
         let dateStr = moment(this.state.form.weekend).format('YYYY-MM-DD');;
         loadUrl += `?date=${dateStr}&from=${dateStr}&to=${dateStr}`;
         loadUrl += '&person_id=' + this.props.personId;
