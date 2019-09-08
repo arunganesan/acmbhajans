@@ -82,7 +82,7 @@ export class Requests extends React.Component {
       initForms={initForms}
       pageName="Request"
       editForm={this.renderForm()}
-      URL={`${URLBASE}/request/edit`}
+      URL={`${URLBASE()}/request/edit`}
       populateForm={(datum, currState) => {}}
 
       additionalButtons={
