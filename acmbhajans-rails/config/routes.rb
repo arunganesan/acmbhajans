@@ -36,4 +36,7 @@ Rails.application.routes.draw do
   
   get 'individual/graduated'
   get 'individual/request'
+
+  get '/', to: 'home#index'
+  get '/index', to: 'home#index'
 end
