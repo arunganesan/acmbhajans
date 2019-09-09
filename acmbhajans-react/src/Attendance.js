@@ -57,13 +57,19 @@ export class Attendance extends React.Component {
             }
             
             let uniqPeople = _.sortBy(_.uniq(people));
-            
+
+            let updateFunc = () => {
+                console.log('Updating grid');
+                this.list.forceUpdateGrids()}
+
             console.log(dates, uniqPeople)
             this.setState({
                 attendance_summary: data.attendance_summary,
                 sortedDates: dates,
                 sortedPeople: uniqPeople,
-            })
+            }, updateFunc)
+
+            setTimeout(updateFunc, 500);
         });
     }
 
@@ -80,16 +86,21 @@ export class Attendance extends React.Component {
 
 
     changeAttendance(dateStr, peopleStr) {
-        let newValue = null;
-
-        if (!_.has(this.state.attendance_summary, dateStr) || !_.has(this.state.attendance_summary[dateStr], peopleStr)) {
+        let newValue = '';
+        
+        if (
+            !_.has(this.state.attendance_summary, dateStr) 
+            || !_.has(this.state.attendance_summary[dateStr], peopleStr)
+            || this.state.attendance_summary[dateStr][peopleStr] === null) {
             newValue = true;
         } else if (this.state.attendance_summary[dateStr][peopleStr] === true) {
             newValue = false;
         } else if (this.state.attendance_summary[dateStr][peopleStr] === false) {
-            newValue = null;
+            newValue = '';
         }
-        
+
+        console.log('PREVIOUS VALUE', this.state.attendance_summary[dateStr][peopleStr])
+        console.log('NEW VALUE', newValue);
         
         let loadUrl = `${URLBASE()}/request/attendance?person=${peopleStr}&weekend=${dateStr}`; 
         loadUrl += `&attended_${this.state.event}=${newValue}`
@@ -101,7 +112,6 @@ export class Attendance extends React.Component {
             })
 
     }
-      
       
     _cellRenderer({columnIndex, key, rowIndex, style}) {
         let rowClassName = this._getRowClassName(rowIndex);
@@ -180,10 +190,10 @@ export class Attendance extends React.Component {
             <AutoSizer disableHeight>
             {({width}) => (
                 <MultiGrid
-                fixedColumnCount={1}
-                fixedRowCount={1}
-
-                cellRenderer={this._cellRenderer}
+                    fixedColumnCount={1}
+                    fixedRowCount={1}
+                    ref={ref => { this.list = ref }}
+                    cellRenderer={this._cellRenderer}
                 
                 classNameBottomLeftGrid="BodyGrid namesGrid"
                 classNameBottomRightGrid="BodyGrid"

@@ -23,6 +23,8 @@ export class Summary extends React.Component {
             overscanColumnCount: 0,
             overscanRowCount: 10,
             rowHeight: 40,
+
+            tableHeight: 1000,
         };
 
 
@@ -174,7 +176,7 @@ export class Summary extends React.Component {
                 columnCount={this.state.sortedDates.length+1}
                 rowCount={this.state.sortedPeople.length+1}
 
-                height={500}
+                height={this.state.tableHeight}
                 noContentRenderer={this._noContentRenderer}
                 overscanColumnCount={this.state.overscanColumnCount}
                 overscanRowCount={this.state.overscanRowCount}
