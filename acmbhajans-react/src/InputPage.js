@@ -9,6 +9,7 @@ import { getDay, addDays } from "date-fns";
 import { findElt, findEltName } from './Fields'
 
 import { AutoSizer, Grid } from 'react-virtualized'
+import { MdDone, MdClear } from 'react-icons/md'
 
 import {URLBASE} from './Config'
 
@@ -159,33 +160,65 @@ export class InputPage extends React.Component {
         
         if (rowIndex === 0) {
             let header = ''
-            if (columnIndex === 0)
-                header = 'Name'
-            if (columnIndex === 1)
-                header = 'Will attend practice'
-            else if (columnIndex === 2)
-                header = 'Practice request'
-            else if (columnIndex === 3)
-                header = 'Will attend practice'
-            else if (columnIndex === 4)
-                header = 'Bhajan request'
+
+            switch (columnIndex) {
+                case 0:
+                    header = 'Name'
+                    break
+                case 1:
+                    header = 'Will attend practice'
+                    break
+                case 2:
+                    header = 'Practice request'
+                    break
+                case 3:
+                    header = 'Will attend practice'
+                    break
+                case 4:
+                    header = 'Bhajan request'
+                    break
+                default:
+                    header = ''
+            }
             
             return <div className="cell top-next-week-row" style={style}>{header}</div>;
         } else {
             let content = ''
             let request = this.state.requests[rowIndex-1];
             let firstColumnClass = 'next-week-first-column';
-            if (columnIndex === 0) {
-                content = findEltName(request.person_id, this.state.people)
-            } else if (columnIndex === 2) {
-                let bhajan = findElt(request.practice_request_id, this.state.bhajans)
-                if (bhajan !== null) 
-                    content = bhajan.name;
-                
-            } else if (columnIndex === 4) {
-                let bhajan = findElt(request.satsang_request_id, this.state.bhajans)
-                if (bhajan !== null) 
-                    content = bhajan.name;
+            let bhajan;
+
+            switch (columnIndex) {
+                case 0:
+                    content = findEltName(request.person_id, this.state.people)
+                    break
+                case 1:
+                    content = ''
+                    if (request.will_attend_practice === true)
+                        content = <MdDone />
+                    else if (request.will_attend_practice === false) 
+                        content = <MdClear />
+                    break;
+                case 2:
+                    bhajan = findElt(request.practice_request_id, this.state.bhajans)
+                    if (bhajan !== null) 
+                        content = bhajan.name;
+                    break
+                case 3:
+                    content = ''
+                    if (request.will_attend_satsang === true)
+                        content = <MdDone />
+                    else if (request.will_attend_satsang === false) 
+                        content = <MdClear />
+                    break;
+                case 4:
+                    bhajan = findElt(request.satsang_request_id, this.state.bhajans)
+                    if (bhajan !== null) 
+                        content = bhajan.name;
+                    break
+                default:
+                    content = ''
+                    break
             }
             
             return <div className={`cell ${rowClassName} ` + (columnIndex === 0 ? firstColumnClass : '')} style={style}>{content}</div>;
@@ -193,7 +226,6 @@ export class InputPage extends React.Component {
     }
 
     _noContentRenderer() {
-        console.log("NO CONRENT REDERER??");
         return null; //<div className="noCells">No cells</div>;
       }    
 
@@ -281,7 +313,7 @@ export class InputPage extends React.Component {
                         <Card.Body>
                         <Form.Group>
                         <Form.Check 
-                            type="checkbox" 
+                            type="checkbox"
                             label="Attending Practice"
                             checked={this.state.form.will_attend_practice} 
                             onChange={event => this.setState({
