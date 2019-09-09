@@ -17,6 +17,9 @@ Rails.application.routes.draw do
   post 'request/edit'
   get 'request/edit'
 
+  post 'request/attendance'
+  get 'request/attendance'
+
   post 'weekend/edit'
   get 'weekend/edit'
 

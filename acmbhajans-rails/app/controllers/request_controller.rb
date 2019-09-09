@@ -70,4 +70,48 @@ class RequestController < ApplicationController
     
     render :json =>  obj
   end
+
+
+  def attendance
+    ActiveRecord::Base.logger = nil
+    if request.post?
+      if params['id'] == '' || params['id'].nil?
+        request_obj = Request.new  
+      else
+        request_obj = Request.find_by(id: params['id'])
+      end
+      request_obj.attended_practice = params['attended_practice']
+      request_obj.attended_satsang = params['attended_satsang']
+      request_obj.save!
+    end
+
+    event = Event.find_by(name: params[:event])
+    attendance_summary = {}
+    
+    requests = Request.all
+    requests.each do | request_obj |
+      date = request_obj.weekend
+      person = request_obj.person
+
+      if person.nil? 
+        next
+      end
+      
+      if !attendance_summary.key? date
+        attendance_summary[date] = {}
+      end
+
+      if params[:event] == 'practice'
+        attendance_summary[date][person.name] = request_obj.attended_practice
+      else
+        attendance_summary[date][person.name] = request_obj.attended_satsang
+      end
+    end
+      
+    render :json => {
+      'attendance_summary': attendance_summary,
+      'events': Event.all,
+      'people': Person.all,
+    }
+  end
 end

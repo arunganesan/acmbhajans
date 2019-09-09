@@ -17,6 +17,7 @@ import { InputPage } from './InputPage.js'
 import { Summary } from './Summary'
 import { Recordings } from './Recordings'
 import { Database } from './Database'
+import { Attendance } from './Attendance'
 
 import { BASEDIR, URLBASE  } from './Config'
 
@@ -165,6 +166,7 @@ class AppRouter extends React.Component {
                   <MyLink to="people" />
                   <MyLink to="requests" />
                   <MyLink to="rendition" />
+                  <MyLink to="attendance" />
                 </>)
             }
             
@@ -195,6 +197,7 @@ class AppRouter extends React.Component {
           <Route path={`/${BASEDIR}/people`} component={People} />
           <Route path={`/${BASEDIR}/requests`} component={Requests} />
           <Route path={`/${BASEDIR}/rendition`} component={Rendition} />
+          <Route path={`/${BASEDIR}/attendance`} component={Attendance} />
         </div>
       </div>
     </Router>
