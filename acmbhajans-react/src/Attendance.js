@@ -77,6 +77,30 @@ export class Attendance extends React.Component {
         // return row % 2 === 0 ? "evenRow" : "oddRow";
         return '';
     }
+
+
+    changeAttendance(dateStr, peopleStr) {
+        let newValue = null;
+
+        if (!_.has(this.state.attendance_summary, dateStr) || !_.has(this.state.attendance_summary[dateStr], peopleStr)) {
+            newValue = true;
+        } else if (this.state.attendance_summary[dateStr][peopleStr] === true) {
+            newValue = false;
+        } else if (this.state.attendance_summary[dateStr][peopleStr] === false) {
+            newValue = null;
+        }
+        
+        
+        let loadUrl = `${URLBASE()}/request/attendance?person=${peopleStr}&weekend=${dateStr}`; 
+        loadUrl += `&attended_${this.state.event}=${newValue}`
+        fetch(loadUrl, {
+            method: 'POST', mode: 'cors', cache: 'no-cache'})
+            .then(response => {
+                console.log('Got response');
+                this.fetchSummaryTable();
+            })
+
+    }
       
       
     _cellRenderer({columnIndex, key, rowIndex, style}) {
@@ -94,7 +118,7 @@ export class Attendance extends React.Component {
         } else if (columnIndex === 0) {
             return <div className="cell leftRow" style={style}>{this.state.sortedPeople[rowIndex-1]}</div>;
         } else {
-            let classNames = `cell ${rowClassName} `   
+            let classNames = `cell attendance-cell ${rowClassName} `   
             let content = ''
 
             // console.log(dateStr, peopleStr, this.state.attendance_summary[dateStr][peopleStr])
@@ -109,7 +133,9 @@ export class Attendance extends React.Component {
                 }
             }
             
-            return <div className={classNames} style={style}>{content}</div>;
+            return <div 
+                onClick={() => this.changeAttendance(dateStr, peopleStr) }
+                className={classNames} style={style}>{content}</div>;
         }
     }
 

@@ -78,6 +78,19 @@ padding: 1.25rem;
   margin-top: 15px;
 }
 
+.cell {
+  justify-content: center;
+  align-items: center;
+}
+
+.attendance-cell {
+  cursor: pointer;
+}
+
+.attendance-cell:hover {
+  border: solid medium var(--select-color);
+}
+
 .database-row {
   height: 100%;
   display: flex;
