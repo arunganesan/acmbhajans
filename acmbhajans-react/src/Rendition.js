@@ -23,6 +23,8 @@ const initForms = {
       bhajan_id: '',
       event_id: '',
       weekend: '',
+      
+      order: '',
 
       lead: [],
       backup: [],
@@ -62,6 +64,7 @@ export class Rendition extends React.Component {
                 { 'type': 'date', 'field': 'weekend'},
                 { 'type': 'text', 'label': 'Recording URL', field: 'recording_url'},
                 { 'type': 'text', 'label': 'Shruti', field: 'shruti'},
+                { 'type': 'text', 'label': 'Order', field: 'order'},
                 
                 { 'type': 'dropdown', 'label': 'Bhajan', 'field': 'bhajan_id', 'choices': this.state.bhajans},
                 { 'type': 'dropdown', 'label': 'Event', 'field': 'event_id', 'choices': this.state.events},

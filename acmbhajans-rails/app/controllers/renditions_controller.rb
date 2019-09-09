@@ -12,6 +12,7 @@ class RenditionsController < ApplicationController
   
         rendition.recording_url = params['recording_url']
         rendition.shruti = params['shruti']
+        rendition.order = params['order']
 
         rendition.weekend = Date.parse(params['weekend'])
 

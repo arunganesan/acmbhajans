@@ -136,7 +136,9 @@ export class Recordings extends React.Component {
                         content = bhajan.name;
                     break;
                 case 4:
-                    content = (<a href='#'>Link</a>)
+                    content = ''
+                    if (rendition.recording_url !== '')
+                        content = (<a href={rendition.recording_url}>Link</a>)
                     break
                 default:
                     content = '.'
