@@ -138,7 +138,7 @@ export class Recordings extends React.Component {
                 case 4:
                     content = ''
                     if (rendition.recording_url !== '' && rendition.recording_url !== undefined && rendition.recording_url !== null)
-                        content = (<a href={rendition.recording_url}>Link</a>)
+                        content = (<a target='_blank' rel='noopener noreferrer' href={rendition.recording_url}>Link</a>)
                     break
                 default:
                     content = '.'
