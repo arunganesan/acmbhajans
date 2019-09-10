@@ -19,7 +19,7 @@ import { Recordings } from './Recordings'
 import { Database } from './Database'
 import { Attendance } from './Attendance'
 
-import { BASEDIR, URLBASE  } from './Config'
+import { BASEDIR, isDevel, URLBASE  } from './Config'
 
 function capitalize (word) {
   return word.charAt(0).toUpperCase() + word.slice(1);
@@ -148,7 +148,9 @@ class AppRouter extends React.Component {
   return (
     <Router>
       <div id='navigation'>
-        <Navbar expand="lg" bg="primary" variant="dark">
+        <Navbar expand="lg" bg={
+          isDevel() ? 'warning' : 'primary'
+        } variant="dark">
           <Nav className="mr-auto">
             <MyLink to="home" label="Home" />
 
