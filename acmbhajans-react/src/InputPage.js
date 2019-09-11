@@ -142,8 +142,8 @@ export class InputPage extends React.Component {
         if (filterBy != null) 
             choices = choices.filter(choice => filterBy.includes(choice.id));
         
-
-        return choices.map(choice => <option
+        
+        return _.sortBy(choices, ['name']).map(choice => <option
             key={label + '-' + choice.id} 
             value={choice.id}>
                 {choice.name}
@@ -344,7 +344,6 @@ export class InputPage extends React.Component {
                     </Col>
                 </Row>
                 <Row>
-                    
                     <Card className='next-week-card'>
                         <Card.Title>Practice</Card.Title>
                         <Card.Body>
@@ -477,9 +476,9 @@ export class InputPage extends React.Component {
                     }
                     
                 </Row>
-
                 <Row>
-                    <Col><Button onClick={this.handleSubmit}>Save</Button></Col>
+                    <Col><Button onClick={this.handleSubmit}>Save</Button> If you do not see your bhajan in the drop down list, please contact the coordinators @ <a href='mailto:acmbhajans@gmail.com'>acmbhajans@gmail.com</a></Col>
+                    
                 </Row>
         </Container>
     </Form>)
