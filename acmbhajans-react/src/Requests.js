@@ -128,12 +128,14 @@ export class Requests extends React.Component {
         let row =  '' + weekendName + '. ' + personName;
 
         if (will_attend_practice) {
-          row += ` - will attend practice (${practiceRequestName})`
+          row += ` - will attend practice (${practiceRequestName}) "${datum['practice_note']}"`
         } 
 
         if (will_attend_satsang) {
-          row += ` - will attend satsang (${satsangRequestName})`
+          row += ` - will attend satsang (${satsangRequestName}) "${datum['satsang_note']}"`
         }
+
+        
 
         return row;
       }}
