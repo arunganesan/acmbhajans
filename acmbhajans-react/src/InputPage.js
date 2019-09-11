@@ -312,16 +312,22 @@ export class InputPage extends React.Component {
                         <Card.Title>Practice</Card.Title>
                         <Card.Body>
                         <Form.Group>
-                        <Form.Check 
-                            type="checkbox"
-                            label="Attending Practice"
-                            checked={this.state.form.will_attend_practice} 
-                            onChange={event => this.setState({
-                                form: {
-                                    ...this.state.form,
-                                    will_attend_practice: event.target.checked
-                                }
-                            })}/>
+                            <Form.Label>Attending practice</Form.Label>
+                            <Form.Control 
+                                as="select"
+                                value={this.state.form.will_attend_practice}
+                                onChange={event => this.setState({ 
+                                    form: {
+                                        ...this.state.form,
+                                        will_attend_practice: event.target.value
+                                    }
+                                    })}
+                            >
+                                <option value={true}>Yes</option>
+                                <option value={''}>Undecided</option>
+                                <option value={false}>No</option>
+                                
+                            </Form.Control>
                         </Form.Group>
 
                         <Form.Group>
@@ -360,16 +366,22 @@ export class InputPage extends React.Component {
                     <Card.Title>Satsang</Card.Title>
                         <Card.Body>
                         <Form.Group>
-                            <Form.Check 
-                                type="checkbox" 
-                                label="Attending Satsang"
-                                checked={this.state.form.will_attend_satsang} 
-                                onChange={event => this.setState({
+                            <Form.Label>Attending satsang</Form.Label>
+                            <Form.Control 
+                                as="select"
+                                value={this.state.form.will_attend_satsang}
+                                onChange={event => this.setState({ 
                                     form: {
                                         ...this.state.form,
-                                        will_attend_satsang: event.target.checked
+                                        will_attend_satsang: event.target.value
                                     }
-                                })}/>
+                                    })}
+                            >
+                                <option value={true}>Yes</option>
+                                <option value={''}>Undecided</option>
+                                <option value={false}>No</option>
+                                
+                            </Form.Control>
                         </Form.Group>
 
                         <Form.Group>
@@ -386,11 +398,14 @@ export class InputPage extends React.Component {
                                     })}
                             >
                                 <option value=''>None</option>
-                                { this.generateBhajans(
+                                { this.generateBhajans('satsang', null ) }
+                                {/* 
+                                    Uncomment to turn on read-to-sing list
+                                    { this.generateBhajans(
                                     'satsang', 
                                     this.props.personId in this.state.ready_list ? 
                                     this.state.ready_list[this.props.personId] :
-                                    null )}
+                                    null )} */}
                             </Form.Control>
                         </Form.Group>
 
@@ -413,7 +428,7 @@ export class InputPage extends React.Component {
                     
                     { this.props.personId && _.has(this.state.ready_list, this.props.personId) &&
                     <Card className='next-week-card'>
-                        <Card.Title>Ready-list</Card.Title>
+                        <Card.Title>Ready bhajans</Card.Title>
                         <Card.Body>
                         { this.state.ready_list[this.props.personId].map(bhajan_id => 
                             <Button variant='outline-primary' onClick={evt => this.selectBhajan(bhajan_id)} block>
