@@ -3,6 +3,14 @@ import { Card, Button, Form, Row, Col, Container } from 'react-bootstrap'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
+
+import { makeStyles } from '@material-ui/core/styles';
+import { Button as MUIButton } from '@material-ui/core/Button';
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+
+
 import _ from 'lodash'
 import moment from 'moment';
 import { getDay, addDays } from "date-fns";
@@ -37,6 +45,9 @@ export class InputPage extends React.Component {
             overscanColumnCount: 0,
             overscanRowCount: 10,
             rowHeight: 40,
+
+            loadingSnackbarOpen: false,
+            snackbarMessage: '',
         };
 
 
@@ -114,13 +125,13 @@ export class InputPage extends React.Component {
           body: JSON.stringify(this.state.form)})
         .then(response => response.json())
         .then(data => {
-            console.log("Got response: ", data);
-              this.setState({ 
-                  ...data,
-                  form: {
-                      ...data.personal_request[0]
-                  }
-              }, () => this.list.forceUpdate())
+            this.showMessage('Saved data')
+            this.setState({ 
+                ...data,
+                form: {
+                    ...data.personal_request[0]
+                }
+            }, () => this.list.forceUpdate())
           });
 
         event.preventDefault();
@@ -169,13 +180,13 @@ export class InputPage extends React.Component {
                     header = 'Will attend practice'
                     break
                 case 2:
-                    header = 'Practice request'
+                    header = 'Practice bhajan'
                     break
                 case 3:
-                    header = 'Will attend practice'
+                    header = 'Will attend satsang'
                     break
                 case 4:
-                    header = 'Bhajan request'
+                    header = 'Satsang bhajan'
                     break
                 default:
                     header = ''
@@ -243,8 +254,21 @@ export class InputPage extends React.Component {
           default:
             return 125;
         }
-      }
+    }
 
+    
+    showMessage(message) {
+        this.setState({
+            loadingSnackbarOpen: true,
+            snackbarMessage: message
+        });
+    }
+
+    closeSnackbar() {
+        this.setState({
+            loadingSnackbarOpen: false
+        });
+    }
 
     render() {
         return (<div>
@@ -278,7 +302,20 @@ export class InputPage extends React.Component {
             </Container>
 
            
-    
+
+            <Snackbar
+                anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+                }}
+                open={this.state.loadingSnackbarOpen}
+                autoHideDuration={1000}
+                onClose={() => this.closeSnackbar()}
+                ContentProps={{
+                'aria-describedby': 'message-id',
+                }}
+                message={<span id="message-id">{this.state.snackbarMessage}</span>}
+            />
         </div>);
     }
 

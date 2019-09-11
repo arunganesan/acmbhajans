@@ -135,8 +135,6 @@ export class Requests extends React.Component {
           row += ` - will attend satsang (${satsangRequestName}) "${datum['satsang_note']}"`
         }
 
-        
-
         return row;
       }}
       
