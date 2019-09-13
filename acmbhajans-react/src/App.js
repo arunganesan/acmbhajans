@@ -8,7 +8,8 @@ import { Modal } from 'react-bootstrap';
 
 import 'bootstrap/dist/css/bootstrap.css';
 
-import { BrowserRouter as Router, Route } from "react-router-dom";
+
+import { Link, HashRouter as Router, Route } from "react-router-dom";
 
 import { People } from './People.js'
 import { Rendition } from './Rendition.js'
@@ -39,8 +40,8 @@ function Index() {
 function MyLink (props) {
   return (
   <NavItem>
-    <LinkContainer to={`/${BASEDIR}/${props.to}`}>
-    <Nav.Link style={{color: 'red'}} eventKey={props.to}>
+    <LinkContainer to={`/${props.to}`}>
+    <Nav.Link style={{color: 'red'}}>
         {props.label ? props.label : capitalize(props.to)}
     </Nav.Link>
     </LinkContainer>
@@ -152,7 +153,7 @@ class AppRouter extends React.Component {
           isDevel() ? 'warning' : 'primary'
         } variant="dark">
           <Nav className="mr-auto">
-            <MyLink to="home" label="Home" />
+            <MyLink to="" label="Home" />
 
             { this.state.loggedIn && 
               <MyLink to="input" label="Next Week" />
@@ -183,23 +184,23 @@ class AppRouter extends React.Component {
         { this.state.showLoginForm && this.generateLoginForm() }
 
         <div id='content'>
-          <Route path={`/${BASEDIR}/home`} exact component={Index} />
+          <Route path={`/`} exact component={Index} />
           <Route 
-            path={`/${BASEDIR}/input`} 
+            path={`/input`} 
             render={props => <InputPage personId={this.state.loggedIn ? this.state.loggedIn.id : null} />} />
 
           <Route 
-            path={`/${BASEDIR}/recordings`}
+            path={`/recordings`}
             render={props => <Recordings personId={this.state.loggedIn ? this.state.loggedIn.id : null} />}
              />
 
 
-          <Route path={`/${BASEDIR}/summary`} component={Summary} />
-          <Route path={`/${BASEDIR}/database`} component={Database} />
-          <Route path={`/${BASEDIR}/people`} component={People} />
-          <Route path={`/${BASEDIR}/requests`} component={Requests} />
-          <Route path={`/${BASEDIR}/rendition`} component={Rendition} />
-          <Route path={`/${BASEDIR}/attendance`} component={Attendance} />
+          <Route path={`/summary`} component={Summary} />
+          <Route path={`/database`} component={Database} />
+          <Route path={`/people`} component={People} />
+          <Route path={`/requests`} component={Requests} />
+          <Route path={`/rendition`} component={Rendition} />
+          <Route path={`/attendance`} component={Attendance} />
         </div>
       </div>
     </Router>

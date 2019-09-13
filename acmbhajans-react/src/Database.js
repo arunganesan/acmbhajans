@@ -100,7 +100,7 @@ export class Database extends React.Component {
   render() {
     return (
         <Container><Row>
-                <Col><ModelEditor
+                <Col lg={{span: 4}}><ModelEditor
                     initForms={initForms}
                     pageName='Bhajans'
                     modelfield='bhajans'
@@ -113,7 +113,8 @@ export class Database extends React.Component {
                     setState={(s) => this.setState(s)}
                 /></Col>
     
-                <Col><ModelEditor
+                <Col>
+                <ModelEditor
                     initForms={initForms}
                     pageName='Languages'
                     modelfield='languages'
@@ -121,9 +122,10 @@ export class Database extends React.Component {
                     URL={`${URLBASE()}/language/edit`}
                     state={this.state}
                     setState={(s) => this.setState(s)}
-                /></Col>
-
-                <Col><ModelEditor
+                />
+                </Col>
+                <Col>
+                <ModelEditor
                     initForms={initForms}
                     pageName='Events'
                     modelfield='events'
@@ -131,9 +133,8 @@ export class Database extends React.Component {
                     URL={`${URLBASE()}/event/edit`}
                     state={this.state}
                     setState={(s) => this.setState(s)}
-                /></Col>
-
-
+                />
+                </Col>
                 <Col><ModelEditor
                     initForms={initForms}
                     pageName='Ragas'
