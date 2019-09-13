@@ -45,9 +45,10 @@ function Index() {
               <ul>
                 <li>Apple Music <a href='https://itunes.apple.com/us/artist/amma/4472743'>https://itunes.apple.com/us/artist/amma/4472743</a></li>
                 <li>Amazon <a href='https://www.amazon.com/default/e/B001LHC1VC?redirectedFromKindleDbs=true'>https://www.amazon.com/default/e/B001LHC1VC?redirectedFromKindleDbs=true</a></li>
-              <li>Google Music <a href='https://play.google.com/store/music/artist/Amma?id=Aaa2nfjq5kpjrhwrcdndbkkaenq'>https://play.google.com/store/music/artist/Amma?id=Aaa2nfjq5kpjrhwrcdndbkkaenq</a></li>
-              <li>CD Baby <a href='https://store.cdbaby.com/artist/Amma'>https://store.cdbaby.com/artist/Amma</a></li>
-              <li>The Amma Shop <a href='http://www.theammashop.org/music/'>http://www.theammashop.org/music/</a> </li>
+                <li>Google Music <a href='https://play.google.com/store/music/artist/Amma?id=Aaa2nfjq5kpjrhwrcdndbkkaenq'>https://play.google.com/store/music/artist/Amma?id=Aaa2nfjq5kpjrhwrcdndbkkaenq</a></li>
+                <li>CD Baby <a href='https://store.cdbaby.com/artist/Amma'>https://store.cdbaby.com/artist/Amma</a></li>
+                <li>The Amma Shop <a href='http://www.theammashop.org/music/'>http://www.theammashop.org/music/</a> </li>
+                <li>Sing With Amma Bhajanamritam Index <a href='https://sing.withamma.com/#/login'>https://sing.withamma.com/#/login</a></li>
               </ul>
             </Col>
           </Row>
