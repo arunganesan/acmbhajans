@@ -4,12 +4,15 @@ import './App.css';
 
 import { LinkContainer } from "react-router-bootstrap";
 import { Nav, NavItem, Navbar, Button } from "react-bootstrap";
-import { Modal } from 'react-bootstrap';
+import { Modal, Container, Row, Col } from 'react-bootstrap';
 
 import 'bootstrap/dist/css/bootstrap.css';
 
-
 import { Link, HashRouter as Router, Route } from "react-router-dom";
+import { MdFavorite } from 'react-icons/md'
+
+
+
 
 import { People } from './People.js'
 import { Rendition } from './Rendition.js'
@@ -31,7 +34,26 @@ function Index() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={amma} height="540" className="App-logo" alt="logo" />
+        <img src={amma} height="308" className="App-logo" alt="logo" />
+
+
+        <Container>
+          <Row>
+            <Col>
+              If you've been looking for a particular Amma bhajan online and are having trouble finding it, here's a handy list of the best sources for Amma's music. You can search by artist, album, and track name at most of these sites. Remember, your purchase makes a difference. Proceeds benefit Amma's many humanitarian and charitable projects. <MdFavorite />
+
+              <ul>
+                <li>Apple Music <a href='https://itunes.apple.com/us/artist/amma/4472743'>https://itunes.apple.com/us/artist/amma/4472743</a></li>
+                <li>Amazon <a href='https://www.amazon.com/default/e/B001LHC1VC?redirectedFromKindleDbs=true'>https://www.amazon.com/default/e/B001LHC1VC?redirectedFromKindleDbs=true</a></li>
+              <li>Google Music <a href='https://play.google.com/store/music/artist/Amma?id=Aaa2nfjq5kpjrhwrcdndbkkaenq'>https://play.google.com/store/music/artist/Amma?id=Aaa2nfjq5kpjrhwrcdndbkkaenq</a></li>
+              <li>CD Baby <a href='https://store.cdbaby.com/artist/Amma'>https://store.cdbaby.com/artist/Amma</a></li>
+              <li>The Amma Shop <a href='http://www.theammashop.org/music/'>http://www.theammashop.org/music/</a> </li>
+              </ul>
+            </Col>
+          </Row>
+        </Container>
+        
+
       </header>
     </div>
   );

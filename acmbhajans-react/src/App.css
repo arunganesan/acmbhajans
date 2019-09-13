@@ -24,7 +24,11 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: black;
+  text-align: left;
+  
+  font-size: 1.25em;
+  line-height: 1.75em;
 }
 
 .App-link {
