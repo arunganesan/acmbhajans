@@ -39,7 +39,7 @@ class RequestController < ApplicationController
         person_id: params[:person_id],
       })
 
-      if personal_request.blank? and params.has_key? :person_id and params[:person_id] != ''
+      if personal_request.blank? and params.has_key? :person_id and params[:person_id] != 'null'
         obj = Request.new
         obj.weekend = Date.parse(params[:date])
         obj.person = Person.find_by(id: params['person_id'])
