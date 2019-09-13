@@ -127,13 +127,16 @@ export class Requests extends React.Component {
         
         let row =  '' + weekendName + '. ' + personName;
 
-        if (will_attend_practice) {
-          row += ` - will attend practice (${practiceRequestName}) "${datum['practice_note']}"`
-        } 
+        let practiceNote = datum['practice_note'] ? `"${datum['practice_note']}"` : '';
+        let satsangNote = datum['satsang_note'] ? `"${datum['satsang_note']}"` : '';
 
-        if (will_attend_satsang) {
-          row += ` - will attend satsang (${satsangRequestName}) "${datum['satsang_note']}"`
-        }
+        if (will_attend_practice)
+          row += ` - will attend practice (${practiceRequestName}) ${practiceNote}`
+        
+
+        if (will_attend_satsang) 
+          row += ` - will attend satsang (${satsangRequestName}) ${satsangNote}`
+        
 
         return row;
       }}

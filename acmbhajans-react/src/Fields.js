@@ -223,7 +223,7 @@ export function findElt (element_id, choices) {
 export function findEltName (element_id, choices) {
     let elt = findElt(element_id, choices);
     if (elt === null) 
-      return 'Error - ID not found'
+      return ''
     return elt.name;
 }
 
