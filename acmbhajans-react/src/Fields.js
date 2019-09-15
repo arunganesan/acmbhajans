@@ -102,6 +102,13 @@ export function DateField (props) {
       props.state.forms[props.modelfield][props.field] + " GMT-0400");
   else {
     selectedDate = getLastWeekendDate();
+    props.setState({ 
+      forms: {
+        ...props.state.forms,
+        [props.modelfield]: {
+          ...props.state.forms[props.modelfield],
+          [props.field]: moment(selectedDate).format("YYYY-MM-DD")
+      }}})
   }
   
   
