@@ -6,6 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment'
 import { getDay, addDays } from "date-fns";
 
+import _ from 'lodash';
 
 
 
@@ -202,7 +203,7 @@ function generateChoices (props) {
       choices = props.choices;
   }
 
-  return choices.map(choice => <option
+  return _.sortBy(choices, ['name']).map(choice => <option
       key={props.label + '-' + choice.id} 
       value={choice.id}>
         {choice.name}
