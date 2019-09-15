@@ -28,7 +28,7 @@ export class Recordings extends React.Component {
             bhajans: [],
             people: [],
             ready_list: {},
-            recordingType: 'mine',
+            recordingType: 'weekly',
 
             overscanColumnCount: 0,
             overscanRowCount: 10,
@@ -186,7 +186,7 @@ export class Recordings extends React.Component {
                     vertical
                     type="radio" 
                     name="options"
-                    defaultValue='mine'
+                    defaultValue='weekly'
                     value={this.state.recordingType} 
                     onChange={(e) => this.setRecordingsType(e)}>
                 
