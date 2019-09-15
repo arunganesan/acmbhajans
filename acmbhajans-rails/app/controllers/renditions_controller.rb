@@ -2,6 +2,9 @@ class RenditionsController < ApplicationController
     require "time"
     skip_before_action :verify_authenticity_token
 
+    ATTENDANCE_FILE = 'attendance.obj'
+    BHAJAN_FILE = 'bhajan.obj'
+
     def edit
       if request.post?
         if params['id'] == ''
@@ -84,6 +87,26 @@ class RenditionsController < ApplicationController
     def summarize
       ActiveRecord::Base.logger = nil
 
+      # save to file
+      attendance_pickle = Marshal.dump(attendance_summary)
+      bhajan_pickle = Marshal.dump(bhajan_summary)
+      
+      attendance_summary = Marshal.load(File.binread(ATTENDANCE_FILE))
+      bhajan_summary = Marshal.load(File.binread(BHAJAN_FILE))
+
+      render :json => {
+        'bhajan_summary': bhajan_summary,
+        'attendance_summary': attendance_summary,
+        'bhajans': Bhajan.all,
+        'events': Event.all,
+        'people': Person.all,
+      }
+    end
+
+
+    def generate_summary
+      ActiveRecord::Base.logger = nil
+
       event = Event.find_by(name: params[:event])
       renditions = Rendition.where(event: event)
       #, weekend: Date.parse('2019-08-17'))
@@ -131,14 +154,16 @@ class RenditionsController < ApplicationController
           attendance_summary[date][person.name] = request_obj.attended_satsang
         end
       end
+
+
+      # save to file
+      attendance_pickle = Marshal.dump(attendance_summary)
+      bhajan_pickle = Marshal.dump(bhajan_summary)
       
-      
-      render :json => {
-        'bhajan_summary': bhajan_summary,
-        'attendance_summary': attendance_summary,
-        'bhajans': Bhajan.all,
-        'events': Event.all,
-        'people': Person.all,
-      }
+      File.open(ATTENDANCE_FILE, 'wb') {|f| f.write(Marshal.dump(attendance_pickle))}
+      File.open(BHAJAN_FILE, 'wb') {|f| f.write(Marshal.dump(bhajan_pickle))}
+
+      header :ok
+      return
     end
   end

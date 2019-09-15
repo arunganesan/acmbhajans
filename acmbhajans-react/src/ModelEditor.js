@@ -3,6 +3,7 @@ import 'react-virtualized/styles.css'
 import { AutoSizer, List } from 'react-virtualized'
 import 'bootstrap/dist/css/bootstrap.css';
 import { Button, Modal, Form } from 'react-bootstrap';
+import Snackbar from '@material-ui/core/Snackbar';
 
 export class ModelEditor extends React.Component {
     constructor(props) {
@@ -11,12 +12,32 @@ export class ModelEditor extends React.Component {
             rowCount: 0,
             overscanRowCount: 100,
             showEditForm: false,
+
+            loadingSnackbarOpen: false,
+            snackbarMessage: '',
         };
         
         this.renderRow = this.renderRow.bind(this);
         this.generateForm = this.generateForm.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+
+        
     }
+
+    
+    showMessage(message) {
+      this.setState({
+          loadingSnackbarOpen: true,
+          snackbarMessage: message
+      });
+  }
+
+  closeSnackbar() {
+      this.setState({
+          loadingSnackbarOpen: false
+      });
+  }
+
 
     generateForm() {
       let onHide = () => this.setState({ showEditForm: false })
@@ -85,7 +106,7 @@ export class ModelEditor extends React.Component {
         body: JSON.stringify(this.props.state.forms[this.props.modelfield])})
       .then(response => response.json())
       .then(data => {
-            console.log('Got response: ', data);
+          this.showMessage('Saved data')
             let updateFunc = () => {
               console.log('Updating grid');
               this.list.forceUpdateGrid()}
@@ -141,6 +162,21 @@ export class ModelEditor extends React.Component {
                 />
             )}
             </AutoSizer>
+
+
+            <Snackbar
+                anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+                }}
+                open={this.state.loadingSnackbarOpen}
+                autoHideDuration={1000}
+                onClose={() => this.closeSnackbar()}
+                ContentProps={{
+                'aria-describedby': 'message-id',
+                }}
+                message={<span id="message-id">{this.state.snackbarMessage}</span>}
+            />
             </div>
         );
     }

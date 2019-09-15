@@ -36,6 +36,7 @@ Rails.application.routes.draw do
   get 'renditions/edit'
   post 'renditions/edit'
   get 'renditions/summarize'
+  get 'renditions/generate_summary'
   
   get 'individual/graduated'
   get 'individual/request'
