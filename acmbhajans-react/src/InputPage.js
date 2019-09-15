@@ -351,7 +351,7 @@ export class InputPage extends React.Component {
                             <Form.Label>Attending practice</Form.Label>
                             <Form.Control 
                                 as="select"
-                                value={this.state.form.will_attend_practice}
+                                value={this.state.form.will_attend_practice === null ? '' : this.state.form.will_attend_practice === null}
                                 onChange={event => this.setState({ 
                                     form: {
                                         ...this.state.form,
@@ -405,7 +405,7 @@ export class InputPage extends React.Component {
                             <Form.Label>Attending satsang</Form.Label>
                             <Form.Control 
                                 as="select"
-                                value={this.state.form.will_attend_satsang}
+                                value={this.state.form.will_attend_satsang === null ? '' : this.state.form.will_attend_satsang}
                                 onChange={event => this.setState({ 
                                     form: {
                                         ...this.state.form,

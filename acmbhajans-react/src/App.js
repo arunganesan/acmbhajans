@@ -53,7 +53,6 @@ function Index() {
             </Col>
           </Row>
         </Container>
-        
 
       </header>
     </div>
@@ -80,7 +79,7 @@ class AppRouter extends React.Component {
     let loggedInLocal = JSON.parse(window.localStorage.getItem('loggedIn'));
     console.log('local storage has: ', loggedInLocal);
     this.state = {
-      showLoginForm: false,
+      showLoginForm: loggedInLocal === null,
       people: [],
       loggedIn: loggedInLocal,
     }
@@ -127,6 +126,8 @@ class AppRouter extends React.Component {
               this.setState({
                 loggedIn: person,
                 showLoginForm: false,
+              }, ()=> {
+                window.location.reload()
               });
           }}
           
