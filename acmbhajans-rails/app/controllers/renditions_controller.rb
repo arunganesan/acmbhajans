@@ -88,9 +88,6 @@ class RenditionsController < ApplicationController
       ActiveRecord::Base.logger = nil
 
       # save to file
-      attendance_pickle = Marshal.dump(attendance_summary)
-      bhajan_pickle = Marshal.dump(bhajan_summary)
-      
       attendance_summary = Marshal.load(File.binread(ATTENDANCE_FILE))
       bhajan_summary = Marshal.load(File.binread(BHAJAN_FILE))
 
