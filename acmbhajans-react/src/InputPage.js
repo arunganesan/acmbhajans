@@ -73,7 +73,6 @@ export class InputPage extends React.Component {
         else
             offset = 6 - dayNum;
         let newDate = addDays(today, offset);
-        console.log('Returning ', newDate);
         return newDate;
     }
 
@@ -338,7 +337,10 @@ export class InputPage extends React.Component {
                                     }
                                 }, () => this.fetchRequest());
                             }}
-                            filterDate={date => getDay(date) === 6}
+                            filterDate={date => {
+                                let today = new Date();
+                                return getDay(date) === 6 && date >= today;
+                            }}
                             />
                     </Form.Group>
                     </Col>

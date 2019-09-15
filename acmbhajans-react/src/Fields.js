@@ -4,7 +4,7 @@ import { Form } from 'react-bootstrap'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment'
-import getDay from "date-fns/getDay";
+import { getDay, addDays } from "date-fns";
 
 
 
@@ -73,6 +73,23 @@ export function IDField (props) {
       value={props.value} />)
 }
 
+
+export function getLastWeekendDate() {
+  let today = new Date();
+  let dayNum = getDay(today);
+
+  let offset;
+
+  if (dayNum === 6)
+      offset = 7;
+  else if (dayNum === 7)
+      offset = 6;
+  else
+      offset = 6 - dayNum;
+  
+  return addDays(today, offset-7);
+}
+
 export function DateField (props) {
   let label = props.label;
   if (!props.label) {
@@ -83,7 +100,11 @@ export function DateField (props) {
   if (props.state.forms[props.modelfield][props.field]) 
     selectedDate = new Date(
       props.state.forms[props.modelfield][props.field] + " GMT-0400");
-    
+  else {
+    selectedDate = getLastWeekendDate();
+  }
+  
+  
   return (
   <Form.Group>
     <Form.Label>{label}</Form.Label>

@@ -15,7 +15,7 @@ import { URLBASE } from './Config'
 
 import "react-datepicker/dist/react-datepicker.css";
 import { getDay, addDays, subDays }  from "date-fns";
-import { findElt, findEltName } from './Fields'
+import { findElt, findEltName, getLastWeekendDate } from './Fields'
 import { AutoSizer, Grid } from 'react-virtualized'
 
 
@@ -23,7 +23,7 @@ export class Recordings extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            chosenWeek: this.getLastWeekendDate(),
+            chosenWeek: getLastWeekendDate(),
             renditions: [],
             bhajans: [],
             people: [],
@@ -172,21 +172,6 @@ export class Recordings extends React.Component {
     }
 
 
-    getLastWeekendDate() {
-        let today = new Date();
-        let dayNum = getDay(today);
-
-        let offset;
-
-        if (dayNum === 6)
-            offset = 7;
-        else if (dayNum === 7)
-            offset = 6;
-        else
-            offset = 6 - dayNum;
-        
-        return addDays(today, offset-7);
-    }
 
     setRecordingsType(recType) {
         this.setState({ 
