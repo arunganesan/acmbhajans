@@ -204,7 +204,10 @@ export class Recordings extends React.Component {
                             chosenWeek: date 
                         }, () => this.fetchRequest());
                     }}
-                    filterDate={date => getDay(date) === 6}
+                    filterDate={date => {
+                        let today = new Date();
+                        return getDay(date) === 6 && date <= today;
+                    }}
                 /> }
                 
             </Col>
