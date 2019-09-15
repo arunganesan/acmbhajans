@@ -87,7 +87,7 @@ export class Rendition extends React.Component {
 
   generateSummary() {
     fetch(`${URLBASE()}/renditions/generate_summary`)
-    .then(() => console.log('Generated summary'));
+    .then(() => alert('Generated summary'));
   }
 
   render() {
