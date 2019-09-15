@@ -7,7 +7,7 @@ import {
   findEltName,
   } from './Fields.js'
 import { ModelEditor } from './ModelEditor'
-import { Form } from 'react-bootstrap'
+import { Button, Form } from 'react-bootstrap'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment'
@@ -85,6 +85,11 @@ export class Rendition extends React.Component {
     return `?from=${fromStr}&to=${toStr}`;
   }
 
+  generateSummary() {
+    fetch(`${URLBASE()}/renditions/generate_summary`)
+    .then(() => console.log('Generated summary'));
+  }
+
   render() {
     return (
     <ModelEditor
@@ -123,7 +128,10 @@ export class Rendition extends React.Component {
             }}
             filterDate={date => getDay(date) === 6}
           />
-       </Form.Group>)]
+       </Form.Group>),
+       (<Button variant="primary" onClick={() => this.generateSummary()}>
+         Regenerate Summary
+       </Button>)]
       }
      
       urlparams={ () => this.generateDateRange() }

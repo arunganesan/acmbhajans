@@ -74,7 +74,6 @@ export class ModelEditor extends React.Component {
     }
 
     fetchNewData() {
-      console.log("Fetching new data");
       let loadUrl = this.props.URL;
       if (this.props.urlparams)
       loadUrl += this.props.urlparams();

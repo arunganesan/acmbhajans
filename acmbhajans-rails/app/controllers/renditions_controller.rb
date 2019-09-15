@@ -114,65 +114,69 @@ class RenditionsController < ApplicationController
     def generate_summary
       ActiveRecord::Base.logger = nil
 
-      event = Event.find_by(name: params[:event])
-      renditions = Rendition.where(event: event)
-      #, weekend: Date.parse('2019-08-17'))
-      # eventually store in format:
-      # [week][person] = list of bhajans
-
-      bhajan_summary = {}
-      attendance_summary = {}
-
-      renditions.each do | rendition |
-        date = rendition.weekend
-        if !bhajan_summary.key? date
-          bhajan_summary[date] = {}
-        end
-        
-        rendition.lead.each do | person |
-          if !bhajan_summary[date].key? person.name
-            bhajan_summary[date][person.name] = []
+      # Generate for both practice and satsang
+      events = ['satsang', 'practice']
+      events.each do | event |
+        renditions = Rendition.where(event: event)
+        #, weekend: Date.parse('2019-08-17'))
+        # eventually store in format:
+        # [week][person] = list of bhajans
+  
+        bhajan_summary = {}
+        attendance_summary = {}
+  
+        renditions.each do | rendition |
+          date = rendition.weekend
+          if !bhajan_summary.key? date
+            bhajan_summary[date] = {}
           end
-
-          if !rendition.bhajan.blank? 
-            bhajan_summary[date][person.name] << rendition.bhajan.name
+          
+          rendition.lead.each do | person |
+            if !bhajan_summary[date].key? person.name
+              bhajan_summary[date][person.name] = []
+            end
+  
+            if !rendition.bhajan.blank? 
+              bhajan_summary[date][person.name] << rendition.bhajan.name
+            end
           end
         end
-      end
-
-      requests = Request.all()
-      requests.each do | request_obj |
-        # request_obj = Request.find_by(person_id: person.id, weekend: date)
-        
-        date = request_obj.weekend
-        person = request_obj.person
-
-        if person.nil? 
-          next
+  
+        requests = Request.all()
+        requests.each do | request_obj |
+          # request_obj = Request.find_by(person_id: person.id, weekend: date)
+          
+          date = request_obj.weekend
+          person = request_obj.person
+  
+          if person.nil? 
+            next
+          end
+          
+          if !attendance_summary.key? date
+            attendance_summary[date] = {}
+          end
+  
+          if event == 'practice'
+            attendance_summary[date][person.name] = request_obj.attended_practice
+          else
+            attendance_summary[date][person.name] = request_obj.attended_satsang
+          end
         end
+  
+  
+        # save to file
+        attendance_json = JSON.dump(attendance_summary)
+        bhajan_json = JSON.dump(bhajan_summary)
         
-        if !attendance_summary.key? date
-          attendance_summary[date] = {}
-        end
-
-        if params[:event] == 'practice'
-          attendance_summary[date][person.name] = request_obj.attended_practice
+        if event ==  'practice'
+          File.open(PRACTICE_ATTENDANCE_FILE, 'w') {|f| f.write(attendance_json)}
+          File.open(PRACTICE_BHAJAN_FILE, 'w') {|f| f.write(bhajan_json)}
         else
-          attendance_summary[date][person.name] = request_obj.attended_satsang
+          File.open(SATSANG_ATTENDANCE_FILE, 'w') {|f| f.write(attendance_json)}
+          File.open(SATSANG_BHAJAN_FILE, 'w') {|f| f.write(bhajan_json)}
         end
-      end
-
-
-      # save to file
-      attendance_json = JSON.dump(attendance_summary)
-      bhajan_json = JSON.dump(bhajan_summary)
-      
-      if params[:event] ==  'practice'
-        File.open(PRACTICE_ATTENDANCE_FILE, 'w') {|f| f.write(attendance_json)}
-        File.open(PRACTICE_BHAJAN_FILE, 'w') {|f| f.write(bhajan_json)}
-      else
-        File.open(SATSANG_ATTENDANCE_FILE, 'w') {|f| f.write(attendance_json)}
-        File.open(SATSANG_BHAJAN_FILE, 'w') {|f| f.write(bhajan_json)}
+  
       end
 
       head :ok
