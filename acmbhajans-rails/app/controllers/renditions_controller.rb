@@ -94,13 +94,13 @@ class RenditionsController < ApplicationController
 
       # save to file
       if params[:event] ==  'practice'
-        attendance_summary = Marshal.load(File.binread(PRACTICE_ATTENDANCE_FILE))
-        bhajan_summary = Marshal.load(File.binread(PRACTICE_BHAJAN_FILE))  
+        attendance_summary = JSON.load File.new(PRACTICE_ATTENDANCE_FILE)
+        bhajan_summary = JSON.load File.new(PRACTICE_BHAJAN_FILE)
       else
-        attendance_summary = Marshal.load(File.binread(SATSANG_ATTENDANCE_FILE))
-        bhajan_summary = Marshal.load(File.binread(SATSANG_BHAJAN_FILE))  
+        attendance_summary = JSON.load File.new(SATSANG_ATTENDANCE_FILE)
+        bhajan_summary = JSON.load File.new(SATSANG_BHAJAN_FILE)
       end
-      
+
       render :json => {
         'bhajan_summary': bhajan_summary,
         'attendance_summary': attendance_summary,
@@ -164,15 +164,15 @@ class RenditionsController < ApplicationController
 
 
       # save to file
-      attendance_pickle = Marshal.dump(attendance_summary)
-      bhajan_pickle = Marshal.dump(bhajan_summary)
+      attendance_json = JSON.dump(attendance_summary)
+      bhajan_json = JSON.dump(bhajan_summary)
       
       if params[:event] ==  'practice'
-        File.open(PRACTICE_ATTENDANCE_FILE, 'wb') {|f| f.write(Marshal.dump(attendance_pickle))}
-        File.open(PRACTICE_BHAJAN_FILE, 'wb') {|f| f.write(Marshal.dump(bhajan_pickle))}
+        File.open(PRACTICE_ATTENDANCE_FILE, 'w') {|f| f.write(attendance_json)}
+        File.open(PRACTICE_BHAJAN_FILE, 'w') {|f| f.write(bhajan_json)}
       else
-        File.open(SATSANG_ATTENDANCE_FILE, 'wb') {|f| f.write(Marshal.dump(attendance_pickle))}
-        File.open(SATSANG_BHAJAN_FILE, 'wb') {|f| f.write(Marshal.dump(bhajan_pickle))}
+        File.open(SATSANG_ATTENDANCE_FILE, 'w') {|f| f.write(attendance_json)}
+        File.open(SATSANG_BHAJAN_FILE, 'w') {|f| f.write(bhajan_json)}
       end
 
       head :ok
