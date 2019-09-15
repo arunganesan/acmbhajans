@@ -115,8 +115,9 @@ class RenditionsController < ApplicationController
       ActiveRecord::Base.logger = nil
 
       # Generate for both practice and satsang
-      events = ['satsang', 'practice']
-      events.each do | event |
+      event_names = ['satsang', 'practice']
+      event_names.each do | event_name |
+        event = Event.find_by(name: event_name)
         renditions = Rendition.where(event: event)
         #, weekend: Date.parse('2019-08-17'))
         # eventually store in format:
@@ -157,7 +158,7 @@ class RenditionsController < ApplicationController
             attendance_summary[date] = {}
           end
   
-          if event == 'practice'
+          if event.name == 'practice'
             attendance_summary[date][person.name] = request_obj.attended_practice
           else
             attendance_summary[date][person.name] = request_obj.attended_satsang
@@ -169,7 +170,7 @@ class RenditionsController < ApplicationController
         attendance_json = JSON.dump(attendance_summary)
         bhajan_json = JSON.dump(bhajan_summary)
         
-        if event ==  'practice'
+        if event.name == 'practice'
           File.open(PRACTICE_ATTENDANCE_FILE, 'w') {|f| f.write(attendance_json)}
           File.open(PRACTICE_BHAJAN_FILE, 'w') {|f| f.write(bhajan_json)}
         else
