@@ -2,8 +2,11 @@ class RenditionsController < ApplicationController
     require "time"
     skip_before_action :verify_authenticity_token
 
-    ATTENDANCE_FILE = 'attendance.obj'
-    BHAJAN_FILE = 'bhajan.obj'
+    PRACTICE_ATTENDANCE_FILE = 'practice_attendance.obj'
+    PRACTICE_BHAJAN_FILE = 'practice_bhajan.obj'
+
+    SATSANG_ATTENDANCE_FILE = 'satsang_attendance.obj'
+    SATSANG_BHAJAN_FILE = 'satsang_bhajan.obj'
 
     def edit
       if request.post?
@@ -87,10 +90,18 @@ class RenditionsController < ApplicationController
     def summarize
       ActiveRecord::Base.logger = nil
 
+      event = Event.find_by(name: params[:event])
+      
       # save to file
-      attendance_summary = Marshal.load(File.binread(ATTENDANCE_FILE))
-      bhajan_summary = Marshal.load(File.binread(BHAJAN_FILE))
+      if params[:event] ==  'practice'
+        attendance_summary = Marshal.load(File.binread(PRACTICE_ATTENDANCE_FILE))
+        bhajan_summary = Marshal.load(File.binread(PRACTICE_BHAJAN_FILE))  
+      else
+        attendance_summary = Marshal.load(File.binread(SATSANG_ATTENDANCE_FILE))
+        bhajan_summary = Marshal.load(File.binread(SATSANG_BHAJAN_FILE))  
+      end
 
+      
       render :json => {
         'bhajan_summary': bhajan_summary,
         'attendance_summary': attendance_summary,
@@ -157,8 +168,13 @@ class RenditionsController < ApplicationController
       attendance_pickle = Marshal.dump(attendance_summary)
       bhajan_pickle = Marshal.dump(bhajan_summary)
       
-      File.open(ATTENDANCE_FILE, 'wb') {|f| f.write(Marshal.dump(attendance_pickle))}
-      File.open(BHAJAN_FILE, 'wb') {|f| f.write(Marshal.dump(bhajan_pickle))}
+      if params[:event] ==  'practice'
+        File.open(PRACTICE_ATTENDANCE_FILE, 'wb') {|f| f.write(Marshal.dump(attendance_pickle))}
+        File.open(PRACTICE_BHAJAN_FILE, 'wb') {|f| f.write(Marshal.dump(bhajan_pickle))}
+      else
+        File.open(SATSANG_ATTENDANCE_FILE, 'wb') {|f| f.write(Marshal.dump(attendance_pickle))}
+        File.open(SATSANG_BHAJAN_FILE, 'wb') {|f| f.write(Marshal.dump(bhajan_pickle))}
+      end
 
       header :ok
       return
