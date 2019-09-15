@@ -91,7 +91,7 @@ class RenditionsController < ApplicationController
       ActiveRecord::Base.logger = nil
 
       event = Event.find_by(name: params[:event])
-      
+
       # save to file
       if params[:event] ==  'practice'
         attendance_summary = Marshal.load(File.binread(PRACTICE_ATTENDANCE_FILE))
@@ -176,7 +176,7 @@ class RenditionsController < ApplicationController
         File.open(SATSANG_BHAJAN_FILE, 'wb') {|f| f.write(Marshal.dump(bhajan_pickle))}
       end
 
-      header :ok
+      head :ok
       return
     end
   end
