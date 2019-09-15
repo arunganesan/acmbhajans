@@ -100,7 +100,6 @@ class RenditionsController < ApplicationController
         attendance_summary = Marshal.load(File.binread(SATSANG_ATTENDANCE_FILE))
         bhajan_summary = Marshal.load(File.binread(SATSANG_BHAJAN_FILE))  
       end
-
       
       render :json => {
         'bhajan_summary': bhajan_summary,
