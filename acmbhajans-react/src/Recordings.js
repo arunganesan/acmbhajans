@@ -134,7 +134,7 @@ export class Recordings extends React.Component {
                     break
                 case 3:
                     content = rendition.order;
-                    content = content == 0 ? 'Practice' : content;
+                    content = content == 0 ? 'P' : content;
                     break
                 case 4:
                     let bhajan = findElt(rendition.bhajan_id, this.state.bhajans)
@@ -164,10 +164,11 @@ export class Recordings extends React.Component {
 
     _getColumnWidth({index}) {
         switch (index) {
-            case 1:
-        case 3:
-            return 200;
-            default:
+        case 0:
+            return 50;
+        case 4:
+            return 450;
+        default:
             return 125;
         }
     }
