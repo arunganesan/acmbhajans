@@ -165,9 +165,11 @@ export class Recordings extends React.Component {
     _getColumnWidth({index}) {
         switch (index) {
         case 0:
+        case 3:
             return 50;
+        case 2:
         case 4:
-            return 450;
+            return 250;
         default:
             return 125;
         }
