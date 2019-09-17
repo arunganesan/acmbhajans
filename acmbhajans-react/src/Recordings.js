@@ -10,6 +10,7 @@ import {
 import DatePicker from "react-datepicker";
 import _ from 'lodash'
 import moment from 'moment'
+import { MdFileDownload } from 'react-icons/md'
 
 import { URLBASE } from './Config'
 
@@ -93,22 +94,22 @@ export class Recordings extends React.Component {
 
             switch (columnIndex) {
                 case 0:
-                    header = 'Date'
+                    header = ''
                     break
                 case 1:
-                    header = 'Lead(s)'
+                    header = 'Date'
                     break
                 case 2:
-                    header = 'Order'
+                    header = 'Lead(s)'
                     break
                 case 3:
-                    header = 'Bhajan'
+                    header = 'Order'
                     break
                 case 4:
-                    header = 'URL'
+                    header = 'Bhajan'
                     break
                 default:
-                    header = '.'
+                    header = ''
             }
             
             return <div className="cell top-next-week-row" style={style}>{header}</div>;
@@ -119,27 +120,27 @@ export class Recordings extends React.Component {
 
             switch (columnIndex) {
                 case 0:
+                    content = ''
+                    if (rendition.recording_url !== '' && rendition.recording_url !== undefined && rendition.recording_url !== null)
+                        content = (<a target='_blank' rel='noopener noreferrer' href={rendition.recording_url}><MdFileDownload /></a>)
+                    break
+                case 1:
                     content = rendition.weekend;
                     break;
-                case 1:
+                case 2:
                     let lead_list = this.state.lead_list[rendition.id];
                     let people_list = lead_list.map( pid => findEltName(pid, this.state.people));
                     content = _.join(people_list, ', ')
                     break
-                case 2:
+                case 3:
                     content = rendition.order;
                     content = content == 0 ? 'Practice' : content;
                     break
-                case 3:
+                case 4:
                     let bhajan = findElt(rendition.bhajan_id, this.state.bhajans)
                     if (bhajan !== null) 
                         content = bhajan.name;
                     break;
-                case 4:
-                    content = ''
-                    if (rendition.recording_url !== '' && rendition.recording_url !== undefined && rendition.recording_url !== null)
-                        content = (<a target='_blank' rel='noopener noreferrer' href={rendition.recording_url}>Link</a>)
-                    break
                 default:
                     content = '.'
             }
