@@ -44,6 +44,7 @@ export class InputPage extends React.Component {
             people: [],
             ready_list: {},
 
+            filteredRequests: [],
             showType: 'all',
 
             overscanColumnCount: 0,
@@ -100,6 +101,7 @@ export class InputPage extends React.Component {
         .then(data => {
             this.setState({
               ...data,
+              filteredRequests: data.requests,
               form: {
                   ...data.personal_request[0]
               },
@@ -198,24 +200,10 @@ export class InputPage extends React.Component {
             return <div className="cell top-next-week-row" style={style}>{header}</div>;
         } else {
             let content = ''
-            let request = this.state.requests[rowIndex-1];
+            let request = this.state.filteredRequests[rowIndex-1];
             let firstColumnClass = 'next-week-first-column';
             let bhajan;
             
-            if (this.state.showType === 'coming') {
-                if (
-                    (request.will_attend_practice === false || request.will_attend_practice === null) &&
-                    (request.will_attend_satsang === false || request.will_attend_satsang === null) &&
-                    (request.practice_request_id == null && request.satsang_request_id == null)) {
-                    return <></>;
-                }
-            } else if (this.state.showType === 'singing') {
-                if (
-                    (request.practice_request_id == null && request.satsang_request_id == null)) {
-                    return <></>;
-                }
-            }
-
             switch (columnIndex) {
                 case 0:
                     content = findEltName(request.person_id, this.state.people)
@@ -288,8 +276,32 @@ export class InputPage extends React.Component {
     }
 
     setShowType(showType) {
+       
+        let filteredRequests = this.state.requests.filter((request) => {            
+            if (showType === 'coming') {
+                if (
+                    (request.will_attend_practice === false || request.will_attend_practice === null) &&
+                    (request.will_attend_satsang === false || request.will_attend_satsang === null) &&
+                    (request.practice_request_id == null && request.satsang_request_id == null)) {
+                    return false;
+                } else {
+                    return true;
+                }
+            } else if (showType === 'singing') {
+                if (
+                    (request.practice_request_id == null && request.satsang_request_id == null)) {
+                    return false;
+                } else {
+                    return true;
+                }
+            } 
+
+            return true;
+        });
+
         this.setState({
-            showType: showType
+            showType: showType,
+            filteredRequests: filteredRequests,
         }, () => { this.list && this.list.forceUpdate && this.list.forceUpdate() });
     }
 
@@ -326,7 +338,7 @@ export class InputPage extends React.Component {
                     columnWidth={this._getColumnWidth}
                     rowHeight={this._getRowHeight}
                     columnCount={5}
-                    rowCount={this.state.requests.length+1}
+                    rowCount={this.state.filteredRequests.length+1}
                     height={1000}
                     noContentRenderer={this._noContentRenderer}
                     overscanColumnCount={this.state.overscanColumnCount}
