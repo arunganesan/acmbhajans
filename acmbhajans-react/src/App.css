@@ -136,6 +136,10 @@ padding: 1.25rem;
   background-color: var(--positive-action-color);
 }
 
+.next-week-toggle {
+  margin-top: 15px;
+}
+
 .ready_bhajan, .my-ready-list-item {
   border-radius: 5px;
   border: solid thin black;

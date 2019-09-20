@@ -1,5 +1,7 @@
 import React from "react";
-import { Card, Button, Form, Row, Col, Container } from 'react-bootstrap'
+import { ToggleButton,
+    ToggleButtonGroup,
+    Card, Button, Form, Row, Col, Container } from 'react-bootstrap'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -41,6 +43,8 @@ export class InputPage extends React.Component {
             bhajans: [],
             people: [],
             ready_list: {},
+
+            showType: 'all',
 
             overscanColumnCount: 0,
             overscanRowCount: 10,
@@ -197,6 +201,20 @@ export class InputPage extends React.Component {
             let request = this.state.requests[rowIndex-1];
             let firstColumnClass = 'next-week-first-column';
             let bhajan;
+            
+            if (this.state.showType === 'coming') {
+                if (
+                    (request.will_attend_practice === false || request.will_attend_practice === null) &&
+                    (request.will_attend_satsang === false || request.will_attend_satsang === null) &&
+                    (request.practice_request_id == null && request.satsang_request_id == null)) {
+                    return <></>;
+                }
+            } else if (this.state.showType === 'singing') {
+                if (
+                    (request.practice_request_id == null && request.satsang_request_id == null)) {
+                    return <></>;
+                }
+            }
 
             switch (columnIndex) {
                 case 0:
@@ -269,12 +287,34 @@ export class InputPage extends React.Component {
         });
     }
 
+    setShowType(showType) {
+        this.setState({
+            showType: showType
+        }, () => { this.list && this.list.forceUpdate && this.list.forceUpdate() });
+    }
+
     render() {
         return (<div>
             { this.generateForm() }
-
-            <Container><Row>
+            <Container>
+                <Row>
                 <Col>
+                <ToggleButtonGroup 
+                    type="radio" 
+                    name="options"
+                    className='next-week-toggle'
+                    defaultValue='all'
+                    value={this.state.showType} 
+                    onChange={(e) => this.setShowType(e)}>
+                
+                <ToggleButton variant='outline-primary' value='all'>All</ToggleButton>
+                <ToggleButton variant='outline-primary' value='coming'>Coming</ToggleButton>
+                <ToggleButton variant='outline-primary' value='singing'>Song Requested</ToggleButton>
+                </ToggleButtonGroup>
+                </Col>
+                </Row>
+            <Row>
+            <Col>
                 <AutoSizer disableHeight>
             {({width}) => (
                 <Grid
@@ -480,7 +520,6 @@ export class InputPage extends React.Component {
                 </Row>
                 <Row>
                     <Col><Button onClick={this.handleSubmit}>Save</Button> If you do not see your bhajan in the drop down list, please contact the coordinators @ <a href='mailto:acmbhajans@gmail.com'>acmbhajans@gmail.com</a></Col>
-                    
                 </Row>
         </Container>
     </Form>)
