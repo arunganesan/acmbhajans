@@ -90,18 +90,18 @@ export class Summary extends React.Component {
         let rowClassName = this._getRowClassName(rowIndex);
         if (columnIndex === 0 && rowIndex === 0)  {
             if (this.state.sortedDates.length === 0) return null;
-            else return <div className={`cell`} style={style}></div>
+            else return <div className={`cell summaryCell`} style={style}></div>
         }
 
         let dateStr = this.state.sortedDates[columnIndex - 1];
         let peopleStr = this.state.sortedPeople[rowIndex - 1];
         
         if (rowIndex === 0) {
-            return <div className="cell topRow" style={style}>{this.state.sortedDates[columnIndex-1]}</div>;
+            return <div className="cell summaryCell topRow" style={style}>{this.state.sortedDates[columnIndex-1]}</div>;
         } else if (columnIndex === 0) {
-            return <div className="cell leftRow" style={style}>{this.state.sortedPeople[rowIndex-1]}</div>;
+            return <div className="cell summaryCell leftRow nameRow" style={style}>{this.state.sortedPeople[rowIndex-1]}</div>;
         } else {
-            let classNames = `cell ${rowClassName} `
+            let classNames = `cell summaryCell ${rowClassName} `
 
             // console.log(dateStr, peopleStr, this.state.attendance_summary[dateStr][peopleStr])
             if (_.has(this.state.attendance_summary, dateStr) && _.has(this.state.attendance_summary[dateStr], peopleStr)) {
@@ -132,7 +132,7 @@ export class Summary extends React.Component {
     _getColumnWidth({index}) {
         switch (index) {
           case 0:
-            return 250;
+            return 75;
           default:
             return 125;
         }

@@ -140,6 +140,13 @@ padding: 1.25rem;
   margin-top: 15px;
 }
 
+.summaryCell {
+  /* transform: rotate(-90deg); */
+  font-size: 0.75em;
+}
+
+
+
 .ready_bhajan, .my-ready-list-item {
   border-radius: 5px;
   border: solid thin black;

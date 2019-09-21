@@ -196,13 +196,18 @@ class AppRouter extends React.Component {
                   <MyLink to="attendance" />
                 </>)
             }
-            
-          </Nav>
-            <Navbar.Collapse className="justify-content-end">
+
+
                 <Navbar.Text>
                   { this.renderLogin() }
                 </Navbar.Text>
-                </Navbar.Collapse>
+            
+          </Nav>
+            {/* <Navbar.Collapse className="justify-content-end">
+                <Navbar.Text>
+                  { this.renderLogin() }
+                </Navbar.Text>
+                </Navbar.Collapse> */}
           </Navbar>
 
         { this.state.showLoginForm && this.generateLoginForm() }
