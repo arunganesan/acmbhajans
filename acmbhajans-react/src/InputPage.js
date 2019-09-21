@@ -72,7 +72,7 @@ export class InputPage extends React.Component {
 
         let offset;
         if (dayNum === 6)
-            offset = 7;
+            offset = 0;
         else if (dayNum === 7)
             offset = 6;
         else
