@@ -15,7 +15,7 @@ import CloseIcon from '@material-ui/icons/Close';
 
 import _ from 'lodash'
 import moment from 'moment';
-import { getDay, addDays } from "date-fns";
+import { getDay, subDays, addDays } from "date-fns";
 import { findElt, findEltName } from './Fields'
 
 import { AutoSizer, Grid } from 'react-virtualized'
@@ -394,7 +394,7 @@ export class InputPage extends React.Component {
                             }}
                             filterDate={date => {
                                 let today = new Date();
-                                return getDay(date) === 6 && date >= today;
+                                return getDay(date) === 6 && date >= subDays(today, 1);
                             }}
                             />
                     </Form.Group>
