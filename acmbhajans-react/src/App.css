@@ -140,7 +140,7 @@ padding: 1.25rem;
   margin-top: 15px;
 }
 
-.summaryCell {
+.summaryCell, .nextWeekCell {
   /* transform: rotate(-90deg); */
   font-size: 0.75em;
 }

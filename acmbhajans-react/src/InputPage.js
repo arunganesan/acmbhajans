@@ -182,13 +182,13 @@ export class InputPage extends React.Component {
                     header = 'Name'
                     break
                 case 1:
-                    header = 'Will attend practice'
+                    header = 'Practice?'
                     break
                 case 2:
                     header = 'Practice bhajan'
                     break
                 case 3:
-                    header = 'Will attend satsang'
+                    header = 'Satsang?'
                     break
                 case 4:
                     header = 'Satsang bhajan'
@@ -197,7 +197,7 @@ export class InputPage extends React.Component {
                     header = ''
             }
             
-            return <div className="cell top-next-week-row" style={style}>{header}</div>;
+            return <div className="cell nextWeekCell top-next-week-row" style={style}>{header}</div>;
         } else {
             let content = ''
             let request = this.state.filteredRequests[rowIndex-1];
@@ -237,7 +237,7 @@ export class InputPage extends React.Component {
                     break
             }
             
-            return <div className={`cell ${rowClassName} ` + (columnIndex === 0 ? firstColumnClass : '')} style={style}>{content}</div>;
+            return <div className={`cell  nextWeekCell ${rowClassName} ` + (columnIndex === 0 ? firstColumnClass : '')} style={style}>{content}</div>;
         }
     }
 
@@ -255,9 +255,12 @@ export class InputPage extends React.Component {
     _getColumnWidth({index}) {
         switch (index) {
           case 0:
-            return 250;
+            return 75;
+        case 1:
+        case 3:
+            return 75;
           default:
-            return 125;
+            return 150;
         }
     }
 
