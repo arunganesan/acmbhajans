@@ -135,7 +135,7 @@ class RequestController < ApplicationController
 
 
     Person.all.each do | person | 
-      if attendance_summary[date].key? person.name
+      if !attendance_summary[date].key? person.name
         attendance_summary[date][person.name] = nil
       end
     end
