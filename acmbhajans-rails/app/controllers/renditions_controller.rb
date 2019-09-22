@@ -159,6 +159,12 @@ class RenditionsController < ApplicationController
           if person.nil? 
             next
           end
+
+
+          if date >= today
+            next
+          end
+          
           
           if !attendance_summary.key? date
             attendance_summary[date] = {}
