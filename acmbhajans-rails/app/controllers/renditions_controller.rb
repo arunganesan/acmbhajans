@@ -126,8 +126,14 @@ class RenditionsController < ApplicationController
         bhajan_summary = {}
         attendance_summary = {}
   
+        today = Date.today
+
         renditions.each do | rendition |
           date = rendition.weekend
+          if date >= today
+            next
+          end
+          
           if !bhajan_summary.key? date
             bhajan_summary[date] = {}
           end
