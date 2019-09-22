@@ -408,7 +408,7 @@ export class InputPage extends React.Component {
                             <Form.Label>Attending practice</Form.Label>
                             <Form.Control 
                                 as="select"
-                                value={this.state.form.will_attend_practice === null ? '' : this.state.form.will_attend_practice === null}
+                                value={this.state.form.will_attend_practice === null ? '' : this.state.form.will_attend_practice}
                                 onChange={event => this.setState({ 
                                     form: {
                                         ...this.state.form,
@@ -463,12 +463,14 @@ export class InputPage extends React.Component {
                             <Form.Control 
                                 as="select"
                                 value={this.state.form.will_attend_satsang === null ? '' : this.state.form.will_attend_satsang}
-                                onChange={event => this.setState({ 
+                                onChange={event =>  {
+                                    console.log(event, event.target.value);
+                                    this.setState({ 
                                     form: {
                                         ...this.state.form,
                                         will_attend_satsang: event.target.value
-                                    }
-                                    })}
+                                    }})
+                                }}
                             >
                                 <option value={true}>Yes</option>
                                 <option value={''}>Undecided</option>
