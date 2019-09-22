@@ -10,6 +10,7 @@ import { AutoSizer, MultiGrid } from 'react-virtualized'
 import _ from 'lodash'
 import { URLBASE } from './Config'
 import { MdDone, MdClear } from 'react-icons/md'
+import Snackbar from '@material-ui/core/Snackbar';
 
 export class Attendance extends React.Component {
     constructor(props) {
@@ -17,6 +18,10 @@ export class Attendance extends React.Component {
         this.state = {
             event: 'satsang',
             attendance_summary: {},
+
+
+            loadingSnackbarOpen: false,
+            snackbarMessage: '',
 
             localchanges: {},
             sortedDates: [],
@@ -199,12 +204,28 @@ export class Attendance extends React.Component {
             })})
             .then(response => {
                 console.log('Got response from loading.');
+                this.showMessage('Saved attendance');
                 this.fetchSummaryTable();
             })
     }
 
+    showMessage(message) {
+        this.setState({
+            loadingSnackbarOpen: true,
+            snackbarMessage: message
+        });
+    }
+  
+    closeSnackbar() {
+        this.setState({
+            loadingSnackbarOpen: false
+        });
+    }
+  
+
     render() {
         return (
+        <div>
         <Container>
             <Row>
                 <Col>
@@ -263,6 +284,22 @@ export class Attendance extends React.Component {
             </AutoSizer>
 
             </Row>
-        </Container>);
+        </Container>
+        
+        <Snackbar
+                anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+                }}
+                open={this.state.loadingSnackbarOpen}
+                autoHideDuration={1000}
+                onClose={() => this.closeSnackbar()}
+                ContentProps={{
+                'aria-describedby': 'message-id',
+                }}
+                message={<span id="message-id">{this.state.snackbarMessage}</span>}
+            />
+
+        </div>);
     }
 }
