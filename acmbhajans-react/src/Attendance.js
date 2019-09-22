@@ -49,7 +49,6 @@ export class Attendance extends React.Component {
         .then(res => res.json())
         .then(data => {
             // Create indexes
-
             let dates = _.sortBy(_.keys(data.attendance_summary)) 
             dates = _.reverse(dates);
 
@@ -69,7 +68,7 @@ export class Attendance extends React.Component {
                 attendance_summary: data.attendance_summary,
                 sortedDates: dates,
                 sortedPeople: uniqPeople,
-                localchanges: [],
+                localchanges: {},
             }, updateFunc)
 
             setTimeout(updateFunc, 500);
@@ -110,13 +109,11 @@ export class Attendance extends React.Component {
         if (!_.has(changes, dateStr))
             changes[dateStr] = {};
         
-        let keystr = `attended_${this.state.event}`;
         if (!_.has(changes[dateStr], peopleStr)) 
             changes[dateStr][peopleStr] = {}
         
-        
+        let keystr = `attended_${this.state.event}`;
         changes[dateStr][peopleStr][keystr] = newValue;
-        
         let updateFunc = () => {
             console.log('Updating grid');
             this.list.forceUpdateGrids()}
@@ -191,6 +188,8 @@ export class Attendance extends React.Component {
 
 
     saveAttendance() {
+
+        console.log('Saving attendance. Local changes is ', this.state.localchanges);
         let loadUrl = `${URLBASE()}/request/attendance`; 
         fetch(loadUrl, {
             method: 'POST', mode: 'cors', cache: 'no-cache',
@@ -199,7 +198,7 @@ export class Attendance extends React.Component {
                 changes: this.state.localchanges
             })})
             .then(response => {
-                console.log('Got response');
+                console.log('Got response from loading.');
                 this.fetchSummaryTable();
             })
     }
