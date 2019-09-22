@@ -124,6 +124,8 @@ export class InputPage extends React.Component {
         loadUrl += '&person_id=' + this.props.personId;
         loadUrl += '&personal_request'
         
+
+
         fetch(loadUrl, {
           method: 'POST', mode: 'cors', cache: 'no-cache',
           headers: { 'Content-type': 'application/json' },
@@ -136,7 +138,7 @@ export class InputPage extends React.Component {
                 form: {
                     ...data.personal_request[0]
                 }
-            }, () => this.list.forceUpdate())
+            }, () => this.fetchRequest())
           });
 
         event.preventDefault();
