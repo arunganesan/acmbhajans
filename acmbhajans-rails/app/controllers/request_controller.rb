@@ -103,7 +103,7 @@ class RequestController < ApplicationController
       end
 
 
-      header :ok
+      head :ok
       return
     end
 
