@@ -108,9 +108,11 @@ class RequestController < ApplicationController
     end
 
     event = Event.find_by(name: params[:event])
+    
     attendance_summary = {}
     
     requests = Request.all
+    date = nil
     requests.each do | request_obj |
       date = request_obj.weekend
       person = request_obj.person
@@ -129,6 +131,16 @@ class RequestController < ApplicationController
         attendance_summary[date][person.name] = request_obj.attended_satsang
       end
     end
+
+
+
+    Person.all.each do | person | 
+      if attendance_summary[date].key? person.name
+        attendance_summary[date][person.name] = nil
+      end
+    end
+    
+
       
     render :json => {
       'attendance_summary': attendance_summary,
