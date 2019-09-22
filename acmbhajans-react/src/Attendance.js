@@ -69,6 +69,7 @@ export class Attendance extends React.Component {
                 attendance_summary: data.attendance_summary,
                 sortedDates: dates,
                 sortedPeople: uniqPeople,
+                localchanges: [],
             }, updateFunc)
 
             setTimeout(updateFunc, 500);
