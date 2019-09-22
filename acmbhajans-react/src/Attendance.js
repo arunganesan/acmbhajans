@@ -1,5 +1,6 @@
 import React from "react";
 import { 
+    Button,
     Col, 
     Container, 
     Row,
@@ -17,6 +18,7 @@ export class Attendance extends React.Component {
             event: 'satsang',
             attendance_summary: {},
 
+            localchanges: {},
             sortedDates: [],
             sortedPeople: [],
             overscanColumnCount: 0,
@@ -91,7 +93,8 @@ export class Attendance extends React.Component {
         if (
             !_.has(this.state.attendance_summary, dateStr) 
             || !_.has(this.state.attendance_summary[dateStr], peopleStr)
-            || this.state.attendance_summary[dateStr][peopleStr] === null) {
+            || this.state.attendance_summary[dateStr][peopleStr] === null
+            || this.state.attendance_summary[dateStr][peopleStr] === '') {
             newValue = true;
         } else if (this.state.attendance_summary[dateStr][peopleStr] === true) {
             newValue = false;
@@ -99,18 +102,29 @@ export class Attendance extends React.Component {
             newValue = '';
         }
 
-        console.log('PREVIOUS VALUE', this.state.attendance_summary[dateStr][peopleStr])
-        console.log('NEW VALUE', newValue);
-        
-        let loadUrl = `${URLBASE()}/request/attendance?person=${peopleStr}&weekend=${dateStr}`; 
-        loadUrl += `&attended_${this.state.event}=${newValue}`
-        fetch(loadUrl, {
-            method: 'POST', mode: 'cors', cache: 'no-cache'})
-            .then(response => {
-                console.log('Got response');
-                this.fetchSummaryTable();
-            })
+        let changes = this.state.localchanges;
+        let attendance = this.state.attendance_summary;
+        attendance[dateStr][peopleStr] = newValue;
 
+        if (!_.has(changes, dateStr))
+            changes[dateStr] = {};
+        
+        let keystr = `attended_${this.state.event}`;
+        if (!_.has(changes[dateStr], peopleStr)) 
+            changes[dateStr][peopleStr] = {}
+        
+        
+        changes[dateStr][peopleStr][keystr] = newValue;
+        
+        let updateFunc = () => {
+            console.log('Updating grid');
+            this.list.forceUpdateGrids()}
+
+
+        this.setState({
+            localchanges: changes,
+            attendance_summary: attendance,
+        }, updateFunc);
     }
       
     _cellRenderer({columnIndex, key, rowIndex, style}) {
@@ -169,6 +183,26 @@ export class Attendance extends React.Component {
         }
       }
 
+    generateSummary() {
+        fetch(`${URLBASE()}/renditions/generate_summary`)
+        .then(() => alert('Generated summary'));
+    }
+
+
+    saveAttendance() {
+        let loadUrl = `${URLBASE()}/request/attendance`; 
+        fetch(loadUrl, {
+            method: 'POST', mode: 'cors', cache: 'no-cache',
+            headers: { 'Content-type': 'application/json' },
+            body: JSON.stringify({
+                changes: this.state.localchanges
+            })})
+            .then(response => {
+                console.log('Got response');
+                this.fetchSummaryTable();
+            })
+    }
+
     render() {
         return (
         <Container>
@@ -183,6 +217,17 @@ export class Attendance extends React.Component {
                         <ToggleButton variant="outline-primary" value='practice'>Practice</ToggleButton>
                         <ToggleButton variant="outline-primary" value='satsang'>Satsang</ToggleButton>
                     </ToggleButtonGroup>
+                </Col>
+                <Col>
+                <Button variant="primary" onClick={() => this.generateSummary()}>
+                    Regenerate Summary
+                </Button>
+                </Col>
+
+                <Col>
+                <Button variant="primary" disabled={_.keys(this.state.localchanges).length === 0} onClick={() => this.saveAttendance()}>
+                    Save local changes
+                </Button>
                 </Col>
             </Row>
 

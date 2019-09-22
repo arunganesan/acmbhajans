@@ -75,31 +75,36 @@ class RequestController < ApplicationController
   def attendance
     ActiveRecord::Base.logger = nil
     if request.post?
-      # if params['id'] == '' || params['id'].nil?
-      #   request_obj = Request.new  
-      # else
-      #   request_obj = Request.find_by(id: params['id'])
-      # end
+      changes = params['changes']
 
-      date = Date.parse(params['weekend'])
-      person = Person.find_by(name: params['person'])
-      
-      request_obj = Request.find_by(person: person, weekend: date)
-      if request_obj.blank?
-        request_obj = Request.new
-        request_obj.person = person
-        request_obj.weekend = date
+      changes.each do | weekendStr, allDateValues |
+        allDateValues.each do | personStr, delta |
+
+          date = Date.parse(weekendStr)
+          person = Person.find_by(name: personStr)
+          
+          request_obj = Request.find_by(person: person, weekend: date)
+          if request_obj.blank?
+            request_obj = Request.new
+            request_obj.person = person
+            request_obj.weekend = date
+          end
+          
+          if delta.has_key? 'attended_practice'
+            request_obj.attended_practice = delta['attended_practice']
+          end
+    
+          if delta.has_key? 'attended_satsang'
+            request_obj.attended_satsang = delta['attended_satsang']
+          end
+          
+          request_obj.save!
+        end
       end
 
-      if params.has_key? 'attended_practice'
-        request_obj.attended_practice = params['attended_practice']
-      end
 
-      if params.has_key? 'attended_satsang'
-        request_obj.attended_satsang = params['attended_satsang']
-      end
-      
-      request_obj.save!
+      header :ok
+      return
     end
 
     event = Event.find_by(name: params[:event])
