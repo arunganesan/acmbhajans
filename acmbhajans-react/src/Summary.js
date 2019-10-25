@@ -9,6 +9,8 @@ import { AutoSizer, MultiGrid } from 'react-virtualized'
 import styles from './Grid.css';
 import _ from 'lodash'
 import { URLBASE } from './Config'
+import Snackbar from '@material-ui/core/Snackbar';
+
 
 export class Summary extends React.Component {
     constructor(props) {
@@ -25,6 +27,8 @@ export class Summary extends React.Component {
             rowHeight: 40,
 
             tableHeight: 1000,
+
+            loadingData: false,
         };
 
 
@@ -44,6 +48,9 @@ export class Summary extends React.Component {
     }
 
     fetchSummaryTable() {
+        this.setState({
+            loadingData: true
+        })
         let loadUrl = `${URLBASE()}/renditions/summarize?event=${this.state.event}`; 
         fetch(loadUrl)
         .then(res => res.json())
@@ -70,6 +77,7 @@ export class Summary extends React.Component {
                 bhajan_summary: data.bhajan_summary,
                 sortedDates: dates,
                 sortedPeople: uniqPeople,
+                loadingData: false,
             })
         });
     }
@@ -159,34 +167,44 @@ export class Summary extends React.Component {
             <AutoSizer disableHeight>
             {({width}) => (
                 <MultiGrid
-                fixedColumnCount={1}
-                fixedRowCount={1}
+                    fixedColumnCount={1}
+                    fixedRowCount={1}
 
-                cellRenderer={this._cellRenderer}
-                
-                classNameBottomLeftGrid="BodyGrid namesGrid"
-                classNameBottomRightGrid="BodyGrid"
-                classNameTopLeftGrid="BodyGrid topLeftGrid"
-                classNameTopRightGrid="BodyGrid datesGrid"
-                
+                    cellRenderer={this._cellRenderer}
+                    classNameBottomLeftGrid="BodyGrid namesGrid"
+                    classNameBottomRightGrid="BodyGrid"
+                    classNameTopLeftGrid="BodyGrid topLeftGrid"
+                    classNameTopRightGrid="BodyGrid datesGrid"
 
-                columnWidth={this._getColumnWidth}
-                rowHeight={this._getRowHeight}
-                
-                columnCount={this.state.sortedDates.length+1}
-                rowCount={this.state.sortedPeople.length+1}
+                    columnWidth={this._getColumnWidth}
+                    rowHeight={this._getRowHeight}
+                    columnCount={this.state.sortedDates.length+1}
+                    rowCount={this.state.sortedPeople.length+1}
 
-                height={this.state.tableHeight}
-                noContentRenderer={this._noContentRenderer}
-                overscanColumnCount={this.state.overscanColumnCount}
-                overscanRowCount={this.state.overscanRowCount}
-                
-                width={width}
+                    height={this.state.tableHeight}
+                    noContentRenderer={this._noContentRenderer}
+                    overscanColumnCount={this.state.overscanColumnCount}
+                    overscanRowCount={this.state.overscanRowCount}
+                    
+                    width={width}
                 />
             )}
             </AutoSizer>
 
             </Row>
+
+            <Snackbar
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                }}
+                open={this.state.loadingData}
+                onClose={() => {}}
+                ContentProps={{
+                'aria-describedby': 'message-id',
+                }}
+                message={<span id="message-id">Loading</span>}
+            />
         </Container>);
     }
 }
