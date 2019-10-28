@@ -138,8 +138,13 @@ export class Recordings extends React.Component {
                     break
                 case 4:
                     let bhajan = findElt(rendition.bhajan_id, this.state.bhajans)
-                    if (bhajan !== null) 
+                    if (bhajan !== null)  {
                         content = bhajan.name;
+                        if (rendition.shruti !=  undefined) {
+                            content += ` (${rendition.shruti})`;
+                        }
+                    }
+                        
                     break;
                 default:
                     content = '.'
