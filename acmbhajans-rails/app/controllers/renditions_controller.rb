@@ -143,8 +143,13 @@ class RenditionsController < ApplicationController
               bhajan_summary[date][person.name] = []
             end
   
-            if !rendition.bhajan.blank? 
-              bhajan_summary[date][person.name] << rendition.bhajan.name
+            if !rendition.bhajan.blank?
+              name = rendition.bhajan.name
+              if !rendition.shruti.blank?
+                name = name + "(#{rendition.shruti})"
+              end
+
+              bhajan_summary[date][person.name] << name
             end
           end
         end
