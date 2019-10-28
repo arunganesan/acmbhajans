@@ -140,7 +140,7 @@ export class Recordings extends React.Component {
                     let bhajan = findElt(rendition.bhajan_id, this.state.bhajans)
                     if (bhajan !== null)  {
                         content = bhajan.name;
-                        if (rendition.shruti !=  undefined) {
+                        if (rendition.shruti != '') {
                             content += ` (${rendition.shruti})`;
                         }
                     }
