@@ -146,7 +146,7 @@ class RenditionsController < ApplicationController
             if !rendition.bhajan.blank?
               name = rendition.bhajan.name
               if !rendition.shruti.blank?
-                name = name + "(#{rendition.shruti})"
+                name = name + " (#{rendition.shruti})"
               end
 
               bhajan_summary[date][person.name] << name
