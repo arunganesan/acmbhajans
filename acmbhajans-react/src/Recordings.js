@@ -221,7 +221,7 @@ export class Recordings extends React.Component {
             </Col>
           </Row>
           <Row>
-            <Col lg={{span: 9}}>
+            <Col>
             <AutoSizer disableHeight>
             {({width}) => (
                 <Grid
