@@ -218,9 +218,9 @@ export class Recordings extends React.Component {
                         return getDay(date) === 6 && date <= today;
                     }}
                 /> }
-                
             </Col>
-
+          </Row>
+          <Row>
             <Col lg={{span: 9}}>
             <AutoSizer disableHeight>
             {({width}) => (
